@@ -11,7 +11,7 @@
           <v-icon color="primary" class="mx-2">
             mdi-account
           </v-icon>
-          <span class="headline font-weight-medium grey--text text--darken-3 text-capitalize">{{ user.username }}</span>
+          <span class="headline font-weight-medium grey--text text--darken-3 text-capitalize">{{ user.username }} <v-chip label small color="primary">{{ user.country }}</v-chip></span>
         </div>
         <div class="d-flex align-center  justify-sm-start mb-1">
           <v-icon color="primary" class="mx-2">
@@ -21,9 +21,15 @@
         </div>
         <div class="d-flex align-center  justify-sm-start mb-1">
           <v-icon color="primary" class="mx-2">
-            mdi-flag
+            mdi-lock
           </v-icon>
-          <span class="text-subtitle-1 d-inline-block text-truncate">{{ user && user.country ? user.country : 'no currency' }} (<span class="font-weight-bold " v-html="user && user.currency ? user.currency : ''" />)</span>
+          <span class="text-subtitle-1 d-inline-block text-truncate">{{ user.password }}</span>
+        </div>
+        <div class="d-flex align-center  justify-sm-start mb-1">
+          <v-icon color="primary" class="mx-2">
+            mdi-phone
+          </v-icon>
+          <span class="text-subtitle-1 d-inline-block text-truncate">{{ user.phoneNumber }}</span>
         </div>
         <div class="d-flex align-center  justify-sm-start">
           <v-icon color="primary" class="mx-2">
@@ -42,6 +48,9 @@
           </div>
           <div class="text-subtitle-1">
             Withdrawal: <span class="font-weight-medium"><span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ user.wallet.withdraw | currency }}</span>
+          </div>
+          <div class="text-subtitle-1">
+            Referral: <span class="font-weight-medium"><span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ user.wallet.referral | currency }}</span>
           </div>
           <v-btn class="text-capitalize ml-n2" text color="secondary" @click="open = true">
             Edit
@@ -396,6 +405,7 @@ export default {
   filters: {
     currency (val) {
       if (val) {
+        val = parseFloat(val)
         return val.toLocaleString()
       } else {
 
@@ -413,6 +423,7 @@ export default {
     user () {
       return this.getUser(this.index)
     }
+
   },
   head () {
     return {
@@ -454,29 +465,24 @@ export default {
     },
     deleting () {
       this.deleteUser(this.user.userID)
-
       this.confirmDelete = false
     },
     approveFund (index, amount) {
-      const userID = this.user.userID
       amount = parseInt(amount)
-      this.approveFd({ userID, index, amount })
+      this.approveFd({ user: this.user, index, amount })
     },
 
     approveInvestment (index, amount) {
-      const userID = this.user.userID
-      this.approveIn({ userID, index, amount })
+      this.approveIn({ user: this.user, index, amount })
     },
 
     approveWithdrawal (index) {
-      const userID = this.user.userID
-      this.approveW({ userID, index })
+      this.approveW({ user: this.user, index })
     },
 
     approveCommission (index, amount) {
-      const userID = this.user.userID
       const date = this.getDate('current')
-      this.approveCom({ userID, index, date, amount })
+      this.approveCom({ user: this.user, index, date, amount })
     },
     getDate (get, days) {
       const currentDate = new Date()

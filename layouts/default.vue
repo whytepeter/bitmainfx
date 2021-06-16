@@ -118,7 +118,7 @@
                   <v-icon color="secondary" x-large>
                     mdi-adjust
                   </v-icon>
-                  Crypto Funds Limited
+                  Bitmain FX
                 </v-list-item-title>
                 <div class="text-subtitle-1 font-weight-light opacity-h">
                   Has been in existence since 2019 and we are going stronger and
@@ -147,16 +147,16 @@
             </v-btn>
           </div>
           <div class="white--text text-center font-weight-light opacity-h">
-            Contact us: support@cryptofunds.com
+            Contact us: support@bitmainfx.online
           </div>
           <div class="white--text text-center font-weight-light opacity-h">
-            Call us: +44 151 946 0267
+            Call us: +44 744 141 8996
           </div>
         </v-col>
       </v-row>
       <v-row justify="center" class="footer-color">
         <v-col cols="12" class="text-center font-weight-light">
-          Copyright © 2019 Crypto Funds Limited. All Rights Reserved.
+          Copyright © 2019 Bitmain FX  All Rights Reserved.
         </v-col>
       </v-row>
     </v-footer>

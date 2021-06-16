@@ -38,8 +38,8 @@ export default {
       { name: 'What is binary option?', des: 'Binary options are a simple and potentially very profitable way to make money from short term movements on the market. By correctly predicting whether the price of an asset will go up or down, you can get a significant income in a continuous way.' },
       { name: 'What is cryptocurrency?', des: 'Cryptocurrency is a digital currency, which functioning is based on blockchain techology. Physically currency doesn\'t exist, it exist only in virtuality. The most popular cryptocurrencies are Bitcoin, Ethereum, Litecoin, Dash, Ripple. You can use these currencies to fund and trade.' },
       { name: 'What is the minimum and maximum deposit amount?', des: 'The minimum deposit amount is 150$ (or €), and the maximum - 50000$ (or €).' },
-      { name: 'Do I have to download any software for trading?', des: 'There is no need to download something before you can start trading with CryptoFunds. All you need to do is sign up and add funds into your account and you’ll be ready to start trading.' },
-      { name: 'Is there any maintenance or registration fee?', des: 'No, it is free to open an account with CryptoFunds.' },
+      { name: 'Do I have to download any software for trading?', des: 'There is no need to download something before you can start trading with BitmainFX. All you need to do is sign up and add funds into your account and you’ll be ready to start trading.' },
+      { name: 'Is there any maintenance or registration fee?', des: 'No, it is free to open an account with BitmainFX.' },
       { name: 'How can I sign up?', des: 'To sign up go to ‘Open an Account’ and enter the required information.Please make sure the data you submit is correct and up to date. In the future it will simplify withdrawal process.' }
     ]
   }),
@@ -56,7 +56,7 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: 'Questions Everyone is asking about CryptoFunds'
+          content: 'Questions Everyone is asking about BitmainFX'
         }
       ]
     }

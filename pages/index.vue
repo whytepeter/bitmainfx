@@ -232,7 +232,8 @@
         Trusted
       </v-col>
       <v-col cols="12" md="10" class=" mb-4 text-center">
-        <span class="accent--text font-weight-bold text-uppercase"> Crypto Funds Limited</span><span class="opacity"> has been in existence since 2019 and we are going stronger and bigger on daily basis because it was founded with patriotic and sincere mind.
+        <span class="accent--text font-weight-bold text-uppercase">Bitmain FX
+          }</span><span class="opacity"> has been in existence since 2019 and we are going stronger and bigger on daily basis because it was founded with patriotic and sincere mind.
           The founder’s primary aim is to eliminate poverty and ensure ultimate financial freedom to raise the standard of living of the common people in our society.
         </span>
       </v-col>
@@ -596,13 +597,13 @@ export default {
 
     ],
     investors: [
-      { name: 'Eunice Igben', avatar: 'avatar/2.jpg', story: 'Long live Cryptofunds, long live the CEO' },
-      { name: 'Dominic Oseni', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg', story: 'With Cryptofunds i dont have to worry about financial burden anymore' },
-      { name: 'Emeka Okorie', avatar: '/avatar/9.jpg', story: 'For a year now, I have been investmenting on with Cryptofunds and have not been dissapointed' },
+      { name: 'Eunice Igben', avatar: 'avatar/2.jpg', story: 'Long live BitmainFX, long live the CEO' },
+      { name: 'Dominic Oseni', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg', story: 'With BitmainFX i dont have to worry about financial burden anymore' },
+      { name: 'Emeka Okorie', avatar: '/avatar/9.jpg', story: 'For a year now, I have been investmenting on with BitmainFX and have not been dissapointed' },
       { name: 'John Fisher', avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg', story: 'We really did not think it was possible before to make so much profit, but here I am right now saying “Anything is just possible with Tread Miners”' },
-      { name: 'Rebecca Paulson', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg', story: 'Its\'s been a wonderful experience with you guys, Cryptofunds is going places' },
-      { name: 'Oluwaseyi Smith', avatar: 'avatar/3.jpg', story: 'Trust me Cryptofunds is one of a kind, Keep up the good work.' },
-      { name: 'Smith Jessica', avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg', story: 'Cryptofunds has been helpful to me.' },
+      { name: 'Rebecca Paulson', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg', story: 'Its\'s been a wonderful experience with you guys, BitmainFX is going places' },
+      { name: 'Oluwaseyi Smith', avatar: 'avatar/3.jpg', story: 'Trust me BitmainFX is one of a kind, Keep up the good work.' },
+      { name: 'Smith Jessica', avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg', story: 'BitmainFX has been helpful to me.' },
       { name: 'Rebecca Paulson', avatar: 'avatar/4.jpg', story: 'The company is very transparent in their dealings which is very good. Investment plan is stable as well' }
     ]
   }),
@@ -638,7 +639,7 @@ export default {
 
   head () {
     return {
-      title: 'Cryptofunds',
+      title: 'BitmainFX',
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {

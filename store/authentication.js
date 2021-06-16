@@ -118,7 +118,8 @@ export const actions = {
               wallet: {
                 totalDeposite: 0,
                 earnings: 0,
-                withdraw: 0
+                withdraw: 0,
+                referral: 0
               },
               investments: [],
               fundWallet: [],

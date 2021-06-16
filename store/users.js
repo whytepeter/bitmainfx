@@ -1,4 +1,7 @@
 import { auth, db } from '@/services/firebase'
+import emailjs, { init } from 'emailjs-com'
+// init Email.js
+init('user_cd0tx2R10vZAq5l6c3IwG')
 
 export const state = () => ({
   admin: null,
@@ -145,28 +148,41 @@ export const actions = {
     }, 3000)
   },
 
-  approveFundWallet ({ commit, dispatch }, { userID, index, amount }) {
-    db.collection('users').where('userID', '==', userID).get().then((docs) => {
-      const users = docs.docs
-      users.forEach((doc) => {
-        const user = doc.data()
-        const fundWallet = user.fundWallet
-        fundWallet[index].status = 'Success'
-        db.collection('users').doc(userID).update({
-          fundWallet
-        }).then(() => {
-          // console.log('funds successfully approved')
+  async approveFundWallet ({ commit, dispatch }, { user, index, amount }) {
+    const userID = user.userID
+    let users
+    await db.collection('users').where('userID', '==', userID).get().then((docs) => {
+      users = docs.docs
+    })
 
-          //  top up total
-          dispatch('updateTotal', { type: 'totalDeposit', amount })
+    users.forEach((doc) => {
+      const user = doc.data()
+      const fundWallet = user.fundWallet
+      fundWallet[index].status = 'Success'
+      db.collection('users').doc(userID).update({
+        fundWallet
+      }).then(() => {
+        // console.log('funds successfully approved')
 
-          makeDeposite()
-          // console.log('wallet updated')
-          dispatch('initAlert', { is: true, status: 'success', message: 'Fund approved successfully' })
-        }).catch((err) => {
-          console.log(err.message)
-          dispatch('initAlert', { is: true, status: 'error', message: err.message })
+        //  top up total
+        dispatch('updateTotal', { type: 'totalDeposit', amount })
+
+        // send email
+        amount = parseInt(amount)
+        emailjs.send('service_yn0f3r9', 'template_9q1sps6', {
+          name: user.username,
+          email: user.email,
+          amount: `$${amount.toLocaleString()}`,
+          reply_to: user.email
+
         })
+
+        makeDeposite()
+        // console.log('wallet updated')
+        dispatch('initAlert', { is: true, status: 'success', message: 'Fund approved successfully' })
+      }).catch((err) => {
+        console.log(err.message)
+        dispatch('initAlert', { is: true, status: 'error', message: err.message })
       })
     })
 
@@ -186,7 +202,8 @@ export const actions = {
       })
     }
   },
-  approveCommission ({ commit, dispatch }, { userID, index, date, amount }) {
+  approveCommission ({ commit, dispatch }, { user, index, date, amount }) {
+    const userID = user.userID
     db.collection('users').where('userID', '==', userID).get().then((docs) => {
       const users = docs.docs
       users.forEach((doc) => {
@@ -244,9 +261,9 @@ export const actions = {
     }
   },
 
-  approveInvestments ({ commit, dispatch }, { userID, index, amount }) {
+  approveInvestments ({ commit, dispatch }, { user, index, amount }) {
     // console.log('starting...')
-
+    const userID = user.userID
     db.collection('users').where('userID', '==', userID).get().then((docs) => {
       const users = docs.docs
       users.forEach((doc) => {
@@ -269,9 +286,9 @@ export const actions = {
     })
   },
 
-  approveWithdrawal ({ commit, dispatch }, { userID, index }) {
+  approveWithdrawal ({ commit, dispatch }, { user, index }) {
     // console.log('starting...')
-
+    const userID = user.userID
     db.collection('users').where('userID', '==', userID).get().then((docs) => {
       const users = docs.docs
       users.forEach((doc) => {
@@ -291,8 +308,10 @@ export const actions = {
     })
   },
 
-  updateTotal ({ commit }, { type, amount }) {
-    const ref = db.collection('total').doc(type)
+  async updateTotal ({ commit }, { type, amount }) {
+    console.log('updating...')
+
+    const ref = await db.collection('total').doc(type)
     ref.get().then((doc) => {
       const oldAmount = doc.data().amount
       const newAmount = oldAmount + parseInt(amount)

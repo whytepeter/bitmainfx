@@ -4,7 +4,7 @@
     :value="true"
     bottom
     right
-    color="primary"
+    color="primary lighten-1"
     elevation="24"
   >
     <div class="text-subtitle-1 font-weight-medium">

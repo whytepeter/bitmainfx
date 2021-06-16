@@ -35,6 +35,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'WalletCard',
   filters: {
+
     currency (val) {
       if (val) {
         return val.toLocaleString()

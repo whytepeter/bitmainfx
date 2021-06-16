@@ -88,6 +88,7 @@ export default {
   filters: {
     currency (val) {
       if (val) {
+        val = parseFloat(val)
         return val.toLocaleString()
       } else {
 

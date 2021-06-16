@@ -39,6 +39,7 @@ export default {
   filters: {
     currency (val) {
       if (val) {
+        val = parseFloat(val)
         return val.toLocaleString()
       } else {
 
@@ -62,18 +63,26 @@ export default {
         },
 
         {
-          name: 'Balance',
+          name: 'Total Profit',
           icon: 'mdi-cash-multiple',
           amount: this.wallet.earnings,
-          btn: 'Total Balance',
+          btn: 'profit',
           to: null,
           class: 'green-g'
         },
         {
-          name: 'Pending Withdraw',
+          name: 'Referral Bonus',
           icon: 'mdi-cash-multiple',
-          amount: this.last.amount,
-          btn: 'Pending Withdraw',
+          amount: this.wallet.referral,
+          btn: 'Referral Bonus',
+          to: null,
+          class: 'pink-g'
+        },
+        {
+          name: 'Withdraw',
+          icon: 'mdi-cash-multiple',
+          amount: this.wallet.withdraw,
+          btn: 'Withdraw',
           to: null,
           class: 'blue-g'
         }
@@ -86,15 +95,19 @@ export default {
 
 <style >
 .v-card.orange-g {
-    background: linear-gradient(to bottom, #F2C94C,#F2994A);
-    box-shadow: 0, 8px 32px 4px hsla(28, 87%, 62%, 0.3);
+    background: linear-gradient(to bottom, #f7e43a,#eb8022);
+    box-shadow: 0, 8px 32px 4px hsla(28, 86%, 53%, 0.3);
 }
 .v-card.blue-g {
     background: linear-gradient(to bottom, #56CCF2,#222DDE);
     box-shadow: 0, 8px 32px 4px hsl(236, 74%, 50%, 0.3);
 }
 .v-card.green-g {
-    background: linear-gradient(to bottom, #13FB73,#0E933B);
-    box-shadow: 0, 8px 32px 4px hsl(140, 83%, 32%, 0.3);
+    background: linear-gradient(to bottom, #03fa6a,#048524);
+    box-shadow: 0, 8px 32px 4px rgba(2, 92, 32, 0.3);
+}
+.v-card.pink-g {
+   background: linear-gradient(to bottom, #e72f57,#47001b);
+    box-shadow: 0, 8px 32px 4px rgba(109, 5, 83, 0.3);
 }
 </style>>

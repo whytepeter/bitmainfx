@@ -25,7 +25,8 @@
                 <div class="text-subtitle-2 font-weight-bold pt-2">
                   Total Deposite: <span class="secondary--text"><span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ user.wallet.totalDeposite | currency }}</span>
                   <v-text-field
-                    v-model="wallet.totalDeposite"
+                    v-model="display.totalDeposite"
+                    type="text"
 
                     outlined
                     dense
@@ -35,8 +36,19 @@
                 <div class="text-subtitle-2 font-weight-bold">
                   Earnings: <span class="secondary--text"><span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ user.wallet.earnings | currency }}</span>
                   <v-text-field
-                    v-model="wallet.earnings"
+                    v-model="display.earnings"
+                    type="text"
 
+                    outlined
+                    dense
+                    placeholder="Enter Amount"
+                  />
+                </div>
+                <div class="text-subtitle-2 font-weight-bold">
+                  Referral: <span class="secondary--text"><span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ user.wallet.referral | currency }}</span>
+                  <v-text-field
+                    v-model="display.referral"
+                    type="text"
                     outlined
                     dense
                     placeholder="Enter Amount"
@@ -45,7 +57,8 @@
                 <div class="text-subtitle-2 font-weight-bold">
                   Withdraw: <span class="secondary--text"><span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ user.wallet.withdraw | currency }}</span>
                   <v-text-field
-                    v-model="wallet.withdraw"
+                    v-model="display.withdraw"
+                    type="text"
 
                     outlined
                     dense
@@ -62,7 +75,7 @@
                 <v-btn
                   :loading="loading.edit"
                   depressed
-                  color="primary"
+                  color="primary lighten-1"
 
                   @click="update"
                 >
@@ -94,6 +107,7 @@ export default {
   filters: {
     currency (val) {
       if (val) {
+        val = parseFloat(val)
         return val.toLocaleString()
       } else {
 
@@ -107,35 +121,40 @@ export default {
   },
 
   data: () => ({
-
-    wallet: {
-      totalDeposite: '',
-      earnings: '',
-      withdraw: ''
-    }
   }),
 
   computed: {
-    ...mapGetters({ loading: 'users/getLoading', alert: 'users/getAlert' })
+    ...mapGetters({ loading: 'users/getLoading', alert: 'users/getAlert' }),
+    display () {
+      return {
+        totalDeposite: this.user.wallet.totalDeposite,
+        earnings: this.user.wallet.earnings,
+        referral: this.user.wallet.referral,
+        withdraw: this.user.wallet.withdraw
+      }
+    }
+
   },
   methods: {
     ...mapActions({ editWallet: 'users/editWallet' }),
     update () {
       const userID = this.user.userID
-      const wallet = {}
-      this.wallet.totalDeposite !== '' ? wallet.totalDeposite = parseInt(this.wallet.totalDeposite) : wallet.totalDeposite = parseInt(this.user.wallet.totalDeposite)
-      this.wallet.earnings !== '' ? wallet.earnings = parseInt(this.wallet.earnings) : wallet.earnings = parseInt(this.user.wallet.earnings)
-      this.wallet.withdraw !== '' ? wallet.withdraw = parseInt(this.wallet.withdraw) : wallet.withdraw = parseInt(this.user.wallet.withdraw)
 
-      this.editWallet({ userID, wallet })
+      this.editWallet({ userID, wallet: this.display })
+      this.checkIfDone()
     },
 
-    reset () {
-      this.$refs.form.reset()
-    },
     cancel () {
-      this.reset()
       this.$emit('closeModal', false)
+    },
+    checkIfDone () {
+      setInterval(() => {
+        if (this.loading.edit) {
+          setTimeout(() => {
+            this.cancel()
+          }, 2000)
+        }
+      }, 1000)
     }
   }
 }

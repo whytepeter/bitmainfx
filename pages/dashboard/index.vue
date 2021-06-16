@@ -199,7 +199,7 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: 'Invest in any of CryptoFunds plans and packages'
+          content: 'Invest in any of BitmainFX plans and packages'
         }
       ]
     }

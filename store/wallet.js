@@ -12,7 +12,8 @@ export const state = () => ({
   wallet: {
     totalDeposite: 0,
     earnings: 0,
-    withdraw: 0
+    withdraw: 0,
+    referral: 0
   },
 
   notifications: {
@@ -206,7 +207,7 @@ export const actions = {
 
   investFund ({ commit, state, dispatch }, payload) {
     // check if Funds is available
-    payload.status = 'Pending'
+    payload.status = 'Ongoing'
     payload.id = auth.currentUser.uid
     const userID = auth.currentUser.uid
     // commit('authentication/SET_LOADING', true, { root: true })

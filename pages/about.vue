@@ -10,14 +10,17 @@
         </div>
       </v-col>
       <v-col cols="12" md="8" class="font-weight-light text-center">
-        <p><span class="accent--text font-weight-medium"> Crypto Funds Limited</span> is an online registered investment platform managed by a team of experienced and competent professionals in the finance and investment industry within and outside the country. Our major aim is to eliminate poverty, empower youths and incapable men within a short period of investment.</p>
+        <p>
+          <span class="accent--text font-weight-medium">Bitmain FX
+            }</span> is an online registered investment platform managed by a team of experienced and competent professionals in the finance and investment industry within and outside the country. Our major aim is to eliminate poverty, empower youths and incapable men within a short period of investment.
+        </p>
         <p> And also to reach out to as many countries we can, and help make life easier through crypto-currency</p>
 
         <p>This investment platform has been in existence and business since 2019, we are growing stronger and bigger on daily basis because it is founded with patriotic and sincere minds.</p>
 
-        <p>In CryptoFunds there is security of investment and assurance of paying members promptly as at when due, irrespective of the package they invest into. Every fund that comes into the business is re-invested into productive business ventures which makes us different from any other online business or platform you might have experienced before or heard about.</p>
+        <p>In BitmainFX there is security of investment and assurance of paying members promptly as at when due, irrespective of the package they invest into. Every fund that comes into the business is re-invested into productive business ventures which makes us different from any other online business or platform you might have experienced before or heard about.</p>
 
-        <p>Also, the management team of CryptoFunds are unique in the sense that they are visible, accessible and easily contacted for conversation on any matter relating to their business for clarification.</p>
+        <p>Also, the management team of BitmainFX are unique in the sense that they are visible, accessible and easily contacted for conversation on any matter relating to their business for clarification.</p>
       </v-col>
       <v-col cols="12" />
     </v-row>
@@ -35,7 +38,7 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: 'CryptoFunds is an online registered investment platform managed by a team of experienced and competent professionals in the finance and investment industry within and outside the country. Our major aim is to give returns to money invest by the members to earn them total financial liberation'
+          content: 'BitmainFX is an online registered investment platform managed by a team of experienced and competent professionals in the finance and investment industry within and outside the country. Our major aim is to give returns to money invest by the members to earn them total financial liberation'
         }
 
       ]
