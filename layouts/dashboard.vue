@@ -5,7 +5,7 @@
         <v-app-bar-nav-icon dark @click="drawer = true" />
         <v-toolbar-title>
           <v-btn height="60" text x-large to="/" class="font-weight-bold rounded-xl">
-            <v-img max-width="90" src="crypto.jpeg" />
+            <v-img max-width="60" src="bitmainfx.png" />
           </v-btn>
         </v-toolbar-title>
 

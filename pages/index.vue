@@ -630,7 +630,7 @@ export default {
     (function () {
       const s1 = document.createElement('script'); const s0 = document.getElementsByTagName('script')[0]
       s1.async = true
-      s1.src = 'https://embed.tawk.to/60c35d4865b7290ac6357294/1f7ti8p3h'
+      s1.src = 'https://embed.tawk.to/60cbb6b665b7290ac63689f3/1f8ds3efv'
       s1.charset = 'UTF-8'
       s1.setAttribute('crossorigin', '*')
       s0.parentNode.insertBefore(s1, s0)
