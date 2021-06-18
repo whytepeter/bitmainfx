@@ -135,7 +135,7 @@
             <v-btn
               color="secondary"
               depressed
-              href="https://wa.me/+13478685900"
+              href="https://wa.me/+19735567564"
               target="_blank"
               icon
               fab
@@ -147,10 +147,20 @@
             </v-btn>
           </div>
           <div class="white--text text-center font-weight-light opacity-h">
-            Contact us: support@bitmainfx.online
+            Contact us: info@bitmainfx.online
           </div>
-          <div class="white--text text-center font-weight-light opacity-h">
-            Call us: +44 744 141 8996
+          <div class="d-flex white--text text-center font-weight-light opacity-h">
+            <span>Call us:</span>
+            <v-spacer />
+            <div class="d-flex flex-column">
+              <span>
+                +1973 556 7564
+              </span>
+
+              <span>
+                +1719 286-3138
+              </span>
+            </div>
           </div>
         </v-col>
       </v-row>

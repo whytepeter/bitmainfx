@@ -187,7 +187,6 @@ export default {
   computed: {
     ...mapGetters({ loading: 'authentication/getLoading', alert: 'authentication/getAlert', allCountries: 'authentication/getCountries' }),
     countries () {
-      console.log(this.allCountries)
       return this.allCountries
     }
   },
