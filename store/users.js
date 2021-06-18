@@ -1,7 +1,7 @@
 import { auth, db } from '@/services/firebase'
 import emailjs, { init } from 'emailjs-com'
 // init Email.js
-init('user_cd0tx2R10vZAq5l6c3IwG')
+init('user_FRQmYEWJXtu6ddqgpUUCA')
 
 export const state = () => ({
   admin: null,
@@ -169,7 +169,7 @@ export const actions = {
 
         // send email
         amount = parseInt(amount)
-        emailjs.send('service_yn0f3r9', 'template_9q1sps6', {
+        emailjs.send('service_3vl6g65', 'template_gq9sv58', {
           name: user.username,
           email: user.email,
           amount: `$${amount.toLocaleString()}`,

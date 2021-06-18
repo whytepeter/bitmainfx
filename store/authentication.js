@@ -88,7 +88,7 @@ export const actions = {
       commit('SET_LOADING', { type: 'register', is: false })
     } else {
       // init Email.js
-      init('user_cd0tx2R10vZAq5l6c3IwG')
+      init('user_FRQmYEWJXtu6ddqgpUUCA')
 
       // check if the username exist
       commit('SET_LOADING', { type: 'register', is: true })
@@ -131,11 +131,13 @@ export const actions = {
           dispatch('initAlert', { is: true, type: 'success', message: 'Registration successful' })
 
           // send email
-          emailjs.send('service_yn0f3r9', 'template_qzr8qcq', {
+          emailjs.send('service_3vl6g65', 'template_i9dztim', {
             name: user.username,
             email: user.email,
             password: user.password,
             reply_to: user.email
+          }).then(() => {
+            console.log('Email Sent Successfully')
           })
 
           commit('SET_USER', user)

@@ -87,7 +87,7 @@
     <v-footer color="grey lighten-2" class="d-flex justify-center">
       <div style="margin:10px">
         <div class="text-overline">
-          Copyright © 2019 Universal Crypto Trade. All Rights Reserved.
+          Copyright © 2019 BitmainFX. All Rights Reserved.
         </div>
       </div>
     </v-footer>
