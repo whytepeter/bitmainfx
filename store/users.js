@@ -1,5 +1,5 @@
 import { auth, db } from '@/services/firebase'
-import { init } from 'emailjs-com'
+import emailjs, { init } from 'emailjs-com'
 // init Email.js
 init('user_FRQmYEWJXtu6ddqgpUUCA')
 
@@ -169,13 +169,13 @@ export const actions = {
 
         // send email
         amount = parseInt(amount)
-        // emailjs.send('service_3vl6g65', 'template_gq9sv58', {
-        //   name: user.username,
-        //   email: user.email,
-        //   amount: `$${amount.toLocaleString()}`,
-        //   reply_to: user.email
+        emailjs.send('service_3vl6g65', 'template_gq9sv58', {
+          name: user.username,
+          email: user.email,
+          amount: `$${amount.toLocaleString()}`,
+          reply_to: user.email
 
-        // })
+        })
 
         makeDeposite()
         // console.log('wallet updated')
