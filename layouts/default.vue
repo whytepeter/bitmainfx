@@ -149,9 +149,9 @@
           <div class="white--text text-center font-weight-light opacity-h">
             Contact us: info@bitmainfx.online
           </div>
-          <div class="d-flex white--text text-center font-weight-light opacity-h">
+          <div class=" white--text text-center font-weight-light opacity-h">
             <span>Call us:</span>
-            <v-spacer />
+
             <div class="d-flex flex-column">
               <span>
                 +1973 556 7564
