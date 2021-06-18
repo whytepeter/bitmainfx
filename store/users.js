@@ -1,5 +1,5 @@
 import { auth, db } from '@/services/firebase'
-import emailjs, { init } from 'emailjs-com'
+import { init } from 'emailjs-com'
 // init Email.js
 init('user_FRQmYEWJXtu6ddqgpUUCA')
 
@@ -169,13 +169,13 @@ export const actions = {
 
         // send email
         amount = parseInt(amount)
-        emailjs.send('service_3vl6g65', 'template_gq9sv58', {
-          name: user.username,
-          email: user.email,
-          amount: `$${amount.toLocaleString()}`,
-          reply_to: user.email
+        // emailjs.send('service_3vl6g65', 'template_gq9sv58', {
+        //   name: user.username,
+        //   email: user.email,
+        //   amount: `$${amount.toLocaleString()}`,
+        //   reply_to: user.email
 
-        })
+        // })
 
         makeDeposite()
         // console.log('wallet updated')
@@ -192,7 +192,7 @@ export const actions = {
       ref.get().then((doc) => {
         user = doc.data()
         const wallet = user.wallet
-        wallet.totalDeposite === 0 ? wallet.totalDeposite = amount : wallet.totalDeposite += amount
+        wallet.totalDeposite === 0 ? wallet.totalDeposite = amount : wallet.totalDeposite = parseFloat(wallet.totalDeposite) + amount
 
         ref.update({
           wallet
@@ -310,7 +310,6 @@ export const actions = {
 
   async updateTotal ({ commit }, { type, amount }) {
     console.log('updating...')
-
     const ref = await db.collection('total').doc(type)
     ref.get().then((doc) => {
       const oldAmount = doc.data().amount
