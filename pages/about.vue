@@ -51,22 +51,22 @@
 
 <script>
 export default {
-  name: "About",
-  head() {
+  name: 'About',
+  head () {
     return {
-      title: "About Us",
+      title: 'About Us',
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {
-          hid: "description",
-          name: "description",
+          hid: 'description',
+          name: 'description',
           content:
-            "BitmainFX is an online registered investment platform managed by a team of experienced and competent professionals in the finance and investment industry within and outside the country. Our major aim is to give returns to money invest by the members to earn them total financial liberation"
+            'BitmainFX is an online registered investment platform managed by a team of experienced and competent professionals in the finance and investment industry within and outside the country. Our major aim is to give returns to money invest by the members to earn them total financial liberation'
         }
       ]
-    };
+    }
   }
-};
+}
 </script>
 
 <style></style>

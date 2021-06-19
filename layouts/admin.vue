@@ -25,8 +25,7 @@
           class="text-capitalize logo "
         >
           <span class="mr-2 d-none d-sm-flex">
-            {{ user !== null ? user.username : "username" }}</span
-          >
+            {{ user !== null ? user.username : "username" }}</span>
           <v-badge
             v-if="user !== null"
             content="admin"
@@ -100,19 +99,19 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex'
 export default {
   data: () => ({
     messages: 2,
 
     drawer: false,
     permanent: true,
-    activePage: "Dashboard",
+    activePage: 'Dashboard',
 
     sideLinks: [
-      { name: "Dashboard", route: "/admin", icon: "mdi-view-dashboard" },
-      { name: "Users", route: "/admin/users", icon: "mdi-account-group" },
-      { name: "Account", route: "/admin/account", icon: "mdi-account-box" }
+      { name: 'Dashboard', route: '/admin', icon: 'mdi-view-dashboard' },
+      { name: 'Users', route: '/admin/users', icon: 'mdi-account-group' },
+      { name: 'Account', route: '/admin/account', icon: 'mdi-account-box' }
       // { name: 'Investments', route: '/admin/investment', icon: 'mdi-cash-minus' },
       // { name: 'Withdraw', route: '/admin/withdraw', icon: 'mdi-cash-minus' }
       // { name: 'Support', route: '/dashboard/support', icon: 'mdi-phone' }
@@ -120,27 +119,27 @@ export default {
   }),
 
   computed: {
-    ...mapGetters({ user: "authentication/getUser" }),
+    ...mapGetters({ user: 'authentication/getUser' }),
 
-    currentYear() {
-      const d = new Date();
-      return d.getFullYear();
+    currentYear () {
+      const d = new Date()
+      return d.getFullYear()
     }
   },
-  created() {
-    this.$store.dispatch("authentication/handleAuthStateChanged");
-    this.$store.dispatch("users/initUsers");
+  created () {
+    this.$store.dispatch('authentication/handleAuthStateChanged')
+    this.$store.dispatch('users/initUsers')
   },
   methods: {
-    switchPage(page) {
-      this.activePage = page;
+    switchPage (page) {
+      this.activePage = page
     },
 
-    logout() {
-      this.$store.dispatch("authentication/logoutUser");
+    logout () {
+      this.$store.dispatch('authentication/logoutUser')
     }
   }
-};
+}
 </script>
 
 <style scoped>

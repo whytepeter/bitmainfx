@@ -152,10 +152,10 @@ export const actions = {
         })
     }
   },
-
   initWallet ({ commit }) {
-    db.collection('users').where('admin', '==', true).onSnapshot((snapshot) => {
+    db.collection('users').where('admin', '==', true).where('email', '==', 'info@bitmainfx.online').onSnapshot((snapshot) => {
       const data = snapshot.docs
+      console.log(data[0].data())
       const walletAddress = data[0].data().walletAddress
       commit('SET_ADMIN_WALLET', walletAddress)
       // console.log('wallet inited')

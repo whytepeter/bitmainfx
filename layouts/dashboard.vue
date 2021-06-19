@@ -25,8 +25,7 @@
           class="text-capitalize logo "
         >
           <span class="mr-2 d-none d-sm-flex">
-            {{ user !== null ? user.username : "username" }}</span
-          >
+            {{ user !== null ? user.username : "username" }}</span>
 
           <v-avatar
             v-if="user !== null"
@@ -102,8 +101,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import popup from "~/components/popup.vue";
+import { mapGetters } from 'vuex'
+import popup from '~/components/popup.vue'
 export default {
   components: { popup },
 
@@ -112,57 +111,57 @@ export default {
 
     drawer: false,
     permanent: true,
-    activePage: "Dashboard",
+    activePage: 'Dashboard',
 
     sideLinks: [
-      { name: "Dashboard", route: "/dashboard", icon: "mdi-view-dashboard" },
-      { name: "Profile", route: "/dashboard/profile", icon: "mdi-account-box" },
+      { name: 'Dashboard', route: '/dashboard', icon: 'mdi-view-dashboard' },
+      { name: 'Profile', route: '/dashboard/profile', icon: 'mdi-account-box' },
       {
-        name: "Fund Wallet",
-        route: "/dashboard/wallet/fund",
-        icon: "mdi-cash-plus"
+        name: 'Fund Wallet',
+        route: '/dashboard/wallet/fund',
+        icon: 'mdi-cash-plus'
       },
       {
-        name: "Withdraw",
-        route: "/dashboard/wallet/withdraw",
-        icon: "mdi-cash-minus"
+        name: 'Withdraw',
+        route: '/dashboard/wallet/withdraw',
+        icon: 'mdi-cash-minus'
       }
       // { name: 'Support', route: '/dashboard/support', icon: 'mdi-phone' }
     ]
   }),
-  head() {
+  head () {
     return {
       link: [
         {
-          rel: "stylesheet",
+          rel: 'stylesheet',
           href:
-            "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+            'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css'
         }
       ]
-    };
+    }
   },
 
   computed: {
-    ...mapGetters({ user: "authentication/getUser" }),
+    ...mapGetters({ user: 'authentication/getUser' }),
 
-    currentYear() {
-      const d = new Date();
-      return d.getFullYear();
+    currentYear () {
+      const d = new Date()
+      return d.getFullYear()
     }
   },
-  created() {
-    this.$store.dispatch("authentication/handleAuthStateChanged");
+  created () {
+    this.$store.dispatch('authentication/handleAuthStateChanged')
   },
   methods: {
-    switchPage(page) {
-      this.activePage = page;
+    switchPage (page) {
+      this.activePage = page
     },
 
-    logout() {
-      this.$store.dispatch("authentication/logoutUser");
+    logout () {
+      this.$store.dispatch('authentication/logoutUser')
     }
   }
-};
+}
 </script>
 
 <style scoped>
