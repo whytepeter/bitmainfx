@@ -11,7 +11,8 @@
         <v-row justify="center">
           <v-col cols="12" md="10" class="text-center">
             <div class=" text-h4 text-md-h3 text-lg-h2 text-capitalize white--text font-weight-bold">
-              The Most Trusted Online Investment Platform Since 2019
+              The Most Trusted Online Investment Platform Since 2013
+ 
             </div>
             <div class="opacity text-subtitle-1 text-md-h6 white--text mt-3 font-weight-light">
               The most convenient trading interface. Instant access to more than 100 assets of the world's leading companies.
@@ -233,7 +234,8 @@
       </v-col>
       <v-col cols="12" md="10" class=" mb-4 text-center">
         <span class="accent--text font-weight-bold text-uppercase">Bitmain FX
-          }</span><span class="opacity"> has been in existence since 2019 and we are going stronger and bigger on daily basis because it was founded with patriotic and sincere mind.
+          }</span><span class="opacity"> has been in existence since 2013
+  and we are going stronger and bigger on daily basis because it was founded with patriotic and sincere mind.
           The founder’s primary aim is to eliminate poverty and ensure ultimate financial freedom to raise the standard of living of the common people in our society.
         </span>
       </v-col>

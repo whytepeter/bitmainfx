@@ -3,7 +3,13 @@
     <div>
       <v-app-bar fixed flat color="primary">
         <v-toolbar-title>
-          <v-btn height="60" text x-large to="/" class="font-weight-bold rounded-xl">
+          <v-btn
+            height="60"
+            text
+            x-large
+            to="/"
+            class="font-weight-bold rounded-xl"
+          >
             <v-img max-width="60" src="bitmainfx.png" />
           </v-btn>
         </v-toolbar-title>
@@ -121,7 +127,7 @@
                   Bitmain FX
                 </v-list-item-title>
                 <div class="text-subtitle-1 font-weight-light opacity-h">
-                  Has been in existence since 2019 and we are going stronger and
+                  Has been in existence since 2013 and we are going stronger and
                   bigger on daily basis because it was founded with patriotic
                   and sincere mind.
                 </div>
@@ -166,7 +172,7 @@
       </v-row>
       <v-row justify="center" class="footer-color">
         <v-col cols="12" class="text-center font-weight-light">
-          Copyright © 2019 Bitmain FX  All Rights Reserved.
+          Copyright © 2013 Bitmain FX All Rights Reserved.
         </v-col>
       </v-row>
     </v-footer>
@@ -174,46 +180,44 @@
 </template>
 
 <script>
-import popup from '~/components/popup.vue'
+import popup from "~/components/popup.vue";
 export default {
   components: { popup },
   data: () => ({
     drawer: false,
     socialLink: [
       {
-        name: 'facebook',
-        to: 'https://facebook.com',
-        icon: 'mdi-facebook'
+        name: "facebook",
+        to: "https://facebook.com",
+        icon: "mdi-facebook"
       },
       {
-        name: 'twitter',
-        to: 'https://twitter.com',
-        icon: 'mdi-twitter'
+        name: "twitter",
+        to: "https://twitter.com",
+        icon: "mdi-twitter"
       },
       {
-        name: 'instagram',
-        to: 'https://instagram.com',
-        icon: 'mdi-instagram'
+        name: "instagram",
+        to: "https://instagram.com",
+        icon: "mdi-instagram"
       },
       {
-        name: 'whatsapp',
-        to: 'https://wa.me/+27639279824',
-        icon: 'mdi-whatsapp'
+        name: "whatsapp",
+        to: "https://wa.me/+27639279824",
+        icon: "mdi-whatsapp"
       }
     ],
 
     mainLinks: [
-      { name: 'Home', route: '/' },
-      { name: 'About Us', route: '/about' },
-      { name: 'FAQ', route: '/faq' },
-      { name: 'Terms & Policy', route: '/policy' },
-      { name: 'Contact Us', route: '/contact' }
+      { name: "Home", route: "/" },
+      { name: "About Us", route: "/about" },
+      { name: "FAQ", route: "/faq" },
+      { name: "Terms & Policy", route: "/policy" },
+      { name: "Contact Us", route: "/contact" }
     ]
   }),
-  created () {
-
-  }
-}
+  created() {}
+};
 </script>
 
 <style scoped>
