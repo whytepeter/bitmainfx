@@ -10,6 +10,10 @@
       <v-col cols="12" class="up">
         <v-row justify="center">
           <v-col cols="12" md="10" class="text-center">
+            <div class="d-flex align-center justify-center mb-4">
+              <v-img max-width="70" src="bitmainfx.png" />
+              <span class="text-h5 font-weight-bold white--text ml-2">BITMAIN FX</span>
+            </div>
             <div class=" text-h4 text-md-h3 text-lg-h2 text-capitalize white--text font-weight-bold">
               The Most Trusted Online Investment Platform Since 2013
             </div>
