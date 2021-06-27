@@ -172,8 +172,8 @@ export const actions = {
         emailjs.send('service_3vl6g65', 'template_gq9sv58', {
           name: user.username,
           email: user.email,
-          amount: `$${amount.toLocaleString()}`,
-          reply_to: user.email
+          amount: `${user.currency}${amount.toLocaleString()}`,
+          reply_to: user.email,
 
         })
 
