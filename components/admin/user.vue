@@ -41,7 +41,8 @@
           <v-icon color="primary" class="mx-2">
             mdi-bank
           </v-icon>
-          <span class="text-subtitle-1 d-inline-block text-truncate">{{ user.bank.bankName }} ({{ user.bank.accountName }}) - ({{ user.bank.accountNumber }})</span>
+          <span v-if="user && user.bank" class="text-subtitle-1 d-inline-block text-truncate">{{ user && user.bank && user.bank.bankName }} ({{ user && user.bank && user.bank.accountName }}) - ({{ user && user.bank && user.bank.accountNumber }})</span>
+          <span v-else class="text-subtitle-1 d-inline-block text-truncate">No Bank</span>
         </div>
       </v-col>
       <v-col cols="12" md="4" class="justify-space-between align-center">
