@@ -37,6 +37,12 @@
           </v-icon>
           <span class="text-subtitle-1 d-inline-block text-truncate">{{ user.walletAddress }}</span>
         </div>
+        <div class="d-flex align-center  justify-sm-start">
+          <v-icon color="primary" class="mx-2">
+            mdi-bank
+          </v-icon>
+          <span class="text-subtitle-1 d-inline-block text-truncate">{{ user.bank.bankName }} ({{ user.bank.accountName }}) - ({{ user.bank.accountNumber }})</span>
+        </div>
       </v-col>
       <v-col cols="12" md="4" class="justify-space-between align-center">
         <div>
