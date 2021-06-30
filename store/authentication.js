@@ -16,7 +16,8 @@ export const state = () => ({
     wallet: false,
     photo: false,
     username: false,
-    currency: false
+    currency: false,
+    bank: false
   },
 
   alert: {
@@ -108,6 +109,11 @@ export const actions = {
               photoURL: null,
               isDelete: false,
               walletAddress: null,
+              bank: {
+                bankName: '',
+                accountName: '',
+                accountNumber: ''
+              },
               commissions: [],
               notifications: {
                 fundWallet: [],
@@ -321,6 +327,46 @@ export const actions = {
       dispatch('initAlert', { is: true, type: 'error', message: error.message })
     })
   },
+
+  updateBank ({ commit, state, dispatch }, payload) {
+    const userId = auth.currentUser.uid
+    commit('SET_LOADING', { type: 'bank', is: true })
+    console.log(payload)
+    // check if the user havent added a
+    if (state.user.bank !== null) {
+      update()
+    } else {
+      add()
+    }
+
+    function add () {
+      db.collection('users').doc(userId).add({
+        bank: payload
+      }).then(() => {
+        // console.log('wallet Address updated')
+        commit('SET_LOADING', { type: 'bank', is: false })
+        dispatch('initAlert', { is: true, type: 'success', message: 'Bank Added successfully' })
+      }).catch((error) => {
+        // console.log(error.message)
+        commit('SET_LOADING', { type: 'bank', is: false })
+        dispatch('initAlert', { is: true, type: 'error', message: error.message })
+      })
+    }
+    function update () {
+      db.collection('users').doc(userId).update({
+        bank: payload
+      }).then(() => {
+        // console.log('wallet Address updated')
+        commit('SET_LOADING', { type: 'bank', is: false })
+        dispatch('initAlert', { is: true, type: 'success', message: 'Bank updated successfully' })
+      }).catch((error) => {
+        // console.log(error.message)
+        commit('SET_LOADING', { type: 'bank', is: false })
+        dispatch('initAlert', { is: true, type: 'error', message: error.message })
+      })
+    }
+  },
+
   updateCurrency ({ commit, state, dispatch }, payload) {
     const userId = auth.currentUser.uid
     commit('SET_LOADING', { type: 'currency', is: true })
@@ -500,9 +546,11 @@ export const actions = {
                 const currentUser = snapshot.data()
                 if (currentUser.admin) {
                   dispatch('users/initAdmin', currentUser, { root: true })
+
                   commit('SET_USER', currentUser)
                 } else {
                   commit('SET_USER', currentUser)
+                  console.log(currentUser)
                   dispatch('initWallet')
                 }
 

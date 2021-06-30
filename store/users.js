@@ -173,8 +173,7 @@ export const actions = {
           name: user.username,
           email: user.email,
           amount: `${user.currency}${amount.toLocaleString()}`,
-          reply_to: user.email,
-
+          reply_to: user.email
         })
 
         makeDeposite()

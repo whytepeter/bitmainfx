@@ -83,7 +83,16 @@
                   <v-icon color="primary" class="mx-2">
                     mdi-bitcoin
                   </v-icon>
-                  <span class="text-subtitle-1 d-inline-block text-truncate">{{ user !== null ? user.walletAddress : 'wallet address' }}</span>
+                  <span class="text-subtitle-1 d-inline-block text-truncate">{{ user && user.walletAddress ? user.walletAddress : 'wallet address' }}</span>
+                </div>
+                <div class="d-flex align-center justify-center justify-sm-start">
+                  <v-icon color="primary" class="mx-2">
+                    mdi-bank
+                  </v-icon>
+                  <span v-if="user && user.bank && user.bank.bankName" class="text-subtitle-1 d-inline-block text-truncate">{{ user.bank.bankName }} ({{ user.bank.accountName }})</span>
+                  <v-btn v-else color="accent" text class="text-lowercase px-0" @click="show = 'bank'">
+                    Add Bank
+                  </v-btn>
                 </div>
               </v-col>
               <v-spacer />
@@ -117,6 +126,61 @@
                 <v-col cols="12" class="py-0 px-4 text-right">
                   <v-btn :loading="loading.email" depressed color="secondary" @click="update('email')">
                     Update Email
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col v-if="show === 'bank'" cols="12" md="6">
+        <v-card>
+          <v-card-title>Update Email</v-card-title>
+          <v-divider />
+          <v-card-text>
+            <v-form @submit.prevent>
+              <v-row>
+                <v-col cols="12" class="py-0">
+                  <v-text-field
+                    v-model="bank.bankName"
+                    type="text"
+                    name="bank"
+                    color="primary"
+                    dense
+                    prepend-icon="mdi-bank"
+                    required
+                    outlined
+                    label="Bank Name"
+                  />
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-text-field
+                    v-model="bank.accountName"
+                    type="text"
+                    name="accountName"
+                    color="primary"
+                    dense
+                    required
+                    outlined
+                    label="Account Name"
+                  />
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-text-field
+                    v-model="bank.accountNumber"
+                    type="accountNumber"
+                    name="accountNumber"
+                    color="primary"
+                    dense
+                    required
+                    outlined
+                    label="Account Number"
+                  />
+                </v-col>
+
+                <v-col cols="12" class="py-0 px-4 text-right">
+                  <v-btn :loading="loading.bank" depressed color="secondary" @click="update('bank')">
+                    Update Bank
                   </v-btn>
                 </v-col>
               </v-row>
@@ -326,10 +390,16 @@ export default {
       new: '',
       confirm: ''
     },
+    bank: {
+      bankName: '',
+      accountName: '',
+      accountNumber: ''
+    },
     items: [
       { title: 'Edit Username', open: 'username' },
       { title: 'Update Email', open: 'email' },
       { title: 'Upload Photo', open: 'photo' },
+      { title: 'Update Bank', open: 'bank' },
       { title: 'Update Currency', open: 'currency' },
       { title: 'Edith Wallet Address', open: 'walletAddress' },
       { title: 'Change Password', open: 'password' }
@@ -359,7 +429,7 @@ export default {
   },
 
   methods: {
-    ...mapActions({ updateEmail: 'authentication/updateEmail', updateUsername: 'authentication/updateUsername', uploadPhoto: 'authentication/uploadPhoto', updateWalletAddress: 'authentication/updateWalletAddress', updatePsw: 'authentication/updatePassword', updateCurrency: 'authentication/updateCurrency', initAlert: 'authentication/initAlert' }),
+    ...mapActions({ updateEmail: 'authentication/updateEmail', updateBank: 'authentication/updateBank', updateUsername: 'authentication/updateUsername', uploadPhoto: 'authentication/uploadPhoto', updateWalletAddress: 'authentication/updateWalletAddress', updatePsw: 'authentication/updatePassword', updateCurrency: 'authentication/updateCurrency', initAlert: 'authentication/initAlert' }),
 
     getSymbol (currency) {
       let symbol
@@ -385,6 +455,10 @@ export default {
       this.password.new = ''
       this.password.old = ''
       this.password.confirm = ''
+
+      this.bank.bankName = ''
+      this.bank.accountNumber = ''
+      this.bank.accountName = ''
     },
 
     update (field) {
@@ -398,6 +472,10 @@ export default {
         this.clearFields()
       } else if (field === 'walletAddress') {
         this.updateWalletAddress(this.walletAddress)
+
+        this.clearFields()
+      } else if (field === 'bank') {
+        this.updateBank(this.bank)
 
         this.clearFields()
       } else if (field === 'currency') {
