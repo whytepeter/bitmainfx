@@ -91,6 +91,18 @@
                         </v-col>
                         <v-col cols="12">
                           <v-text-field
+                            disabled
+                            type="text"
+                            name="Bank"
+                            outlined
+                            dense
+                            color="primary"
+                            :label="user && user.bank ? `${user.bank.bankName} (${user.bank.accountName})-(${user.bank.accountNumber})` : 'Add a Bank '"
+                            required
+                          />
+                        </v-col>
+                        <v-col cols="12">
+                          <v-text-field
                             v-model="password"
                             type="password"
                             name="password"
