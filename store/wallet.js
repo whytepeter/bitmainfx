@@ -6,7 +6,8 @@ export const state = () => ({
     fund: false,
     withdraw: false,
     commission: false,
-    investment: false
+    investment: false,
+    request: false
   },
 
   wallet: {
@@ -106,6 +107,27 @@ export const mutations = {
 
 export const actions = {
 
+  sendRequest ({ commit, dispatch, rootState }) {
+    commit('SET_LOADING', { type: 'request', is: true })
+    const userId = auth.currentUser.uid
+    const ref = db.collection('users').doc(userId)
+
+    const request = {
+      state: true
+    }
+
+    ref.update({
+      request
+    }).then(() => {
+      commit('SET_LOADING', { type: 'request', is: false })
+      dispatch('authentication/initAlert', { is: true, type: 'success', message: 'A request has been sent to admin, expect an email shortly' }, { root: true })
+    }).catch((error) => {
+      console.log('Error getting document:', error)
+      commit('SET_LOADING', { type: 'request', is: false })
+      dispatch('authentication/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+    })
+  },
+
   initWallet ({ commit, state }) {
     const userId = auth.currentUser.uid
     const ref = db.collection('users').doc(userId)
@@ -191,12 +213,22 @@ export const actions = {
           const arr = []
           fundWallet.forEach((doc) => {
             const proof = {
-              walletAddress: doc.walletAddress,
-              amount: doc.amount,
-              date: doc.date,
-              status: doc.status
+              wallet: {
+                walletAddress: doc.walletAddress,
+                amount: doc.amount,
+                date: doc.date,
+                status: doc.status
+              },
+              bank: {
+                bankName: doc.bankName,
+                accountName: doc.accountName,
+                accountNumber: doc.accountNumber,
+                amount: doc.amount,
+                date: doc.date,
+                status: doc.status
+              }
             }
-            arr.push(proof)
+            arr.push(proof[doc.type])
           })
 
           commit('SET_PROOF', arr)
@@ -317,13 +349,27 @@ export const actions = {
                   fundWallet = user.fundWallet
 
                   // push the newInvestment in
-                  fundWallet.unshift({
-                    walletAddress: fund.walletAddress,
-                    amount: fund.amount,
-                    date: fund.date,
-                    recieptURL,
-                    status: 'Pending'
-                  })
+                  const object = {
+                    wallet: {
+                      type: fund.type,
+                      walletAddress: fund.walletAddress,
+                      amount: fund.amount,
+                      date: fund.date,
+                      recieptURL,
+                      status: 'Pending'
+                    },
+                    bank: {
+                      type: fund.type,
+                      bankName: fund.bankName,
+                      accountName: fund.accountName,
+                      accountNumber: fund.accountNumber,
+                      amount: fund.amount,
+                      date: fund.date,
+                      recieptURL,
+                      status: 'Pending'
+                    }
+                  }
+                  fundWallet.unshift(object[fund.type])
 
                   const username = db.collection('users').doc(userID).username
                   const message = {

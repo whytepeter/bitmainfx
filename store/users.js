@@ -22,7 +22,8 @@ export const state = () => ({
   loading: {
     edit: false,
     approveFund: false,
-    approveInvest: false
+    approveInvest: false,
+    request: false
   }
 
 })
@@ -260,6 +261,30 @@ export const actions = {
     }
   },
 
+  closeRequest ({ commit, dispatch }, user) {
+    commit('setLoading', { type: 'request', is: true })
+    // console.log('starting...')
+    const userID = user.userID
+    db.collection('users').where('userID', '==', userID).get().then((docs) => {
+      const users = docs.docs
+      users.forEach((doc) => {
+        // close the request
+        const request = {
+          state: false
+        }
+        db.collection('users').doc(userID).update({
+          request
+        }).then(() => {
+          commit('setLoading', { type: 'request', is: false })
+          dispatch('initAlert', { is: true, status: 'success', message: 'Request Closed' })
+        }).catch((err) => {
+          console.log(err.message)
+          commit('setLoading', { type: 'request', is: false })
+          dispatch('initAlert', { is: true, status: 'error', message: err.message })
+        })
+      })
+    })
+  },
   approveInvestments ({ commit, dispatch }, { user, index, amount }) {
     // console.log('starting...')
     const userID = user.userID

@@ -32,7 +32,12 @@
                         <v-img src="" />
                       </v-list-item-avatar> -->
                         <v-list-item-icon>
-                          <v-icon x-large>
+                          <v-badge v-if="user && user.request && user.request.state" color="secondary">
+                            <v-icon x-large>
+                              mdi-account-circle
+                            </v-icon>
+                          </v-badge>
+                          <v-icon v-else x-large>
                             mdi-account-circle
                           </v-icon>
                         </v-list-item-icon>

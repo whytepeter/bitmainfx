@@ -115,7 +115,125 @@
                       </v-card-text>
                     </v-card>
                   </v-col>
+                  <v-col cols="12">
+                    <v-card color="primary lighten-3" class="card" @click="method = 'bank'">
+                      <v-card-text class="d-flex align-center justify-start">
+                        <v-icon left color="accent">
+                          mdi-bank
+                        </v-icon>
+                        <div>
+                          Bank Deposit
+                        </div>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
                 </v-row>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col v-if="method === 'bank'" cols="12">
+            <v-card dark class="primary px-md-4" flat>
+              <v-card-title class="text-subtitle-1 d-flex">
+                Request Bank Details
+                <v-spacer />
+                <v-btn :loading="loading.request" depressed color="accent primary--text" @click="sendRequest">
+                  Send Request
+                </v-btn>
+              </v-card-title>
+              <v-card-text />
+            </v-card>
+          </v-col>
+          <v-col v-if="method === 'bank'" cols="12">
+            <v-card dark color="primary">
+              <v-card-title>
+                Send Proof of payment
+              </v-card-title>
+              <v-card-text>
+                <v-form
+                  ref="form"
+                  v-model="valid"
+                  lazy-validation
+                  class="pb-2"
+                >
+                  <v-row no-gutters>
+                    <v-col cols="6">
+                      <v-text-field
+                        v-model="bank.amount"
+                        type="text"
+                        name="amount"
+                        outlined
+                        dense
+                        color="secondary"
+                        :rules="required"
+                        label="Enter Amount"
+                      />
+                    </v-col>
+                    <v-col cols="6">
+                      <v-text-field
+                        v-model="bank.bankName"
+                        type="text"
+                        name="bankName"
+                        outlined
+                        dense
+                        color="secondary"
+                        :rules="required"
+                        label="Bank"
+                      />
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        v-model="bank.accountNumber"
+                        type="text"
+                        name="accountNumber"
+                        outlined
+                        dense
+                        color="secondary"
+                        :rules="required"
+                        label="Account Number"
+                      />
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        v-model="bank.accountName"
+                        type="text"
+                        name="accountName"
+                        outlined
+                        dense
+                        color="secondary"
+                        :rules="required"
+                        label="Account Name"
+                      />
+                    </v-col>
+                    <v-col cols="12">
+                      <v-file-input
+                        v-model="bank.photo"
+                        dense
+                        type="file"
+                        name="image"
+                        chips
+                        outlined
+                        required
+                        :rules="photoRules"
+                        label="Upload Image"
+                        prepend-icon="mdi-camera"
+                      />
+                    </v-col>
+
+                    <v-col cols="12" class="text-right">
+                      <v-btn depressed color="error" class="mr-2" @click="clear">
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                        :loading="loading.fund"
+                        depressed
+                        color="accent"
+                        @click="submit"
+                      >
+                        Submit
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-form>
               </v-card-text>
             </v-card>
           </v-col>
@@ -173,7 +291,7 @@
                         name="walletAddress"
                         outlined
                         dense
-                        color="primary"
+                        color="secondary"
                         :rules="walletAddressRules"
                         prepend-icon="mdi-bitcoin"
                         label="Wallet Address"
@@ -186,7 +304,7 @@
                         name="amount"
                         outlined
                         dense
-                        color="primary"
+                        color="secondary"
                         :rules="amountRules"
                         prepend-icon="mdi-cash"
                         label="Enter Amount"
@@ -299,10 +417,20 @@ export default {
     method: '',
     valid: true,
     payment: {
+      type: 'wallet',
       photo: null,
       walletAddress: '',
       amount: ''
     },
+    bank: {
+      type: 'bank',
+      amount: '',
+      photo: null,
+      bankName: '',
+      accountName: '',
+      accountNumber: ''
+    },
+    required: [v => !!v || 'This field  is required'],
     amountRules: [v => !!v || 'amount  is required'],
     walletAddressRules: [v => !!v || 'walletAddress  is required'],
     photoRules: [v => !!v || 'Proof  is required']
@@ -324,6 +452,7 @@ export default {
             sortable: false,
             value: 'walletAddress'
           },
+          { text: 'Bank', value: 'bankName' },
           { text: 'Amount', value: 'amount' },
           { text: 'Date ', value: 'date' },
           { text: 'Status', value: 'status' }
@@ -337,7 +466,9 @@ export default {
     ...mapMutations({ setAlert: 'authentication/SET_ALERT' }),
     ...mapActions({
       notifyMe: 'authentication/notifyWhyte',
-      fundWallet: 'wallet/fundWallet'
+      fundWallet: 'wallet/fundWallet',
+      sendRequest: 'wallet/sendRequest'
+
     }),
 
     async copy (payload) {
@@ -354,13 +485,21 @@ export default {
         return 'info'
       }
     },
+
     submit () {
       this.$refs.form.validate()
       if (this.$refs.form.validate()) {
         this.payment.date = this.getDate('current')
-        this.fundWallet(this.payment)
+        this.bank.date = this.getDate('current')
+
+        const method = {
+          bitcoin: this.payment,
+          bank: this.bank
+        }
+        this.fundWallet(method[this.method])
       }
     },
+
     clear () {
       this.payment.amount = ''
       this.payment.walletAddress = ''

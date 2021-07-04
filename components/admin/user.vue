@@ -1,10 +1,21 @@
 <template>
   <v-container v-if="user !== null || user !== undefined">
     <v-row>
+      <v-col v-if="user.request && user.request.state" cols="12" class="pa-0">
+        <v-card tile flat color="secondary">
+          <v-card-text class="d-flex text-subtitle-1 text-sm-h6 align-center text3--text">
+            Request Bank Details
+
+            <v-spacer />
+            <v-btn :loading="loading.request" outlined @click="closeRequest">
+              Okay
+            </v-btn>
+          </v-card-text>
+        </v-card>
+      </v-col>
       <v-col cols="12" class="text-right pa-0">
-        <v-spacer>
-          <span v-if="user.joinDate !== undefined"><strong>Joined on</strong> {{ user.joinDate }}</span>
-        </v-spacer>
+        <v-spacer />
+        <span v-if="user.joinDate !== undefined"><strong>Joined on</strong> {{ user.joinDate }}</span>
       </v-col>
       <v-col cols="12" md="8">
         <div class="d-flex align-center  justify-sm-start mb-2">
@@ -91,8 +102,22 @@
                           <div>
                             Amount <span class="font-weight-medium ml-2"> ${{ fundWallet.amount |currency }}</span>
                           </div>
-                          <div>
+                          <div v-if="user && user.type && user.type.toLowerCase() === 'wallet'">
                             Send From <span class="font-weight-medium ml-2"> {{ fundWallet.walletAddress }}</span>
+                          </div>
+                          <div v-else>
+                            <div>
+                              Bank
+                              <span class="font-weight-medium ml-2"> {{ fundWallet.bankName }}</span>
+                            </div>
+                            <div>
+                              Account Name
+                              <span class="font-weight-medium ml-2"> {{ fundWallet.accountName }}</span>
+                            </div>
+                            <div>
+                              Acccount Number
+                              <span class="font-weight-medium ml-2"> {{ fundWallet.accountNumber }}</span>
+                            </div>
                           </div>
                           <div>
                             Date <span class="font-weight-medium ml-2"> {{ fundWallet.date }}</span>
@@ -426,7 +451,7 @@ export default {
     showImg: false
   }),
   computed: {
-    ...mapGetters({ getUser: 'users/getUser', alert: 'users/getAlert' }),
+    ...mapGetters({ loading: 'users/getLoading', getUser: 'users/getUser', alert: 'users/getAlert' }),
     user () {
       return this.getUser(this.index)
     }
@@ -446,7 +471,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({ deleteUser: 'users/deleteUser', approveCom: 'users/approveCommission', approveFd: 'users/approveFundWallet', approveIn: 'users/approveInvestments', approveW: 'users/approveWithdrawal' }),
+    ...mapActions({ closeTheRequest: 'users/closeRequest', deleteUser: 'users/deleteUser', approveCom: 'users/approveCommission', approveFd: 'users/approveFundWallet', approveIn: 'users/approveInvestments', approveW: 'users/approveWithdrawal' }),
     status (type) {
       if (type === 'pending' || type === 'Pending') {
         return {
@@ -490,6 +515,10 @@ export default {
     approveCommission (index, amount) {
       const date = this.getDate('current')
       this.approveCom({ user: this.user, index, date, amount })
+    },
+
+    closeRequest () {
+      this.closeTheRequest(this.user)
     },
     getDate (get, days) {
       const currentDate = new Date()
