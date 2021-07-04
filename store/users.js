@@ -1,5 +1,6 @@
 import { auth, db } from '@/services/firebase'
 import emailjs, { init } from 'emailjs-com'
+// import countries from '../services/countries'
 // init Email.js
 init('user_FRQmYEWJXtu6ddqgpUUCA')
 
@@ -116,6 +117,19 @@ export const actions = {
         data.forEach((doc) => {
         // get user detail
           const user = doc.data()
+
+          // update currency symbol
+          // countries.forEach((el) => {
+          //   console.log(el)
+          //   if (el.currency.toLowerCase() === user.country.toLowerCase()) {
+          //     db.collection('users').doc(user.userID).update({
+          //       currency: el.symbol
+          //     }).then(() => {
+          //       console.log(user.usersname, 'currency updated')
+          //     })
+          //   }
+          // })
+
           users.push(user)
         })
 
@@ -149,7 +163,7 @@ export const actions = {
     }, 3000)
   },
 
-  async approveFundWallet ({ commit, dispatch }, { user, index, amount }) {
+  async approveFundWallet ({ commit, dispatch }, { user, index, amount, displayAmount }) {
     const userID = user.userID
     let users
     await db.collection('users').where('userID', '==', userID).get().then((docs) => {
@@ -173,7 +187,7 @@ export const actions = {
         emailjs.send('service_3vl6g65', 'template_gq9sv58', {
           name: user.username,
           email: user.email,
-          amount: `${user.currency}${amount.toLocaleString()}`,
+          amount: displayAmount,
           reply_to: user.email
         })
 

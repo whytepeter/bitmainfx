@@ -100,7 +100,7 @@
                       <v-col cols="12" md="6">
                         <v-card-text>
                           <div>
-                            Amount <span class="font-weight-medium ml-2"> ${{ fundWallet.amount |currency }}</span>
+                            Amount <span class="font-weight-medium ml-2"> <span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ fundWallet.amount |currency }}</span>
                           </div>
                           <div v-if="user && user.type && user.type.toLowerCase() === 'wallet'">
                             Send From <span class="font-weight-medium ml-2"> {{ fundWallet.walletAddress }}</span>
@@ -131,7 +131,7 @@
                             small
                             color="success"
                             class="my-2"
-                            @click="approveFund(i, fundWallet.amount)"
+                            @click="approveFund(i, fundWallet.amount, user && user.currency ? user.currency : '$')"
                           >
                             Approve Payment
                           </v-btn>
@@ -184,7 +184,7 @@
                             Package <span class="font-weight-medium ml-2"> {{ investment.name }}</span>
                           </div>
                           <div>
-                            Amount <span class="font-weight-medium ml-2"> ${{ investment.amount | currency }}</span>
+                            Amount <span class="font-weight-medium ml-2"> <span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ investment.amount | currency }}</span>
                           </div>
                           <div>
                             Duration <span class="font-weight-medium ml-2"> {{ investment.duration }} Days</span>
@@ -251,7 +251,7 @@
                             Package <span class="font-weight-medium ml-2"> {{ withdrawal.name }}</span>
                           </div>
                           <div>
-                            Amount <span class="font-weight-medium ml-2"> ${{ withdrawal.amount | currency }}</span>
+                            Amount <span class="font-weight-medium ml-2"> <span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ withdrawal.amount | currency }}</span>
                           </div>
                           <div>
                             Duration <span class="font-weight-medium ml-2"> {{ withdrawal.duration }} Days</span>
@@ -314,7 +314,7 @@
                       <v-col cols="12" md="6">
                         <v-card-text>
                           <div>
-                            Amount <span class="font-weight-medium ml-2"> ${{ commission.amount |currency }}</span>
+                            Amount <span class="font-weight-medium ml-2"> <span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ commission.amount |currency }}</span>
                           </div>
                           <div>
                             Send From <span class="font-weight-medium ml-2"> {{ commission.walletAddress }}</span>
@@ -499,9 +499,10 @@ export default {
       this.deleteUser(this.user.userID)
       this.confirmDelete = false
     },
-    approveFund (index, amount) {
+    approveFund (index, amount, currency) {
       amount = parseInt(amount)
-      this.approveFd({ user: this.user, index, amount })
+      const displayAmount = `${currency}${amount.toLocaleString()}`
+      this.approveFd({ user: this.user, index, amount, displayAmount })
     },
 
     approveInvestment (index, amount) {
