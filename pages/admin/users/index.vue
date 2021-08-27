@@ -11,20 +11,23 @@
                   <span class="text-subtitle-2 success--text ml-2 font-weight-medium">({{ totalUsers }})</span>
                 </v-col>
                 <v-spacer />
-
                 <v-col cols="12" sm="6">
                   <v-text-field
+                    v-model="search"
                     append-icon="mdi-magnify"
-                    placeholder="Search by username"
+                    placeholder="Search Clients"
                     single-line
                     hide-details
+                    @keyup="clearSearch"
+                    @click:append="searching"
+                    @keypress.enter="searching"
                   />
                 </v-col>
               </v-row>
             </v-card-title>
             <v-card-text class="px-0">
-              <v-expansion-panels v-if="users !== null" focusable popout flat>
-                <v-expansion-panel v-for="(user, index) in users" :key="user.id">
+              <v-expansion-panels v-if="users !== null && !searchUsers.length" focusable popout flat>
+                <v-expansion-panel v-for="(user) in users" :key="user.id">
                   <v-expansion-panel-header class="px-0">
                     <v-list class="transparent">
                       <v-list-item>
@@ -32,12 +35,7 @@
                         <v-img src="" />
                       </v-list-item-avatar> -->
                         <v-list-item-icon>
-                          <v-badge v-if="user && user.request && user.request.state" color="secondary">
-                            <v-icon x-large>
-                              mdi-account-circle
-                            </v-icon>
-                          </v-badge>
-                          <v-icon v-else x-large>
+                          <v-icon x-large>
                             mdi-account-circle
                           </v-icon>
                         </v-list-item-icon>
@@ -47,7 +45,7 @@
                           <v-list-item-subtitle
                             class="d-inline-block text-truncate"
 
-                            v-text="user.walletAddress"
+                            v-text="user.walletAddress && user.walletAddress"
                           />
                         </v-list-item-content>
                         <v-list-item-icon>
@@ -57,7 +55,7 @@
                             depressed
                             outlined
                             class="text-capitalize text-truncate d-none d-sm-flex "
-                            @click="openUser(index)"
+                            @click="openUser(user.email)"
                           >
                             View
                           </v-btn>
@@ -69,7 +67,7 @@
                   <v-expansion-panel-content>
                     <v-card flat>
                       <v-card-text class="d-flex">
-                        Email <span class="ml-2">{{ user.email }}</span>
+                        Email <span class="ml-2">{{ user.email && user.email }}</span>
                         <v-spacer />
                         <v-btn
                           rounded
@@ -77,7 +75,65 @@
                           depressed
                           outlined
                           class="text-capitalize text-truncate d-flex d-sm-none "
-                          @click="openUser(index)"
+                          @click="openUser(user.email)"
+                        >
+                          View
+                        </v-btn>
+                      </v-card-text>
+                    </v-card>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+              <v-expansion-panels v-else focusable popout flat>
+                <v-expansion-panel v-for="(user) in searchUsers" :key="user.id">
+                  <v-expansion-panel-header class="px-0">
+                    <v-list class="transparent">
+                      <v-list-item>
+                        <!-- <v-list-item-avatar>
+                        <v-img src="" />
+                      </v-list-item-avatar> -->
+                        <v-list-item-icon>
+                          <v-icon x-large>
+                            mdi-account-circle
+                          </v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content class="">
+                          <v-list-item-title class="text-subtitle-1 font-weight-medium text-capitalize " v-text="user.username" />
+                          <v-list-item-subtitle
+                            class="d-inline-block text-truncate"
+
+                            v-text="user.walletAddress && user.walletAddress"
+                          />
+                        </v-list-item-content>
+                        <v-list-item-icon>
+                          <v-btn
+                            rounded
+                            small
+                            depressed
+                            outlined
+                            class="text-capitalize text-truncate d-none d-sm-flex "
+                            @click="openUser(user.email)"
+                          >
+                            View
+                          </v-btn>
+                        </v-list-item-icon>
+                      </v-list-item>
+                    </v-list>
+                  </v-expansion-panel-header>
+                  <v-divider />
+                  <v-expansion-panel-content>
+                    <v-card flat>
+                      <v-card-text class="d-flex">
+                        Email <span class="ml-2">{{ user.email && user.email }}</span>
+                        <v-spacer />
+                        <v-btn
+                          rounded
+                          small
+                          depressed
+                          outlined
+                          class="text-capitalize text-truncate d-flex d-sm-none "
+                          @click="openUser(user.email)"
                         >
                           View
                         </v-btn>
@@ -104,7 +160,7 @@
             </v-card-title>
             <v-card-text>
               <keep-alive>
-                <user :index="index" />
+                <user :email="selected" />
               </keep-alive>
             </v-card-text>
           </v-card>
@@ -130,14 +186,30 @@ export default {
   }),
 
   data: () => ({
+    search: '',
     show: false,
-    index: ''
+    searchUsers: [],
+    selected: ''
   }),
   computed: {
     ...mapGetters({ totalUsers: 'users/totalUsers', users: 'users/getUsers' })
 
   },
   methods: {
+    searching () {
+      // console.log(this.users);
+      this.users.forEach((el) => {
+        if (el.username.toLowerCase().includes(this.search.toLowerCase()) || el.email.toLowerCase().includes(this.search.toLowerCase())) {
+          this.searchUsers.push(el)
+        }
+      })
+      console.log(this.searchUsers)
+    },
+    clearSearch () {
+      if (this.search === '') {
+        this.searchUsers = []
+      }
+    },
     status (type) {
       if (type === 'pending' || type === 'Pending') {
         return {
@@ -162,14 +234,15 @@ export default {
       }
     },
 
-    openUser (index) {
+    openUser (email) {
+      console.log(email)
       this.show = true
-      this.index = index
+      this.selected = email
     },
 
     closeUser () {
       this.show = false
-      this.index = ''
+      this.selected = ''
     }
   },
   head () {

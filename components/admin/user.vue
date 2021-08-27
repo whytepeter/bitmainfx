@@ -444,16 +444,21 @@ export default {
       }
     }
   },
-  props: ['index'],
+  props: ['email'],
   data: () => ({
     open: false,
     confirmDelete: false,
     showImg: false
   }),
   computed: {
-    ...mapGetters({ loading: 'users/getLoading', getUser: 'users/getUser', alert: 'users/getAlert' }),
+    ...mapGetters({ users: 'users/getUsers', loading: 'users/getLoading', getUser: 'users/getUser', alert: 'users/getAlert' }),
     user () {
-      return this.getUser(this.index)
+    const searchUser = this.users.find((el) => {
+        return el.email === this.email
+      })
+
+      console.log(searchUser)
+      return searchUser
     }
 
   },
