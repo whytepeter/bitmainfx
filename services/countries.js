@@ -165,6 +165,11 @@ export default [
     symbol: 'kr'
   },
   {
+    currency: 'Eswatini',
+    abbreviation: 'SZL',
+    symbol: 'E'
+  },
+  {
     currency: 'Euro Member Countries',
     abbreviation: 'EUR',
     symbol: '€'
@@ -494,11 +499,7 @@ export default [
     abbreviation: 'SRD',
     symbol: '$'
   },
-  {
-    currency: 'Swizaland Lilangeni',
-    abbreviation: 'SZL',
-    symbol: 'SZL'
-  },
+
   {
     currency: 'Syria Pound',
     abbreviation: 'SYP',
@@ -581,7 +582,7 @@ export default [
   },
   {
     currency: 'Zimbia Kwacha',
-    abbreviation: 'ZMK',
-    symbol: 'ZK'
+    abbreviation: 'ZMW',
+    symbol: 'ZMW'
   }
 ]
