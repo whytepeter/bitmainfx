@@ -581,7 +581,7 @@ export default [
     symbol: 'Z$'
   },
   {
-    currency: 'Zimbia Kwacha',
+    currency: 'Zambia',
     abbreviation: 'ZMW',
     symbol: 'ZMW'
   }
