@@ -495,6 +495,11 @@ export default [
     symbol: '$'
   },
   {
+    currency: 'Swizaland Lilangeni',
+    abbreviation: 'SZL',
+    symbol: 'SZL'
+  },
+  {
     currency: 'Syria Pound',
     abbreviation: 'SYP',
     symbol: '£'
@@ -573,5 +578,10 @@ export default [
     currency: 'Zimbabwe Dollar',
     abbreviation: 'ZWD',
     symbol: 'Z$'
+  },
+  {
+    currency: 'Zimbia Kwacha',
+    abbreviation: 'ZMK',
+    symbol: 'ZK'
   }
 ]
