@@ -19,8 +19,7 @@
           <v-spacer />
           <div class="d-flex text-h6 flex-column align-end">
             <div class="primary--text">
-              <span v-html="user && user.currency ? user.currency : '$'" />
-              {{ card.amount | currency }}
+              ${{ card.amount | currency }}
             </div>
             <div class="font-weight-medium text-subtitle-1">
               {{ card.name }}
