@@ -31,7 +31,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="12" class="px-0">
         <v-card flat dark color="transparent" class="pa-0">
           <v-card-title class="pb-1 px-4">
             Hi,
@@ -49,7 +49,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="12" class="px-0">
         <v-card dark flat color="transparent">
           <v-card-title>Investment Packages</v-card-title>
           <v-divider />

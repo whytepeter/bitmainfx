@@ -1,7 +1,14 @@
 <template>
   <v-row justify="space-around ma-0">
-    <v-col v-for="plan in plans" :key="plan.name" cols="12" sm="6" md="4">
-      <v-card max-width="300" dark class="primary mx-auto">
+    <v-col
+      v-for="plan in plans"
+      :key="plan.name"
+      cols="12"
+      sm="6"
+      md="4"
+      class="px-0"
+    >
+      <v-card light max-width="300" class="white mx-auto">
         <v-card-title class=" headline font-weight-medium justify-center">
           {{ plan.name }} Package
         </v-card-title>
@@ -24,7 +31,7 @@
               </div>
             </v-col>
             <v-col cols="12">
-              <v-btn block depressed color="accent" @click.stop="plan.open = true">
+              <v-btn block depressed color="secondary" @click.stop="plan.open = true">
                 Invest
               </v-btn>
             </v-col>
