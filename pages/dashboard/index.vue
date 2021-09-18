@@ -33,16 +33,16 @@
     <v-row>
       <v-col cols="12">
         <v-card dark color="primary">
-          <v-card-title>
+          <v-card-title class="py-1 px-2">
             Hi,
             <span v-if="user && !user.username" class="ml-2">
               {{ user !== null && user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : 'Full Name' }}
             </span>
             <span v-else class="ml-2">
               {{ user !== null ? user.username : 'Username' }}
-            </span>,
+            </span>
           </v-card-title>
-          <v-card-text>
+          <v-card-text class="py-0">
             <showcase />
           </v-card-text>
         </v-card>
