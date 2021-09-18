@@ -6,9 +6,8 @@
       cols="12"
       sm="6"
       md="4"
-      class="px-0"
     >
-      <v-card light max-width="300" class="white mx-auto">
+      <v-card light max-width="350" class="white mx-auto">
         <v-card-title class=" headline font-weight-medium justify-center">
           {{ plan.name }} Package
         </v-card-title>
