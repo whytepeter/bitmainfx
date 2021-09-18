@@ -30,22 +30,17 @@
         </div>
       </v-col>
     </v-row>
-    <v-row no-gutters justify="end">
-      <v-col cols="12" md="4" class="pa-0">
-        <v-card dense flat dark color="primary accent--text">
-          <v-card-title class="text-button justify-center ">
-            <span>{{ currentDate }}</span>
-          </v-card-title>
-        </v-card>
-      </v-col>
-    </v-row>
     <v-row>
       <v-col cols="12">
         <v-card dark color="primary">
           <v-card-title>
-            Dashboard
-            <v-spacer />
-            <span class="text-subtitle-1 font-weight-medium success--text text--darken-2 ">Login IP ({{ ip }})</span>
+            Hi,
+            <span v-if="user && !user.username">
+              {{ user !== null && user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : 'Full Name' }}
+            </span>
+            <span v-else>
+              {{ user !== null ? user.username : 'Username' }}
+            </span>,
           </v-card-title>
           <v-card-text>
             <showcase />
@@ -110,7 +105,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters({ info: 'wallet/getInvestmentStatus', alert: 'authentication/getAlert' }),
+    ...mapGetters({ user: 'authentication/getUser', info: 'wallet/getInvestmentStatus', alert: 'authentication/getAlert' }),
     table () {
       return {
 
