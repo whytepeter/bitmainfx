@@ -22,7 +22,8 @@
           <v-icon color="primary" class="mx-2">
             mdi-account
           </v-icon>
-          <span class="headline font-weight-medium grey--text text--darken-3 text-capitalize">{{ user.username }} <v-chip label small color="primary">{{ user.country }}</v-chip></span>
+          <span v-if="user && user.firstName" class="headline font-weight-medium grey--text text--darken-3 text-capitalize">{{ user.firstName }} {{ user.lastName }} <v-chip label small color="primary">{{ user.country }}</v-chip></span>
+          <span v-else class="headline font-weight-medium grey--text text--darken-3 text-capitalize">{{ user.username }} <v-chip label small color="primary">{{ user.country }}</v-chip></span>
         </div>
         <div class="d-flex align-center  justify-sm-start mb-1">
           <v-icon color="primary" class="mx-2">
@@ -252,6 +253,21 @@
                           </div>
                           <div>
                             Amount <span class="font-weight-medium ml-2"> <span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ withdrawal.amount | currency }}</span>
+                          </div>
+                          <div>
+                           Paymenth Method <span class="font-weight-medium ml-2"> {{ withdrawal.paymentMethod }}</span>
+                          </div>
+                          <div v-if="withdrawal.walletAddress">
+                            Wallet Address <span class="font-weight-medium ml-2"> {{ withdrawal.walletAddress }}</span>
+                          </div>
+                          <div v-if="withdrawal.bank">
+                            Bank <span class="font-weight-medium ml-2"> {{ withdrawal.bank }}</span>
+                          </div>
+                          <div v-if="withdrawal.accName">
+                            Account Name <span class="font-weight-medium ml-2"> {{ withdrawal.accName }}</span>
+                          </div>
+                          <div v-if="withdrawal.accNumber">
+                            Account Number <span class="font-weight-medium ml-2"> {{ withdrawal.accNumber }}</span>
                           </div>
                           <div>
                             Duration <span class="font-weight-medium ml-2"> {{ withdrawal.duration }} Days</span>
