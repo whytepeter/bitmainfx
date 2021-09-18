@@ -34,14 +34,10 @@
           </v-expansion-panel>
         </v-expansion-panels>
       </v-col> -->
-      <v-col cols="12">
+      <v-col cols="12" class="pa-0">
         <v-card flat dark color="transparent" class="pa-0">
-          <v-card-title class="text-subtitle-1 font-weight-medium">
+          <v-card-title class="text-subtitle-1 font-weight-medium py-0">
             Withdraw
-            <v-spacer />
-            <v-btn v-if="show" text color="secondary" class="text-capitalize " @click="show = !show">
-              Pay Commission
-            </v-btn>
           </v-card-title>
 
           <v-card-text>
@@ -65,6 +61,18 @@
                       </div>
                       <v-row no-gutters>
                         <v-col cols="12">
+                          <v-select
+                            v-model="paymentMethod"
+                            dense
+                            color="secondary"
+                            :items="paymentMethods"
+                            outlined
+                            :rules="[(v) => !!v || 'Payment Method is required']"
+                            label="Payment Method"
+                            required
+                          />
+                        </v-col>
+                        <v-col cols="12">
                           <v-text-field
                             v-model="amount"
                             type="number"
@@ -73,32 +81,59 @@
                             dense
                             color="secondary"
                             label="Enter Amount"
-
                             required
                           />
                         </v-col>
-                        <v-col cols="12">
+                        <v-col v-if="paymentMethod !== 'Bank Transfer'" cols="12">
                           <v-text-field
-                            disabled
+                            v-model="walletAddress"
                             type="text"
                             name="walletAddress"
                             outlined
                             dense
                             color="secondary"
-                            :label="user !== null ? user.walletAddress : 'Your Wallet Address '"
+                            label="Wallet Address"
+                            :rules="walletAddressRules"
                             required
                           />
                         </v-col>
-                        <v-col cols="12">
+                        <v-col v-if="paymentMethod === 'Bank Transfer'" cols="12">
                           <v-text-field
-                            disabled
+                            v-model="bank"
                             type="text"
                             name="Bank"
                             outlined
                             dense
                             color="secondary"
-                            :label="user && user.bank ? `${user.bank.bankName} (${user.bank.accountName})-(${user.bank.accountNumber})` : 'Add a Bank '"
+                            label="Bank"
                             required
+                            :rules="bankRules"
+                          />
+                        </v-col>
+                        <v-col v-if="paymentMethod === 'Bank Transfer'" cols="12">
+                          <v-text-field
+                            v-model="accName"
+                            type="text"
+                            name="accName"
+                            outlined
+                            dense
+                            color="secondary"
+                            label="Account Name"
+                            required
+                            :rules="accNameRules"
+                          />
+                        </v-col>
+                        <v-col v-if="paymentMethod === 'Bank Transfer'" cols="12">
+                          <v-text-field
+                            v-model="accNumber"
+                            type="text"
+                            name="accNumber"
+                            outlined
+                            dense
+                            color="secondary"
+                            label="Account Number"
+                            required
+                            :rules="accNumberRules"
                           />
                         </v-col>
                         <v-col cols="12">
@@ -128,7 +163,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
+    <!-- <v-row>
       <v-col cols="12" md="6">
         <v-card flat color="white">
           <v-card-title class="text-subtitle-1 font-weight-medium">
@@ -188,17 +223,15 @@
           </v-form>
         </v-card>
       </v-col>
-    </v-row>
+    </v-row> -->
     <v-row>
       <v-col cols="12">
-        <v-card dark color="primary">
-          <v-card-title>
+        <v-card flat color="white">
+          <v-card-title class="text-subtitle-1 font-weight-medium">
             My Withdraw
             <v-spacer />
           </v-card-title>
           <v-data-table
-            dark
-            class="primary"
             mobile
             :headers="table.headers"
             :items="table.info"
@@ -229,6 +262,16 @@ export default {
   data: () => ({
     show: false,
     dialog: false,
+    paymentMethod: '',
+    walletAddress: '',
+    walletAddressRules: [v => !!v || 'Wallet Address is required'],
+    bank: '',
+    bankRules: [v => !!v || 'Bank is required'],
+    accName: '',
+    accNameRules: [v => !!v || 'Account Name is required'],
+    accNumber: '',
+    accNumberRules: [v => !!v || 'Account Number is required'],
+    paymentMethods: ['Bitcoin', 'Ethereum', 'Dash', 'Litecoin', 'Perfect Money', 'Bank Transfer'],
     amount: '',
     password: '',
     error: '',
@@ -244,8 +287,8 @@ export default {
   computed: {
     ...mapGetters({ notifications: 'wallet/getNofitications', alert: 'authentication/getAlert', info: 'wallet/getWithdrawStatus', user: 'authentication/getUser', wallet: 'wallet/getWallet', invest: 'wallet/getInvestmentStatus', loading: 'wallet/getLoading' }),
     table () {
+      console.log(this.info)
       return {
-
         headers: [
           {
             text: 'Wallet Address',
@@ -254,6 +297,7 @@ export default {
             value: 'walletAddress'
           },
           { text: 'Amount', value: 'amount' },
+          { text: 'Payment Method', value: 'paymentMethod' },
           { text: 'Date', value: 'date' },
           { text: 'Commission', value: 'commission' },
           { text: 'Status', value: 'status' }
@@ -309,12 +353,18 @@ export default {
     },
     submit () {
       if (this.user !== null) {
+        console.log(this.wallet.earnings)
+        console.log(this.amount)
         if (this.password === this.user.password) {
           if (this.amount > 0) {
-            if (this.amount <= this.wallet.earnings) {
+            if (this.amount <= parseInt(this.wallet.earnings)) {
               const commission = 300
               const details = {
-                walletAddress: this.user.walletAddress,
+                walletAddress: this.walletAddress,
+                bank: this.bank,
+                accName: this.accName,
+                accNumber: this.accNumber,
+                paymentMethod: this.paymentMethod,
                 amount: parseInt(this.amount),
                 date: this.getDate('current'),
                 commission,

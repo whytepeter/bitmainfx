@@ -194,6 +194,10 @@ export const actions = {
               walletAddress: doc.walletAddress,
               amount: doc.amount,
               date: doc.date,
+              paymentMethod: doc.paymentMethod,
+              bank: doc.bank,
+              accName: doc.accName,
+              accNumber: doc.accNumber,
               commission: doc.commission,
               status: doc.status
             }
@@ -591,6 +595,10 @@ export const actions = {
             walletAddress: doc.walletAddress,
             amount: doc.amount,
             date: doc.date,
+            paymentMethod: doc.paymentMethod,
+            bank: doc.bank,
+            accName: doc.accName,
+            accNumber: doc.accNumber,
             commission: doc.commission,
             status: doc.status
           }
