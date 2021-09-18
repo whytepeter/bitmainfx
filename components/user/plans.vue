@@ -1,41 +1,39 @@
 <template>
-  <v-container>
-    <v-row justify="space-around">
-      <v-col v-for="plan in plans" :key="plan.name" cols="12" sm="6" md="4">
-        <v-card max-width="300" dark class="primary lighten-1 mx-auto">
-          <v-card-title class=" headline font-weight-medium justify-center">
-            {{ plan.name }} Package
-          </v-card-title>
-          <v-divider />
-          <v-card-text>
-            <v-row justify="center">
-              <v-col cols="12">
-                <div class="d-flex justify-space-between">
-                  <span>Minimum Capital</span>
-                  <span class="font-weight-medium text-subtitle-1">${{ plan.minimum | currency }}</span>
-                </div>
-                <div class="d-flex justify-space-between">
-                  <span>Maximum Capital</span>
-                  <span class="font-weight-medium text-subtitle-1">${{ plan.maximum | currency }}</span>
-                </div>
+  <v-row justify="space-around ma-0">
+    <v-col v-for="plan in plans" :key="plan.name" cols="12" sm="6" md="4">
+      <v-card max-width="300" dark class="primary mx-auto">
+        <v-card-title class=" headline font-weight-medium justify-center">
+          {{ plan.name }} Package
+        </v-card-title>
+        <v-divider />
+        <v-card-text>
+          <v-row justify="center">
+            <v-col cols="12">
+              <div class="d-flex justify-space-between">
+                <span>Minimum Capital</span>
+                <span class="font-weight-medium text-subtitle-1">${{ plan.minimum | currency }}</span>
+              </div>
+              <div class="d-flex justify-space-between">
+                <span>Maximum Capital</span>
+                <span class="font-weight-medium text-subtitle-1">${{ plan.maximum | currency }}</span>
+              </div>
 
-                <div class="d-flex justify-space-between">
-                  <span>ROI</span>
-                  <span class="font-weight-medium text-subtitle-1">{{ plan.roi | currency }}%</span>
-                </div>
-              </v-col>
-              <v-col cols="12">
-                <v-btn block depressed color="accent" @click.stop="plan.open = true">
-                  Invest
-                </v-btn>
-              </v-col>
-            </v-row>
-            <plan-modal :plan="plan" />
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+              <div class="d-flex justify-space-between">
+                <span>ROI</span>
+                <span class="font-weight-medium text-subtitle-1">{{ plan.roi | currency }}%</span>
+              </div>
+            </v-col>
+            <v-col cols="12">
+              <v-btn block depressed color="accent" @click.stop="plan.open = true">
+                Invest
+              </v-btn>
+            </v-col>
+          </v-row>
+          <plan-modal :plan="plan" />
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

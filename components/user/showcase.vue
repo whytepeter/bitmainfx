@@ -1,6 +1,6 @@
 <template>
   <v-row class="ma-0">
-    <v-col v-for="card in cards" :key="card.name" cols="12" sm="6" md="4">
+    <v-col v-for="card in cards" :key="card.name" cols="12" sm="6" md="3">
       <v-card
         flat
         light

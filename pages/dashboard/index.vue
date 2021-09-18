@@ -32,8 +32,8 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-card dark color="primary">
-          <v-card-title class="py-1 px-2">
+        <v-card flat dark color="transparent" class="pa-0">
+          <v-card-title class="pb-1 px-4">
             Hi,
             <span v-if="user && !user.username" class="ml-2">
               {{ user !== null && user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : 'Full Name' }}
@@ -50,7 +50,7 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-card dark color="primary">
+        <v-card dark flat color="transparent">
           <v-card-title>Investment Packages</v-card-title>
           <v-divider />
           <v-card-text>
