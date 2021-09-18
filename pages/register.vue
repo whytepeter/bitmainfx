@@ -29,15 +29,28 @@
               <v-row no-gutters="">
                 <v-col cols="12">
                   <v-text-field
-                    v-model="username"
+                    v-model="firstName"
                     type="text"
-                    name="username"
+                    name="firstName"
                     outlined
                     dense
                     color="primary"
-                    label="Username"
+                    label="First Name"
                     required
-                    :rules="usernameRules"
+                    :rules="firstNameRules"
+                  />
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="lastName"
+                    type="text"
+                    name="lastName"
+                    outlined
+                    dense
+                    color="primary"
+                    label="Last Name"
+                    required
+                    :rules="lastNameRules"
                   />
                 </v-col>
                 <v-col cols="12">
@@ -51,6 +64,19 @@
                     :rules="emailRules"
                     color="primary"
                     label="Email"
+                  />
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="phoneNumber"
+                    type="phoneNumber"
+                    name="phoneNumber"
+                    outlined
+                    dense
+                    required
+                    :rules="phoneNumberRules"
+                    color="primary"
+                    label="Phone Number"
                   />
                 </v-col>
 
@@ -152,10 +178,17 @@ export default {
     valid: true,
     show: false,
     show1: false,
-
-    username: '',
-    usernameRules: [
-      v => !!v || 'Username is required'
+    firstName: '',
+    firstNameRules: [
+      v => !!v || 'First Name is required'
+    ],
+    lastName: '',
+    lastNameRules: [
+      v => !!v || 'Last Name is required'
+    ],
+    phoneNumber: '',
+    phoneNumberRules: [
+      v => !!v || 'Phone Number is required'
     ],
     email: '',
     emailRules: [
@@ -198,7 +231,9 @@ export default {
       this.$refs.form.validate()
       if (this.$refs.form.validate()) {
         const user = {
-          username: this.username,
+          firstName: this.firstName,
+          lastName: this.lastName,
+          phoneNumber: this.phoneNumber,
           email: this.email,
           password: this.password,
           country: this.country,

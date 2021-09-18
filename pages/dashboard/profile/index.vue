@@ -62,31 +62,37 @@
               </v-col>
               <v-col cols="12" sm="6">
                 <div class="d-flex align-center justify-center justify-sm-start mb-4">
-                  <v-icon color="primary" class="mx-2">
+                  <v-icon color="secondary" class="mx-2">
                     mdi-account
                   </v-icon>
-                  <span class="headline font-weight-medium text-capitalize">{{ user !== null ? user.username : 'username' }}</span>
+                  <span class="headline font-weight-medium text-capitalize">{{ user !== null && user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : 'Full Name' }}</span>
                 </div>
                 <div class="d-flex align-center justify-center justify-sm-start mb-2">
-                  <v-icon color="primary" class="mx-2">
+                  <v-icon color="secondary" class="mx-2">
                     mdi-email
                   </v-icon>
                   <span class="text-subtitle-1 d-inline-block text-truncate">{{ user !== null ? user.email : 'email' }}</span>
                 </div>
+                <div class="d-flex align-center justify-center justify-sm-start mb-2">
+                  <v-icon color="secondary" class="mx-2">
+                    mdi-phone
+                  </v-icon>
+                  <span class="text-subtitle-1 d-inline-block text-truncate">{{ user !== null ? user.phoneNumber : 'Phone Number' }}</span>
+                </div>
                 <div class="d-flex align-center justify-center justify-sm-start">
-                  <v-icon color="primary" class="mx-2">
+                  <v-icon color="secondary" class="mx-2">
                     mdi-flag
                   </v-icon>
                   <span class="text-subtitle-1 d-inline-block text-truncate">{{ user && user.country ? user.country : 'no currency' }} (<span class="font-weight-bold " v-html="user && user.currency ? user.currency : ''" />)</span>
                 </div>
                 <div class="d-flex align-center justify-center justify-sm-start">
-                  <v-icon color="primary" class="mx-2">
+                  <v-icon color="secondary" class="mx-2">
                     mdi-bitcoin
                   </v-icon>
                   <span class="text-subtitle-1 d-inline-block text-truncate">{{ user && user.walletAddress ? user.walletAddress : 'wallet address' }}</span>
                 </div>
                 <div class="d-flex align-center justify-center justify-sm-start">
-                  <v-icon color="primary" class="mx-2">
+                  <v-icon color="secondary" class="mx-2">
                     mdi-bank
                   </v-icon>
                   <span v-if="user && user.bank && user.bank.bankName" class="text-subtitle-1 d-inline-block text-truncate">{{ user.bank.bankName }} ({{ user.bank.accountName }})</span>
@@ -135,7 +141,7 @@
       </v-col>
       <v-col v-if="show === 'bank'" cols="12" md="6">
         <v-card>
-          <v-card-title>Update Email</v-card-title>
+          <v-card-title>Update Bank</v-card-title>
           <v-divider />
           <v-card-text>
             <v-form @submit.prevent>
@@ -220,30 +226,92 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col v-if="show === 'username'" cols="12" md="6">
+      <v-col v-if="show === 'firstName'" cols="12" md="6">
         <v-card>
-          <v-card-title>Change Username</v-card-title>
+          <v-card-title>Change First Name</v-card-title>
           <v-divider />
           <v-card-text>
             <v-form @submit.prevent>
               <v-row>
                 <v-col cols="12" class="py-0">
                   <v-text-field
-                    v-model="username"
+                    v-model="firstName"
                     type="text"
-                    name="email"
+                    name="firstName"
                     color="primary"
                     dense
                     outlined
                     prepend-icon="mdi-account"
                     required
-                    label="Username"
+                    label="First Name"
                   />
                 </v-col>
 
                 <v-col cols="12" class="py-0 px-4 text-right">
-                  <v-btn :loading="loading.username" depressed color="secondary" @click="update('username')">
-                    Change Username
+                  <v-btn :loading="loading.firstName" depressed color="secondary" @click="update('firstName')">
+                    Change First Name
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col v-if="show === 'lastName'" cols="12" md="6">
+        <v-card>
+          <v-card-title>Change Last Name</v-card-title>
+          <v-divider />
+          <v-card-text>
+            <v-form @submit.prevent>
+              <v-row>
+                <v-col cols="12" class="py-0">
+                  <v-text-field
+                    v-model="lastName"
+                    type="text"
+                    name="lastName"
+                    color="primary"
+                    dense
+                    outlined
+                    prepend-icon="mdi-account"
+                    required
+                    label="First Name"
+                  />
+                </v-col>
+
+                <v-col cols="12" class="py-0 px-4 text-right">
+                  <v-btn :loading="loading.lastName" depressed color="secondary" @click="update('lastName')">
+                    Change Last Name
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col v-if="show === 'phoneNumber'" cols="12" md="6">
+        <v-card>
+          <v-card-title>Change Phone Number</v-card-title>
+          <v-divider />
+          <v-card-text>
+            <v-form @submit.prevent>
+              <v-row>
+                <v-col cols="12" class="py-0">
+                  <v-text-field
+                    v-model="phoneNumber"
+                    type="text"
+                    name="phoneNumber"
+                    color="primary"
+                    dense
+                    outlined
+                    prepend-icon="mdi-account"
+                    required
+                    label="Phone Number"
+                  />
+                </v-col>
+
+                <v-col cols="12" class="py-0 px-4 text-right">
+                  <v-btn :loading="loading.phoneNumber" depressed color="secondary" @click="update('phoneNumber')">
+                    Change Phone Number
                   </v-btn>
                 </v-col>
               </v-row>
@@ -381,7 +449,9 @@ export default {
 
   data: () => ({
     show: '',
-    username: '',
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
     email: '',
     walletAddress: '',
     file: [],
@@ -396,7 +466,9 @@ export default {
       accountNumber: ''
     },
     items: [
-      { title: 'Edit Username', open: 'username' },
+      { title: 'Edit First Name', open: 'firstName' },
+      { title: 'Edit Last Name', open: 'lastName' },
+      { title: 'Edit Phone Number', open: 'phoneNumber' },
       { title: 'Update Email', open: 'email' },
       { title: 'Upload Photo', open: 'photo' },
       { title: 'Update Bank', open: 'bank' },
@@ -429,7 +501,7 @@ export default {
   },
 
   methods: {
-    ...mapActions({ updateEmail: 'authentication/updateEmail', updateBank: 'authentication/updateBank', updateUsername: 'authentication/updateUsername', uploadPhoto: 'authentication/uploadPhoto', updateWalletAddress: 'authentication/updateWalletAddress', updatePsw: 'authentication/updatePassword', updateCurrency: 'authentication/updateCurrency', initAlert: 'authentication/initAlert' }),
+    ...mapActions({ updatePhoneNumber: 'authentication/updatePhoneNumber', updateLastName: 'authentication/updateLastName', updateFirstName: 'authentication/updateFirstName', updateEmail: 'authentication/updateEmail', updateBank: 'authentication/updateBank', updateUsername: 'authentication/updateUsername', uploadPhoto: 'authentication/uploadPhoto', updateWalletAddress: 'authentication/updateWalletAddress', updatePsw: 'authentication/updatePassword', updateCurrency: 'authentication/updateCurrency', initAlert: 'authentication/initAlert' }),
 
     getSymbol (currency) {
       let symbol
@@ -448,7 +520,9 @@ export default {
 
     clearFields () {
       this.email = ''
-      this.username = ''
+      this.firstName = ''
+      this.lastName = ''
+      this.phoneNumber = ''
       this.walletAddress = ''
       this.file = []
 
@@ -466,8 +540,16 @@ export default {
         this.updateEmail(this.email)
 
         this.clearFields()
-      } else if (field === 'username') {
-        this.updateUsername(this.username)
+      } else if (field === 'firstName') {
+        this.updateFirstName(this.firstName)
+
+        this.clearFields()
+      } else if (field === 'lastName') {
+        this.updateLastName(this.lastName)
+
+        this.clearFields()
+      } else if (field === 'phoneNumber') {
+        this.updatePhoneNumber(this.phoneNumber)
 
         this.clearFields()
       } else if (field === 'walletAddress') {

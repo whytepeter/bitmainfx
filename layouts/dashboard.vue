@@ -25,7 +25,7 @@
           class="text-capitalize logo "
         >
           <span class="mr-2 d-none d-sm-flex">
-            {{ user !== null ? user.username : "username" }}</span>
+            {{ user !== null && user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : 'Full Name' }}</span>
 
           <v-avatar
             v-if="user !== null"

@@ -453,7 +453,7 @@ export default {
   computed: {
     ...mapGetters({ users: 'users/getUsers', loading: 'users/getLoading', getUser: 'users/getUser', alert: 'users/getAlert' }),
     user () {
-    const searchUser = this.users.find((el) => {
+      const searchUser = this.users.find((el) => {
         return el.email === this.email
       })
 

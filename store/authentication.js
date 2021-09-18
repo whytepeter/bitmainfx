@@ -15,7 +15,9 @@ export const state = () => ({
     email: false,
     wallet: false,
     photo: false,
-    username: false,
+    firstName: false,
+    lastName: false,
+    phoneNumber: false,
     currency: false,
     bank: false
   },
@@ -100,7 +102,9 @@ export const actions = {
             .set({
               admin: false,
               userID: cred.user.uid,
-              username: user.username,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              phoneNumber: user.phoneNumber,
               email: user.email,
               password: user.password,
               country: user.country,
@@ -467,16 +471,16 @@ export const actions = {
     }
   },
 
-  updateUsername ({ commit, dispatch, state }, payload) {
+  updateFirstName ({ commit, dispatch, state }, payload) {
     const userId = auth.currentUser.uid
-    commit('SET_LOADING', { type: 'username', is: true })
+    commit('SET_LOADING', { type: 'firstName', is: true })
 
     db.collection('users').doc(userId).update({
-      username: payload
+      firstName: payload
     }).then(() => {
-      // console.log('username update successful')
-      commit('SET_LOADING', { type: 'username', is: false })
-      dispatch('initAlert', { is: true, type: 'success', message: 'Username updated successfully' })
+      // console.log('firstName update successful')
+      commit('SET_LOADING', { type: 'firstName', is: false })
+      dispatch('initAlert', { is: true, type: 'success', message: 'First Name updated successfully' })
 
       if (state.user !== null) {
         if (state.user.admin) {
@@ -487,7 +491,57 @@ export const actions = {
       }
     }).catch((error) => {
       // console.log(error.message)
-      commit('SET_LOADING', { type: 'username', is: false })
+      commit('SET_LOADING', { type: 'firstName', is: false })
+      dispatch('initAlert', { is: true, type: 'error', message: error.message })
+    })
+  },
+
+  updateLastName ({ commit, dispatch, state }, payload) {
+    const userId = auth.currentUser.uid
+    commit('SET_LOADING', { type: 'lastName', is: true })
+
+    db.collection('users').doc(userId).update({
+      lastName: payload
+    }).then(() => {
+      // console.log('lastName update successful')
+      commit('SET_LOADING', { type: 'lastName', is: false })
+      dispatch('initAlert', { is: true, type: 'success', message: 'Last Name updated successfully' })
+
+      if (state.user !== null) {
+        if (state.user.admin) {
+          this.$router.push('/admin/account')
+        } else {
+          this.$router.push('/dashboard/profile')
+        }
+      }
+    }).catch((error) => {
+      // console.log(error.message)
+      commit('SET_LOADING', { type: 'lastName', is: false })
+      dispatch('initAlert', { is: true, type: 'error', message: error.message })
+    })
+  },
+
+  updatePhoneNumber ({ commit, dispatch, state }, payload) {
+    const userId = auth.currentUser.uid
+    commit('SET_LOADING', { type: 'phoneNumber', is: true })
+
+    db.collection('users').doc(userId).update({
+      phoneNumber: payload
+    }).then(() => {
+      // console.log('phoneNumber update successful')
+      commit('SET_LOADING', { type: 'phoneNumber', is: false })
+      dispatch('initAlert', { is: true, type: 'success', message: 'Phone Number updated successfully' })
+
+      if (state.user !== null) {
+        if (state.user.admin) {
+          this.$router.push('/admin/account')
+        } else {
+          this.$router.push('/dashboard/profile')
+        }
+      }
+    }).catch((error) => {
+      // console.log(error.message)
+      commit('SET_LOADING', { type: 'phoneNumber', is: false })
       dispatch('initAlert', { is: true, type: 'error', message: error.message })
     })
   },
