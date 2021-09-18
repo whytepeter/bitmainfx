@@ -4,28 +4,33 @@
       <v-col v-for="card in cards" :key="card.name" cols="12" sm="6" md="4">
         <v-card
           flat
-          dark
-          rounded="lg"
-          :class="card.class"
+          light
+          class="py-0"
         >
-          <v-card-title class="text-h6">
-            <v-icon fab color="white" class="mr-3">
-              {{ card.icon }}
-            </v-icon>
-            {{ card.name }}
-          </v-card-title>
-
-          <v-card-text>
-            <div class="text-h5 white--text">
-              <span v-html="user && user.currency ? user.currency : '$'" /> {{ card.amount | currency }}
+          <v-progress-linear
+            color="secondary"
+            :value="100"
+          />
+          <v-card-text class="pb-1 text-subtitle-1 d-flex align-center">
+            <div>
+              <v-icon large fab color="secondary" class="mr-3">
+                {{ card.icon }}
+              </v-icon>
+            </div>
+            <v-spacer />
+            <div class="d-flex text-h6 flex-column align-end">
+              <div class="primary--text">
+                <span v-html="user && user.currency ? user.currency : '$'" />
+                {{ card.amount | currency }}
+              </div>
+              <div class="font-weight-medium text-subtitle-1">
+                {{ card.name }}
+              </div>
+              <v-btn :to="card.to" text color="secondary" class="text-caption text-capitalize px-1">
+                {{ card.btn }}
+              </v-btn>
             </div>
           </v-card-text>
-
-          <v-card-actions>
-            <v-btn :to="card.to" text class="text-caption text-capitalize ">
-              {{ card.btn }}
-            </v-btn>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>

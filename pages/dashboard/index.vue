@@ -35,10 +35,10 @@
         <v-card dark color="primary">
           <v-card-title>
             Hi,
-            <span v-if="user && !user.username">
+            <span v-if="user && !user.username" class="ml-2">
               {{ user !== null && user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : 'Full Name' }}
             </span>
-            <span v-else>
+            <span v-else class="ml-2">
               {{ user !== null ? user.username : 'Username' }}
             </span>,
           </v-card-title>
