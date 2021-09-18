@@ -16,7 +16,7 @@
           <v-row justify="center">
             <v-col cols="12">
               <div class="d-flex  justify-space-between">
-                <span class="text-subtitle-1 font-weight-bold">Minimum Capital</span>
+                <span class="">Minimum Capital</span>
                 <span class="font-weight-medium text-subtitle-1">${{ plan.minimum | currency }}</span>
               </div>
               <div class="d-flex justify-space-between">

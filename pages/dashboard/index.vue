@@ -50,7 +50,7 @@
     </v-row>
     <v-row>
       <v-col cols="12" class="px-0">
-        <v-card dark flat color="transparent">
+        <v-card flat color="transparent">
           <v-card-title>Investment Packages</v-card-title>
           <v-divider />
           <v-card-text>
@@ -61,7 +61,7 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-card dark color="primary">
+        <v-card flat color="white">
           <v-card-title>
             My Investment
             <v-spacer />
@@ -73,9 +73,9 @@
               hide-details
             />
           </v-card-title>
-          <v-data-table mobile class="primary" :headers="table.headers" :items="table.info" :search="table.search">
+          <v-data-table mobile class="" :headers="table.headers" :items="table.info" :search="table.search">
             <template v-slot:item.status="{ item }">
-              <v-chip :color="getColor(item.status)" dark>
+              <v-chip :color="getColor(item.status)">
                 {{ item.status }}
               </v-chip>
             </template>
