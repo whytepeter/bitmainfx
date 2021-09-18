@@ -50,7 +50,7 @@
     </v-row>
     <v-row>
       <v-col cols="12" class="px-0">
-        <v-card flat color="transparent">
+        <v-card flat dark color="transparent">
           <v-card-title>Investment Packages</v-card-title>
           <v-divider />
           <v-card-text>

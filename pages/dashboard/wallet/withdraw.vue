@@ -12,7 +12,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
+      <!-- <v-col cols="12">
         <v-expansion-panels dark accordion>
           <v-expansion-panel class="primary">
             <v-expansion-panel-header>
@@ -33,10 +33,10 @@
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
-      </v-col>
+      </v-col> -->
       <v-col cols="12">
-        <v-card dark color="primary">
-          <v-card-title>
+        <v-card flat dark color="transparent" class="pa-0">
+          <v-card-title class="text-subtitle-1 font-weight-medium">
             Withdraw
             <v-spacer />
             <v-btn v-if="show" text color="secondary" class="text-capitalize " @click="show = !show">
@@ -50,8 +50,8 @@
                 <wallet-card />
               </v-col>
               <v-col cols="12" md="6">
-                <v-card dark flat class="primary lighten-1 px-md-4">
-                  <v-card-title>
+                <v-card light flat class="white  px-md-4">
+                  <v-card-title class="text-subtitle-1 font-weight-medium">
                     Withdraw to wallet
                   </v-card-title>
 
@@ -71,7 +71,7 @@
                             name="amount"
                             outlined
                             dense
-                            color="primary"
+                            color="secondary"
                             label="Enter Amount"
 
                             required
@@ -84,7 +84,7 @@
                             name="walletAddress"
                             outlined
                             dense
-                            color="primary"
+                            color="secondary"
                             :label="user !== null ? user.walletAddress : 'Your Wallet Address '"
                             required
                           />
@@ -96,7 +96,7 @@
                             name="Bank"
                             outlined
                             dense
-                            color="primary"
+                            color="secondary"
                             :label="user && user.bank ? `${user.bank.bankName} (${user.bank.accountName})-(${user.bank.accountNumber})` : 'Add a Bank '"
                             required
                           />
@@ -108,14 +108,13 @@
                             name="password"
                             outlined
                             dense
-                            color="primary"
+                            color="secondary"
                             label="Password"
-
                             required
                           />
                         </v-col>
                         <v-col cols="12">
-                          <v-btn depressed :loading="loading.withdraw" color="accent" @click="submit">
+                          <v-btn depressed :loading="loading.withdraw" color="secondary" @click="submit">
                             Proceed
                           </v-btn>
                         </v-col>
@@ -131,8 +130,8 @@
     </v-row>
     <v-row>
       <v-col cols="12" md="6">
-        <v-card dark color="primary">
-          <v-card-title>
+        <v-card flat color="white">
+          <v-card-title class="text-subtitle-1 font-weight-medium">
             Send Proof of payment
           </v-card-title>
           <v-form @submit.prevent>
@@ -145,7 +144,7 @@
                     name="walletAddress"
                     outlined
                     dense
-                    color="primary"
+                    color="secondary"
                     prepend-icon="mdi-bitcoin"
                     label="Wallet Address"
                   />
@@ -157,7 +156,7 @@
                     name="amount"
                     outlined
                     dense
-                    color="primary"
+                    color="secondary"
                     prepend-icon="mdi-cash"
                     label="Enter Amount"
                   />
@@ -169,7 +168,7 @@
                     type="file"
                     name="image"
                     chips
-
+                    color="secondary"
                     outlined
                     label="Upload Image"
                     prepend-icon="mdi-camera"
@@ -180,7 +179,7 @@
                   <v-btn depressed color="error" class="mr-2" @click="clear">
                     Cancel
                   </v-btn>
-                  <v-btn :loading="loading.commission" depressed color="accent" @click="proceed">
+                  <v-btn :loading="loading.commission" depressed color="secondary" @click="proceed">
                     Submit
                   </v-btn>
                 </v-col>
