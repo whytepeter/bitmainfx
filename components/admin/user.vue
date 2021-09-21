@@ -1,6 +1,9 @@
 <template>
   <v-container v-if="user !== null || user !== undefined">
     <v-row>
+      <v-col v-if="user && user.block" cols="12" class="error pa-0 white--text text-center">
+        User Blocked
+      </v-col>
       <v-col v-if="user.request && user.request.state" cols="12" class="pa-0">
         <v-card tile flat color="secondary">
           <v-card-text class="d-flex text-subtitle-1 text-sm-h6 align-center text3--text">
@@ -13,16 +16,11 @@
           </v-card-text>
         </v-card>
       </v-col>
+
       <v-col cols="12" class="text-right pa-0 d-flex align-center ">
-        <v-switch
-          v-model="displayBlock"
-          :loading="loading.block"
-          color="error"
-          inset
-          label="Block User"
-          class="py-0 my-0"
-          @click="blockUser"
-        />
+        <v-btn :loading="loading.block" depressed :color="user.block ? 'success' : 'error'" @click="blockUser">
+          {{ user.block ? 'Unblock' : 'Block' }}
+        </v-btn>
         <v-spacer />
         <span v-if="user.joinDate !== undefined"><strong>Joined on</strong> {{ user.joinDate }}</span>
       </v-col>
@@ -484,14 +482,6 @@ export default {
 
       console.log(searchUser)
       return searchUser
-    },
-    displayBlock: {
-      get () {
-        return this.user.block
-      },
-      set (val) {
-        this.user.block = val
-      }
     }
 
   },
@@ -540,7 +530,7 @@ export default {
     blockUser () {
       const payload = {
         userID: this.user.userID,
-        state: this.displayBlock
+        state: !this.user.block
       }
       this.block(payload)
     },

@@ -380,17 +380,19 @@ export const actions = {
       dispatch('initAlert', { is: true, status: 'error', message: err.message })
     })
   },
-  blockUser ({ dispatch }, { userID, state }) {
+  blockUser ({ commit, dispatch }, { userID, state }) {
+    commit('setLoading', { type: 'block', is: true })
     db.collection('users').doc(userID).update({
       block: state
     }).then(() => {
-      window.location.reload()
+      commit('setLoading', { type: 'block', is: false })
       if (state === true) {
         dispatch('initAlert', { is: true, status: 'success', message: 'user  blocked successfully' })
       } else {
         dispatch('initAlert', { is: true, status: 'success', message: 'user  unblocked successfully' })
       }
     }).catch((err) => {
+      commit('setLoading', { type: 'block', is: false })
       dispatch('initAlert', { is: true, status: 'error', message: err.message })
     })
   }
