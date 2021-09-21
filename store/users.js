@@ -24,7 +24,8 @@ export const state = () => ({
     edit: false,
     approveFund: false,
     approveInvest: false,
-    request: false
+    request: false,
+    block: false
   }
 
 })
@@ -118,16 +119,11 @@ export const actions = {
         // get user detail
           const user = doc.data()
 
-          // update currency symbol
-          // countries.forEach((el) => {
-          //   console.log(el)
-          //   if (el.currency.toLowerCase() === user.country.toLowerCase()) {
-          //     db.collection('users').doc(user.userID).update({
-          //       currency: el.symbol
-          //     }).then(() => {
-          //       console.log(user.usersname, 'currency updated')
-          //     })
-          //   }
+          // // update user block
+          // db.collection('users').doc(user.userID).update({
+          //   block: false
+          // }).then(() => {
+          //   console.log(user.usersname, 'user block updated')
           // })
 
           users.push(user)
@@ -380,6 +376,20 @@ export const actions = {
       isDelete: true
     }).then(() => {
       dispatch('initAlert', { is: true, status: 'success', message: 'user is deleted' })
+    }).catch((err) => {
+      dispatch('initAlert', { is: true, status: 'error', message: err.message })
+    })
+  },
+  blockUser ({ dispatch }, { userID, state }) {
+    db.collection('users').doc(userID).update({
+      block: state
+    }).then(() => {
+      window.location.reload()
+      if (state === true) {
+        dispatch('initAlert', { is: true, status: 'success', message: 'user  blocked successfully' })
+      } else {
+        dispatch('initAlert', { is: true, status: 'success', message: 'user  unblocked successfully' })
+      }
     }).catch((err) => {
       dispatch('initAlert', { is: true, status: 'error', message: err.message })
     })

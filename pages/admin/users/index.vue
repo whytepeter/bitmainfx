@@ -41,10 +41,10 @@
                         </v-list-item-icon>
 
                         <v-list-item-content class="">
-                          <v-list-item-title class="text-subtitle-1 font-weight-medium text-capitalize " v-text="user.username" />
+                          <v-list-item-title v-if="user && !user.firstName" class="text-subtitle-1 font-weight-medium text-capitalize " v-text="user.username" />
+                          <v-list-item-title v-else class="text-subtitle-1 font-weight-medium text-capitalize " v-text="`${user.firstName} ${user.lastName}`" />
                           <v-list-item-subtitle
                             class="d-inline-block text-truncate"
-
                             v-text="user.walletAddress && user.walletAddress"
                           />
                         </v-list-item-content>

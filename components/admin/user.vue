@@ -13,7 +13,16 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" class="text-right pa-0">
+      <v-col cols="12" class="text-right pa-0 d-flex align-center ">
+        <v-switch
+          v-model="displayBlock"
+          :loading="loading.block"
+          color="error"
+          inset
+          label="Block User"
+          class="py-0 my-0"
+          @click="blockUser"
+        />
         <v-spacer />
         <span v-if="user.joinDate !== undefined"><strong>Joined on</strong> {{ user.joinDate }}</span>
       </v-col>
@@ -255,7 +264,7 @@
                             Amount <span class="font-weight-medium ml-2"> <span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ withdrawal.amount | currency }}</span>
                           </div>
                           <div>
-                           Paymenth Method <span class="font-weight-medium ml-2"> {{ withdrawal.paymentMethod }}</span>
+                            Paymenth Method <span class="font-weight-medium ml-2"> {{ withdrawal.paymentMethod }}</span>
                           </div>
                           <div v-if="withdrawal.walletAddress">
                             Wallet Address <span class="font-weight-medium ml-2"> {{ withdrawal.walletAddress }}</span>
@@ -475,6 +484,14 @@ export default {
 
       console.log(searchUser)
       return searchUser
+    },
+    displayBlock: {
+      get () {
+        return this.user.block
+      },
+      set (val) {
+        this.user.block = val
+      }
     }
 
   },
@@ -492,7 +509,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({ closeTheRequest: 'users/closeRequest', deleteUser: 'users/deleteUser', approveCom: 'users/approveCommission', approveFd: 'users/approveFundWallet', approveIn: 'users/approveInvestments', approveW: 'users/approveWithdrawal' }),
+    ...mapActions({ block: 'users/blockUser', closeTheRequest: 'users/closeRequest', deleteUser: 'users/deleteUser', approveCom: 'users/approveCommission', approveFd: 'users/approveFundWallet', approveIn: 'users/approveInvestments', approveW: 'users/approveWithdrawal' }),
     status (type) {
       if (type === 'pending' || type === 'Pending') {
         return {
@@ -519,6 +536,13 @@ export default {
     deleting () {
       this.deleteUser(this.user.userID)
       this.confirmDelete = false
+    },
+    blockUser () {
+      const payload = {
+        userID: this.user.userID,
+        state: this.displayBlock
+      }
+      this.block(payload)
     },
     approveFund (index, amount, currency) {
       amount = parseInt(amount)
