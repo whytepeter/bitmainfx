@@ -213,12 +213,16 @@ export const actions = {
 
                 // Redirect to dashboard
                 if (!state.user.isDelete) {
-                  if (state.user !== null) {
-                    if (state.user.admin) {
-                      this.$router.push('/admin')
-                    } else {
-                      this.$router.push('/dashboard')
+                  if (!state.user.block) {
+                    if (state.user !== null) {
+                      if (state.user.admin) {
+                        this.$router.push('/admin')
+                      } else {
+                        this.$router.push('/dashboard')
+                      }
                     }
+                  } else {
+                    location.href = '/'
                   }
                 } else {
                   location.href = '/'
