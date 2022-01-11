@@ -13,7 +13,7 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-card dark color="primary">
+        <v-card>
           <v-card-title>
             Profile
             <v-spacer />
@@ -23,7 +23,7 @@
                 <v-btn
                   text
                   v-bind="attrs"
-                  color="accent"
+                  color="secondary"
                   class=" text-capitalize "
                   v-on="on"
                 >
@@ -62,43 +62,22 @@
               </v-col>
               <v-col cols="12" sm="6">
                 <div class="d-flex align-center justify-center justify-sm-start mb-4">
-                  <v-icon color="secondary" class="mx-2">
+                  <v-icon color="primary" class="mx-2">
                     mdi-account
                   </v-icon>
-                  <span class="headline font-weight-medium text-capitalize">{{ user !== null && user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : 'Full Name' }}</span>
+                  <span class="headline font-weight-medium grey--text text--darken-3 text-capitalize">{{ user !== null ? user.username : 'username' }}</span>
                 </div>
                 <div class="d-flex align-center justify-center justify-sm-start mb-2">
-                  <v-icon color="secondary" class="mx-2">
+                  <v-icon color="primary" class="mx-2">
                     mdi-email
                   </v-icon>
                   <span class="text-subtitle-1 d-inline-block text-truncate">{{ user !== null ? user.email : 'email' }}</span>
                 </div>
-                <div class="d-flex align-center justify-center justify-sm-start mb-2">
-                  <v-icon color="secondary" class="mx-2">
-                    mdi-phone
-                  </v-icon>
-                  <span class="text-subtitle-1 d-inline-block text-truncate">{{ user !== null ? user.phoneNumber : 'Phone Number' }}</span>
-                </div>
                 <div class="d-flex align-center justify-center justify-sm-start">
-                  <v-icon color="secondary" class="mx-2">
-                    mdi-flag
-                  </v-icon>
-                  <span class="text-subtitle-1 d-inline-block text-truncate">{{ user && user.country ? user.country : 'no currency' }} (<span class="font-weight-bold " v-html="user && user.currency ? user.currency : ''" />)</span>
-                </div>
-                <div class="d-flex align-center justify-center justify-sm-start">
-                  <v-icon color="secondary" class="mx-2">
+                  <v-icon color="primary" class="mx-2">
                     mdi-bitcoin
                   </v-icon>
-                  <span class="text-subtitle-1 d-inline-block text-truncate">{{ user && user.walletAddress ? user.walletAddress : 'wallet address' }}</span>
-                </div>
-                <div class="d-flex align-center justify-center justify-sm-start">
-                  <v-icon color="secondary" class="mx-2">
-                    mdi-bank
-                  </v-icon>
-                  <span v-if="user && user.bank && user.bank.bankName" class="text-subtitle-1 d-inline-block text-truncate">{{ user.bank.bankName }} ({{ user.bank.accountName }})</span>
-                  <v-btn v-else color="accent" text class="text-lowercase px-0" @click="show = 'bank'">
-                    Add Bank
-                  </v-btn>
+                  <span class="text-subtitle-1 d-inline-block text-truncate">{{ user !== null ? user.walletAddress : 'wallet address' }}</span>
                 </div>
               </v-col>
               <v-spacer />
@@ -139,61 +118,6 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col v-if="show === 'bank'" cols="12" md="6">
-        <v-card>
-          <v-card-title>Update Bank</v-card-title>
-          <v-divider />
-          <v-card-text>
-            <v-form @submit.prevent>
-              <v-row>
-                <v-col cols="12" class="py-0">
-                  <v-text-field
-                    v-model="bank.bankName"
-                    type="text"
-                    name="bank"
-                    color="primary"
-                    dense
-                    prepend-icon="mdi-bank"
-                    required
-                    outlined
-                    label="Bank Name"
-                  />
-                </v-col>
-                <v-col cols="12" class="py-0">
-                  <v-text-field
-                    v-model="bank.accountName"
-                    type="text"
-                    name="accountName"
-                    color="primary"
-                    dense
-                    required
-                    outlined
-                    label="Account Name"
-                  />
-                </v-col>
-                <v-col cols="12" class="py-0">
-                  <v-text-field
-                    v-model="bank.accountNumber"
-                    type="accountNumber"
-                    name="accountNumber"
-                    color="primary"
-                    dense
-                    required
-                    outlined
-                    label="Account Number"
-                  />
-                </v-col>
-
-                <v-col cols="12" class="py-0 px-4 text-right">
-                  <v-btn :loading="loading.bank" depressed color="secondary" @click="update('bank')">
-                    Update Bank
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-col>
       <v-col v-if="show === 'photo'" cols="12" md="6">
         <v-card>
           <v-card-title>Upload Photo</v-card-title>
@@ -226,92 +150,30 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col v-if="show === 'firstName'" cols="12" md="6">
+      <v-col v-if="show === 'username'" cols="12" md="6">
         <v-card>
-          <v-card-title>Change First Name</v-card-title>
+          <v-card-title>Change Username</v-card-title>
           <v-divider />
           <v-card-text>
             <v-form @submit.prevent>
               <v-row>
                 <v-col cols="12" class="py-0">
                   <v-text-field
-                    v-model="firstName"
+                    v-model="username"
                     type="text"
-                    name="firstName"
+                    name="email"
                     color="primary"
                     dense
                     outlined
                     prepend-icon="mdi-account"
                     required
-                    label="First Name"
+                    label="Username"
                   />
                 </v-col>
 
                 <v-col cols="12" class="py-0 px-4 text-right">
-                  <v-btn :loading="loading.firstName" depressed color="secondary" @click="update('firstName')">
-                    Change First Name
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col v-if="show === 'lastName'" cols="12" md="6">
-        <v-card>
-          <v-card-title>Change Last Name</v-card-title>
-          <v-divider />
-          <v-card-text>
-            <v-form @submit.prevent>
-              <v-row>
-                <v-col cols="12" class="py-0">
-                  <v-text-field
-                    v-model="lastName"
-                    type="text"
-                    name="lastName"
-                    color="primary"
-                    dense
-                    outlined
-                    prepend-icon="mdi-account"
-                    required
-                    label="First Name"
-                  />
-                </v-col>
-
-                <v-col cols="12" class="py-0 px-4 text-right">
-                  <v-btn :loading="loading.lastName" depressed color="secondary" @click="update('lastName')">
-                    Change Last Name
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col v-if="show === 'phoneNumber'" cols="12" md="6">
-        <v-card>
-          <v-card-title>Change Phone Number</v-card-title>
-          <v-divider />
-          <v-card-text>
-            <v-form @submit.prevent>
-              <v-row>
-                <v-col cols="12" class="py-0">
-                  <v-text-field
-                    v-model="phoneNumber"
-                    type="text"
-                    name="phoneNumber"
-                    color="primary"
-                    dense
-                    outlined
-                    prepend-icon="mdi-account"
-                    required
-                    label="Phone Number"
-                  />
-                </v-col>
-
-                <v-col cols="12" class="py-0 px-4 text-right">
-                  <v-btn :loading="loading.phoneNumber" depressed color="secondary" @click="update('phoneNumber')">
-                    Change Phone Number
+                  <v-btn :loading="loading.username" depressed color="secondary" @click="update('username')">
+                    Change Username
                   </v-btn>
                 </v-col>
               </v-row>
@@ -343,41 +205,6 @@
                 <v-col cols="12" class="py-0 px-4 text-right">
                   <v-btn :loading="loading.wallet" depressed color="secondary" @click="update('walletAddress')">
                     Update Wallet
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col v-if="show === 'currency'" cols="12" md="6">
-        <v-card>
-          <v-card-title>Update Currency</v-card-title>
-          <v-divider />
-          <v-card-text>
-            <v-form @submit.prevent>
-              <v-row>
-                <v-col cols="9">
-                  <v-autocomplete
-                    v-model="country"
-                    :items="countries"
-                    item-text="currency"
-                    dense
-                    outlined
-                    color="primary"
-                    label="Country"
-                    required
-                    :rules="[(v) => !!v || 'Country is required']"
-                  />
-                </v-col>
-                <v-col
-                  cols="3"
-                >
-                  <span class="px-4 pt-4 font-weight-bold text-h6 text-center" v-html="getSymbol(country)" />
-                </v-col>
-                <v-col cols="12" class="py-0 px-4 text-right">
-                  <v-btn :loading="loading.currency" depressed color="secondary" @click="update('currency')">
-                    Update Currency
                   </v-btn>
                 </v-col>
               </v-row>
@@ -449,9 +276,7 @@ export default {
 
   data: () => ({
     show: '',
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
+    username: '',
     email: '',
     walletAddress: '',
     file: [],
@@ -460,23 +285,13 @@ export default {
       new: '',
       confirm: ''
     },
-    bank: {
-      bankName: '',
-      accountName: '',
-      accountNumber: ''
-    },
     items: [
-      { title: 'Edit First Name', open: 'firstName' },
-      { title: 'Edit Last Name', open: 'lastName' },
-      { title: 'Edit Phone Number', open: 'phoneNumber' },
+      { title: 'Edit Username', open: 'username' },
       { title: 'Update Email', open: 'email' },
       { title: 'Upload Photo', open: 'photo' },
-      { title: 'Update Bank', open: 'bank' },
-      { title: 'Update Currency', open: 'currency' },
       { title: 'Edith Wallet Address', open: 'walletAddress' },
       { title: 'Change Password', open: 'password' }
-    ],
-    country: null
+    ]
 
   }),
   head () {
@@ -493,46 +308,25 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({ user: 'authentication/getUser', loading: 'authentication/getLoading', alert: 'authentication/getAlert', allCountries: 'authentication/getCountries' }),
-    countries () {
-      console.log(this.allCountries)
-      return this.allCountries
-    }
+    ...mapGetters({ user: 'authentication/getUser', loading: 'authentication/getLoading', alert: 'authentication/getAlert' })
   },
 
   methods: {
-    ...mapActions({ updatePhoneNumber: 'authentication/updatePhoneNumber', updateLastName: 'authentication/updateLastName', updateFirstName: 'authentication/updateFirstName', updateEmail: 'authentication/updateEmail', updateBank: 'authentication/updateBank', updateUsername: 'authentication/updateUsername', uploadPhoto: 'authentication/uploadPhoto', updateWalletAddress: 'authentication/updateWalletAddress', updatePsw: 'authentication/updatePassword', updateCurrency: 'authentication/updateCurrency', initAlert: 'authentication/initAlert' }),
+    ...mapActions({ updateEmail: 'authentication/updateEmail', updateUsername: 'authentication/updateUsername', uploadPhoto: 'authentication/uploadPhoto', updateWalletAddress: 'authentication/updateWalletAddress', updatePsw: 'authentication/updatePassword', initAlert: 'authentication/initAlert' }),
 
-    getSymbol (currency) {
-      let symbol
-      if (currency !== null) {
-        symbol = this.allCountries.find((el) => {
-          return currency.toLowerCase() === el.currency.toLowerCase() ? el.symbol : ''
-        })
-      } else {
-        symbol = ''
-      }
-      return symbol.symbol
-    },
     open (el) {
       this.show = el
     },
 
     clearFields () {
       this.email = ''
-      this.firstName = ''
-      this.lastName = ''
-      this.phoneNumber = ''
+      this.username = ''
       this.walletAddress = ''
       this.file = []
 
       this.password.new = ''
       this.password.old = ''
       this.password.confirm = ''
-
-      this.bank.bankName = ''
-      this.bank.accountNumber = ''
-      this.bank.accountName = ''
     },
 
     update (field) {
@@ -540,31 +334,12 @@ export default {
         this.updateEmail(this.email)
 
         this.clearFields()
-      } else if (field === 'firstName') {
-        this.updateFirstName(this.firstName)
-
-        this.clearFields()
-      } else if (field === 'lastName') {
-        this.updateLastName(this.lastName)
-
-        this.clearFields()
-      } else if (field === 'phoneNumber') {
-        this.updatePhoneNumber(this.phoneNumber)
+      } else if (field === 'username') {
+        this.updateUsername(this.username)
 
         this.clearFields()
       } else if (field === 'walletAddress') {
         this.updateWalletAddress(this.walletAddress)
-
-        this.clearFields()
-      } else if (field === 'bank') {
-        this.updateBank(this.bank)
-
-        this.clearFields()
-      } else if (field === 'currency') {
-        this.updateCurrency({
-          country: this.country,
-          currency: this.getSymbol(this.country)
-        })
 
         this.clearFields()
       } else if (field === 'photo') {

@@ -1,99 +1,129 @@
-import colors from 'vuetify/es5/util/colors'
+import colors from "vuetify/es5/util/colors";
 
 export default {
   /*
-  ** Nuxt rendering mode
-  ** See https://nuxtjs.org/api/configuration-mode
-  */
-  mode: 'spa',
+   ** Nuxt rendering mode
+   ** See https://nuxtjs.org/api/configuration-mode
+   */
+  mode: "spa",
   /*
-  ** Nuxt target
-  ** See https://nuxtjs.org/api/configuration-target
-  */
-  target: 'static',
+   ** Nuxt target
+   ** See https://nuxtjs.org/api/configuration-target
+   */
+  target: "static",
   /*
-  ** Headers of the page
-  ** See https://nuxtjs.org/api/configuration-head
-  */
+   ** Headers of the page
+   ** See https://nuxtjs.org/api/configuration-head
+   */
   head: {
-    titleTemplate: '%s - BitmainFX',
+    titleTemplate: "%s Bitmain FX",
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Bitmain FX is an online registered investment platform managed by a team of experienced and competent professionals in the finance and investment industry within and outside the country. Our major aim is to eliminate poverty, empower youths and incapable men within a short period of investment.' || '' }
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no" },
+      {
+        hid: "description",
+        name: "description",
+        content: process.env.npm_package_description || "Bitmain FX  has been one of the world’s leading online brokers since 2013. Our developers, financial experts, personal, and support managers are making every effort to make your trading more comfortable, secured and profitable year after year."
+      }
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
   /*
-  ** Global CSS
-  */
-  css: [
-  ],
+   ** Global CSS
+   */
+  css: [],
   /*
-  ** Plugins to load before mounting the App
-  ** https://nuxtjs.org/guide/plugins
-  */
+   ** Plugins to load before mounting the App
+   ** https://nuxtjs.org/guide/plugins
+   */
   plugins: [
-    { src: '@/plugins/aos', ssr: false }
+    { src: "@/plugins/aos", ssr: false },
+    { src: "@/plugins/crypto", ssr: false },
+    { src: "@/plugins/vue-cookies", ssr: false },
+    { src: "@/plugins/axios", ssr: false },
+    { src: "@/plugins/vue-json-excel", ssr: false },
+    { src: "@/plugins/vidle", ssr: false },
+    { src: "~/plugins/mono", ssr: false },
+    { src: "~/plugins/vue-dragscroll", ssr: false },
+    { src: "~/plugins/vue-social-sharing", ssr: false },
+    { src: "~/plugins/vue-youtube", ssr: false },
+    // { src: "~/plugins/vue-google-translate", ssr: false }
   ],
   /*
-  ** Router Settings
-  */
- router: {
-   middleware: ['authenticated']
- },
+   ** Router Settings
+   */
+  router: {
+    middleware: "authenticated"
+  },
+
   /*
-  ** Auto import components
-  ** See https://nuxtjs.org/api/configuration-components
-  */
+   ** Auto import components
+   ** See https://nuxtjs.org/api/configuration-components
+   */
   components: true,
   /*
-  ** Nuxt.js dev-modules
-  */
+   ** Nuxt.js dev-modules
+   */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
-    '@nuxtjs/vuetify'
-  
+    "@nuxtjs/eslint-module",
+    "@nuxtjs/vuetify"
   ],
   /*
-  ** Nuxt.js modules
-  */
+   ** Nuxt.js modules
+   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/pwa',
-    '@neneos/nuxt-animate.css'
+    "@nuxtjs/axios",
+    "@nuxtjs/auth-next",
+    "@nuxtjs/pwa",
+    "@neneos/nuxt-animate.css"
   ],
+
   /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
- 
+   ** modifying the default loader
+   */
+  loadingIndicator: {
+    name: "wandering-cubes",
+    color: "#0094FF",
+    background: "white"
+  },
+
+  loading: {
+    color: "#01579B"
+  },
   /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
-  axios: {},
+   ** Axios module configuration
+   ** See https://axios.nuxtjs.org/options
+   */
+
   /*
-  ** vuetify module configuration
-  ** https://github.com/nuxt-community/vuetify-module
-  */
+   ** Axios module configuration
+   ** See https://axios.nuxtjs.org/options
+   */
+  /*
+   ** vuetify module configuration
+   ** https://github.com/nuxt-community/vuetify-module
+   */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    customVariables: ["~/assets/variables.scss"],
+    treeShake: true,
     theme: {
       dark: false,
       themes: {
         light: {
-          primary: '#01021e',
-          accent: colors.amber.darken2,
-          secondary: colors.lightBlue.lighten1,
+          primary: "#06063d",
+          dark: "#1A006B",
+          secondary: "#0094FF",
+          accent: "#FFA000",
+          text1: "#555A68",
+          text3: "#0C1529",
+          text2: "#373F53",
+          light: "#F2F2F2",
           info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: '#EB5757',
-          success: colors.green.accent3
+          warning: "#FF8F00",
+          error: "#EB5757",
+          success: "#0FC236"
         },
 
         dark: {
@@ -109,9 +139,9 @@ export default {
     }
   },
   /*
-  ** Build configuration
-  ** See https://nuxtjs.org/api/configuration-build/
-  */
+   ** Build configuration
+   ** See https://nuxtjs.org/api/configuration-build/
+   */
   build: {
     extend(config, ctx) {
       if (ctx.isDev && ctx.isClient) {
@@ -130,4 +160,4 @@ export default {
   generate: {
     fallback: true
   }
-}
+};

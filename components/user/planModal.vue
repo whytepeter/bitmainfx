@@ -22,6 +22,8 @@
             <v-col cols="12">
               You are about to invest in
               <span class="font-weight-bold ">{{ plan.name }}</span> package
+              with withdrawal commission of
+              <span class="font-weight-bold">${{ plan.withdrawCommission | currency }}</span>
             </v-col>
             <v-col cols="12">
               <div class="text-subtitle-2 font-weight-bold">
@@ -31,10 +33,6 @@
               <div class="text-subtitle-2 font-weight-bold">
                 Maximum capital:
                 <span>${{ plan.maximum | currency }}</span>
-              </div>
-              <div class="text-subtitle-2 font-weight-bold">
-                ROI:
-                <span>{{ plan.roi | currency }}%</span>
               </div>
             </v-col>
             <v-col cols="12" class=" mt-0 mb-2 px-3 py-0 text-right text-caption error--text">
@@ -88,7 +86,6 @@ export default {
   filters: {
     currency (val) {
       if (val) {
-        val = parseFloat(val)
         return val.toLocaleString()
       } else {
 

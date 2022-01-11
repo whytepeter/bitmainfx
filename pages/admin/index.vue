@@ -1,120 +1,91 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-fab-transition>
-        <v-btn
-          style="top:10px"
-          color="primary"
-          fab
-          dark
-          small
-          absolute
-          top
-          right
-        >
-          <v-badge
-            bordered
-            content="2"
-            color="error"
-          >
-            <v-icon color="accent">
-              mdi-bell
-            </v-icon>
-          </v-badge>
-        </v-btn>
-        </v-badge>
-      </v-fab-transition>
+  <v-container class="pa-0">
+    <v-row justify="center" no-gutters class="ma-0">
+      <!-- <v-col cols="12">
+        <v-card dark flat tile color="primary">
+          <p-pattern />
+          <v-card-text class="text-center">
+            <div>
+              <span class="text-subtitle-1 white--text">Total Revenue</span>
+            </div>
+            <div v-if="user && user.wallet.deposit !== 0" class="text-h6 text-sm-h4 font-weight-bold white--text my-1">
+              {{ user && user.wallet.deposit | currency }}
+            </div>
+            <div class="text-h6 text-sm-h4 font-weight-bold white--text my-1">
+              $0.00
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-col> -->
 
-      <v-col cols="10" md="3">
-        <v-card dark color="primary">
-          <v-card-text class="text-subtitle-1 d-flex align-center justify-space-between">
-            <span>Total Users:</span> <span class=" success--text ml-2 font-weight-medium">({{ totalUsers }})</span>
+      <v-col cols="12" class="pa-0">
+        <v-card flat tile color="transparent">
+          <p-pattern v-if="daf" />
+          <v-card-text class="d-flex">
+            <div class="d-flex flex-column">
+              <span class="text-subtitle-1 text2--text">Admin</span>
+              <span class="text-h6 text2--text font-weight-light">Welcome, {{ user && user.firstName }} {{ user && user.lastName }}</span>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
-    </v-row>
-    <v-row>
       <v-col
-        v-for="(item, i) in data"
+        v-for="(wallet, i) in wallets"
         :key="i"
-        :cols="item.name === 'Total Deposite' ? 12 : 6"
+        cols="12"
+        sm="6"
         md="4"
+        class="pa-2"
       >
-        <v-card class="py-4">
-          <v-card-title>
-            <span class="text-subtitle-2 text-sm-headline">{{ item.name }}</span>
-            <v-spacer />
-            <v-icon fab color="secondary">
-              {{ item.icon }}
-            </v-icon>
-          </v-card-title>
-          <!-- <v-divider /> -->
-          <v-card-text>
-            <span class="text-h5 text-sm-h4 font-weight-medium">${{ item.amount | currency }}</span>
-          </v-card-text>
-        </v-card>
+        <x-wallet-card :type="wallet.type" :icon="wallet.icon" :title="wallet.title" :amount="wallet.amount" :number="wallet.number" />
       </v-col>
+      <v-col cols="12" class="my-2" />
+      <x-transaction :title="'All Transactions'" :type="'all'" />
     </v-row>
   </v-container>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import XTransaction from '~/components/other/xTransaction.vue'
+import xWalletCard from '~/components/other/xWalletCard.vue'
 export default {
   name: 'Admin',
+  components: { xWalletCard, XTransaction },
   layout: 'admin',
-  filters: {
-    currency (val) {
-      if (val) {
-        return val.toLocaleString()
-      } else {
-
-      }
-    }
-  },
-  data: () => ({
-
-  }),
+  data: () => ({}),
   computed: {
-    ...mapGetters({ totalDeposite: 'users/getTotalDeposite', totalUsers: 'users/totalUsers', totalInvestments: 'users/getTotalInvestments', totalCommissions: 'users/getTotalCommissions' }),
-
-    data () {
+    ...mapGetters({ user: 'authentication/getUser', state: 'admin/getState' }),
+    wallets () {
       return [
-
         {
-          name: 'Total Deposite',
+          title: 'Total Users',
+          type: 'number',
+          icon: 'mdi-account-multiple',
+          number: this.state('users') && this.state('users').length
+        },
+        {
+          title: 'Deposit Request',
+          type: 'number',
           icon: 'mdi-cash-plus',
-          amount: this.totalDeposite
+          number: this.state('deposits') && this.state('deposits').length
         },
         {
-          name: 'Total Investments',
-          icon: 'mdi-bitcoin',
-          amount: this.totalInvestments
-        },
-        {
-          name: 'Total Commissions',
-          icon: 'mdi-cash-usd',
-          amount: this.totalCommissions
+          title: 'Withdrawal Request',
+          type: 'number',
+          icon: 'mdi-cash-minus',
+          number: this.state('withdraws') && this.state('withdraws').length
         }
+        // {
+        //   title: 'Loan Request',
+        //   type: 'number',
+        //   icon:'',
+        //   number: this.state('loans') && this.state('loans').length
+        // }
       ]
     }
-
   },
-
-  head () {
-    return {
-      title: 'Dashboard',
-      meta: [
-        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Universal Crypto Trade is an online registered investment platform managed by a team of experienced and competent professionals in the finance and investment industry within and outside the country. Our major aim is to eliminate poverty, empower youths and incapable men within a short period of investment.'
-        }
-      ]
-
-    }
-  }
+  methods: {}
 
 }
 </script>

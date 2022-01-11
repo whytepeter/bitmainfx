@@ -1,45 +1,37 @@
-import Cookie from 'js-cookie'
 import { auth, db, st } from '@/services/firebase'
-import emailjs, { init } from 'emailjs-com'
+import emailjs from 'emailjs-com'
 import countries from '../services/countries'
 
 export const state = () => ({
   login: false,
-  adminWallet: '',
-  blocked: false,
+
   loading: {
-    register: false,
+    all: false,
     login: false,
-    reset: false,
+    register: false,
     password: false,
-    email: false,
+    reset: false,
     wallet: false,
-    photo: false,
-    firstName: false,
-    lastName: false,
-    phoneNumber: false,
-    currency: false,
-    bank: false
+    profile: false,
+    verify: false,
+    resolve: false,
+    updateDB: false
   },
 
-  alert: {
-    is: false,
-    type: '',
-    message: ''
-  },
-
-  user: null
+  user: null,
+  verification: null
 })
 
 export const getters = {
+  getState: state => (payload) => {
+    return state[payload]
+  },
+
   getCountries () {
     return countries
   },
   getUser (state) {
     return state.user
-  },
-  getAdminWallet (state) {
-    return state.adminWallet
   },
   getLoading (state) {
     return state.loading
@@ -47,606 +39,871 @@ export const getters = {
   getAlert (state) {
     return state.alert
   },
-  GET_LOGIN (state) {
+  getLogin (state) {
     return state.login
   }
+
 }
 
 export const mutations = {
-  SET_LOGIN (state, mode) {
-    state.login = mode
-  },
-  SET_ADMIN_WALLET (state, payload) {
-    state.adminWallet = payload
-  },
-  SET_LOADING (state, { type, is }) {
-    state.loading[type] = is
-  },
   // user mutation
-  SET_USER (state, currentUser) {
-    state.user = currentUser
-  },
-
-  SET_ALERT (state, alert) {
-    state.alert = alert
-  },
   setState (state, payload) {
     state[payload.type] = payload.value
+  },
+
+  setLogin (state, mode) {
+    state.login = mode
+  },
+  setLoading (state, { type, is }) {
+    state.loading.all = is
+    state.loading[type] = is
   }
+
 }
 
 export const actions = {
 
-  initAlert ({ commit }, { is, type, message, time }) {
-    time ? time = time * 1000 : time = 5000
-    commit('SET_ALERT', { is, type, message })
+  async updateDB ({ commit }, payload) {
+    commit('setLoading', { type: 'updateDB', is: true })
+    await db.collection('users')
+      .onSnapshot((snapshot) => {
+        const data = snapshot.docs
+        data.forEach((doc) => {
+          // get user detail
+          let newUser
+          const user = doc.data()
+          const name = user.email.split('@')[0]
 
-    setTimeout(() => {
-      commit('SET_ALERT', { is: false, type: '', message: '' })
-    }, time)
-  },
-  registerUser ({ commit, dispatch }, user) {
-    if (state.blocked) {
-      this.$router.push('/error/cors')
-      commit('SET_LOADING', { type: 'register', is: false })
-    } else {
-      // init Email.js
-      init('user_FRQmYEWJXtu6ddqgpUUCA')
-
-      // check if the username exist
-      commit('SET_LOADING', { type: 'register', is: true })
-      auth.createUserWithEmailAndPassword(user.email, user.password)
-        .then((cred) => {
-          db.collection('users')
-            .doc(cred.user.uid)
-            .set({
-              admin: false,
-              userID: cred.user.uid,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              phoneNumber: user.phoneNumber,
+          if (!user.accStatus) {
+            newUser = {
+              accStatus: 'Active',
+              accType: 'Starter',
+              role: user.admin ? 'admin' : 'user',
+              block: false,
+              delete: user.isDelete ? user.isDelete : false,
+              userID: user.userID,
+              firstName: name,
+              lastName: '',
+              phoneNumber: '',
               email: user.email,
+              joinDate: user.joinDate,
+              lastLogin: user.joinDate,
+              referralID: getReferralID(user),
+              referredBy: '',
+              symbol: '$',
+              trader: '',
+              verification: false,
               password: user.password,
-              country: user.country,
-              currency: user.currency.toString(),
-              joinDate: user.date,
-              photoURL: null,
-              isDelete: false,
-              walletAddress: null,
-              bank: {
-                bankName: '',
-                accountName: '',
-                accountNumber: ''
-              },
-              commissions: [],
-              notifications: {
-                fundWallet: [],
-                general: [],
-                withdraw: [],
-                investment: []
-              },
+              photoURL: user.photoURL,
+              country: '',
+              currency: 'USD',
+              walletAddress: user.walletAddress,
               wallet: {
-                totalDeposite: 0,
-                earnings: 0,
-                withdraw: 0,
-                referral: 0
-              },
-              investments: [],
-              fundWallet: [],
-              withdraw: []
-
-            })
-
-          commit('SET_LOADING', { type: 'register', is: false })
-          dispatch('initAlert', { is: true, type: 'success', message: 'Registration successful' })
-
-          // send email
-          emailjs.send('service_3vl6g65', 'template_i9dztim', {
-            name: user.username,
-            email: user.email,
-            password: user.password,
-            reply_to: user.email
-          }).then(() => {
-            console.log('Email Sent Successfully')
+                deposit: 0,
+                earnings: user.wallet.earnings,
+                referral: 0,
+                bonus: 0,
+                investment: 0,
+                withdraw: user.wallet.withdraw
+              }
+            }
+          } else {
+            newUser = user
+          }
+          console.log(newUser)
+          // Updated user details
+          db.collection('users').doc(user.userID).set(newUser).then(() => {
+            console.log(`${user.username} updated successfully`)
+            commit('setLoading', { type: 'updateDB', is: false })
+          }).catch((error) => {
+            commit('setLoading', { type: 'updateDB', is: false })
+            console.log(error.message)
           })
-
-          commit('SET_USER', user)
-          setTimeout(() => {
-            this.$router.push('/login')
-          }, 1500)
+        }).catch((error) => {
+          commit('setLoading', { type: 'updateDB', is: false })
+          console.log(error.message)
         })
-        .catch((error) => {
-          dispatch('initAlert', { is: true, type: 'error', message: error.message })
+      })
 
-          commit('SET_LOADING', { type: 'register', is: false })
-        })
+    function getReferralID (user) {
+      const name = `${user.email.substring(0, 2)}`
+      const id = user.userID.substring(0, 5)
+      console.log(`${name}-${id}`)
+      return `${name}-${id}`
     }
   },
-  initWallet ({ commit }) {
-    db.collection('users').where('admin', '==', true).where('email', '==', 'info@bitmainfx.online').onSnapshot((snapshot) => {
-      const data = snapshot.docs
-      console.log(data[0].data())
-      const walletAddress = data[0].data().walletAddress
-      commit('SET_ADMIN_WALLET', walletAddress)
-      // console.log('wallet inited')
-    })
-    // I don hammer
-    // commit('SET_ADMIN_WALLET', '3GpVqNCFEg1kZH1TmUt8bBfv7UfapbKoC2')
+
+  // async uploadPhoto ({ dispatch }, payload) {
+  //   const userID = auth.currentUser.uid
+  //   const ref = db.collection('users').doc(userID)
+
+  //   let photoURL
+  //   const photo = payload.photo
+  //   const filename = photo.name
+  //   const ext = filename.slice(filename.lastIndexOf('.'))
+
+  //   await st.ref(`photo/${userID}${ext}`)
+  //     .put(photo)
+  //     .then((res) => {
+  //       // console.log('start download')
+  //       st.ref(`photo/${userID}${ext}`)
+  //         .getDownloadURL()
+  //         .then((url) => {
+  //           photoURL = url
+  //           // update photo in the database
+  //           ref.update({
+  //             photoURL
+  //           }).then(function () {
+  //             console.log('user updated')
+  //           })
+  //             .catch(function (error) {
+  //               // The document probably doesn't exist.
+  //               console.log(error.message)
+  //               dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+  //             })
+  //         })
+  //         .catch((error) => {
+  //           console.log(error.message)
+  //           dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+  //         })
+  //     }).catch((err) => {
+  //       console.log(err)
+  //       dispatch('controller/initAlert', { is: true, type: 'error', message: err.message }, { root: true })
+  //     })
+  // },
+
+  async register ({ commit, dispatch, state }, user) {
+    commit('setLoading', { type: 'register', is: true })
+    await auth.createUserWithEmailAndPassword(user.email, user.password)
+      .then((cred) => {
+        console.log(cred.user.uid)
+        db.collection('users')
+          .doc(cred.user.uid)
+          .set({
+            role: 'user',
+            block: false,
+            delete: false,
+            userID: cred.user.uid,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phoneNumber: user.phoneNumber,
+            email: user.email,
+            joinDate: user.date,
+            lastLogin: user.date,
+            accType: 'Starter',
+            accStatus: 'Active',
+            password: user.password,
+            photoURL: '',
+            country: user.country,
+            currency: user.currency,
+            symbol: user.symbol,
+            trader: user.trader,
+            walletAddress: 'Wallet Address',
+            verification: false,
+            referralID: getReferralID(cred.user.uid),
+            referredBy: '',
+            wallet: {
+              deposit: 0,
+              earnings: 0,
+              bonus: 0,
+              withdraw: 0,
+              referral: 0,
+              investment: 0
+            }
+          }).then((docRef) => {
+            // dispatch('uploadPhoto', { photo: user.photo })
+            dispatch('controller/initAlert', { is: true, type: 'success', message: 'Registration successful' }, { root: true })
+            commit('setLoading', { type: 'register', is: false })
+            setTimeout(() => {
+              this.$router.push('/login')
+            }, 1500)
+
+            dispatch('referralFunc', { id: state.referralID })
+
+            // send email
+            emailjs.send('service_sudkpgl', 'template_s69c0ss', {
+              name: `${user.firstName} ${user.lastName}`,
+              email: user.email,
+              reply_to: user.email
+            }, 'user_TLauoz4cLLa9yzX94oEe0').then(() => {
+              console.log('Email Sent to User Successfully')
+            })
+
+            // send email to admin
+            // emailjs.send('service_42t869i -N', 'template_zln6bza -N', {
+            //   name: `${user.firstName} ${user.lastName}`,
+            //   email: user.email,
+            //   phoneNumber: user.phoneNumber,
+            //   country: user.country,
+            //   reply_to: user.email
+            // }, 'user_SZoHTciRAEIr6QhgLi6rR -N').then(() => {
+            //   console.log('Email Sent to User Successfully')
+            // })
+          }).catch((error) => {
+            dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+            commit('setLoading', { type: 'register', is: false })
+            console.log(error.message)
+          })
+      })
+      .catch((error) => {
+        dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+        commit('setLoading', { type: 'register', is: false })
+        console.log(error.message)
+      })
+
+    function getReferralID (userId) {
+      const name = `${user.firstName.substring(0, 1)}${user.lastName.substring(0, 1)}`
+      const id = userId.substring(0, 5)
+      return `${name}-${id}`
+    }
   },
 
-  loginUser ({ commit, dispatch, state }, user) {
+  resolveUser ({ commit, dispatch, state }, user) {
     // start the loading
-    commit('SET_LOADING', { type: 'login', is: true })
+    commit('setLoading', { type: 'resolve', is: true })
+    commit('setLoading', { type: 'login', is: true })
     // Login the User
 
-    if (state.blocked) {
-      this.$router.push('/error/cors')
-      commit('SET_LOADING', { type: 'login', is: false })
-    } else {
-      auth
-        .signInWithEmailAndPassword(user.email, user.password)
-        .then(() => {
-          commit('SET_USER', user)
-          commit('SET_LOGIN', true)
-          const userId = auth.currentUser.uid
+    auth
+      .signInWithEmailAndPassword(user.email, user.password)
+      .then(() => {
+        const userId = auth.currentUser.uid
+        // const currentUser = auth.currentUser
+        // commit('setState', { type: 'user', value: currentUser })
+        // get current user details
+        console.log(userId)
+        const firstName = user.email.split('@')[0]
+        console.log(firstName)
+        db.collection('users')
+          .doc(userId)
+          .set({
+            role: 'user',
+            block: false,
+            delete: false,
+            userID: userId,
+            firstName,
+            lastName: '',
+            phoneNumber: '',
+            email: user.email,
+            joinDate: user.date,
+            lastLogin: user.date,
+            accType: 'Starter',
+            verified: false,
+            password: user.password,
+            photoURL: '',
+            country: '',
+            currency: 'USD',
+            symbol: '$',
+            trader: 'Mr William Zaki Maged (10%)',
+            referralID: getReferralID(userId),
+            referredBy: null,
+            walletAddress: 'Wallet Address',
+            wallet: {
+              deposit: 0,
+              earnings: 0,
+              bonus: 0,
+              withdraw: 0,
+              referral: 0,
+              investment: 0
+            }
 
-          // get current user details
-          console.log(userId)
-          db.collection('users').doc(userId)
+          })
 
-            .get().then((doc) => {
-              console.log(doc.data())
-              if (doc.exists) {
-                const currentUser = doc.data()
-                // console.log(currentUser.admin)
-                if (currentUser.admin) {
-                  dispatch('users/initAdmin', currentUser, { root: true })
-                  commit('SET_USER', currentUser)
-                } else {
-                  dispatch('initWallet')
-                  commit('SET_USER', currentUser)
-                }
+        dispatch('loginUser', user)
+          .catch((error) => {
+            dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+            commit('setLoading', { type: 'resolve', is: false })
+            commit('setLoading', { type: 'login', is: false })
+            console.log(error.message)
+          })
+      })
+      .catch((error) => {
+        dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+        commit('setLoading', { type: 'resolve', is: false })
+        commit('setLoading', { type: 'login', is: false })
+        console.log(error.message)
+      })
 
-                // set wallet
-                // console.log('initwallet')
-                dispatch('wallet/initWallet', null, { root: true })
+    function getReferralID (userId) {
+      const name = `${(user.email.split('@')[0]).substring(0, 2).toUpperCase()}`
+      const id = userId.substring(0, 5)
+      return `${name}-${id}`
+    }
+  },
+  loginUser ({ commit, dispatch, state }, user) {
+    commit('setLoading', { type: 'login', is: true })
+    auth
+      .signInWithEmailAndPassword(user.email, user.password)
+      .then(() => {
+        const userID = auth.currentUser.uid
+        console.log(userID)
+        // get current user details
+        db.collection('users').doc(userID)
+          .get().then((doc) => {
+            if (doc.exists) {
+              const currentUser = doc.data()
+              commit('setState', { type: 'user', value: currentUser })
+              console.log(currentUser)
 
-                // Redirect to dashboard
-                if (!state.user.isDelete) {
-                  if (!state.user.block) {
-                    if (state.user !== null) {
-                      if (state.user.admin) {
-                        this.$router.push('/admin')
-                      } else {
-                        this.$router.push('/dashboard')
-                      }
-                    }
+              // Update last login
+              updateLastLogin(currentUser.userID, user.date)
+              // Redirect to dashboard
+              if (!state.user.block) {
+                if (state.user !== null) {
+                  if (state.user.role === 'admin') {
+                    this.$router.push('/admin')
                   } else {
-                    location.href = '/'
+                    this.$router.push('/dashboard/home')
                   }
-                } else {
-                  location.href = '/'
+                  commit('setLoading', { type: 'login', is: false })
+                  dispatch('controller/initAlert', { is: true, type: 'success', message: 'Login successful' }, { root: true })
                 }
-                commit('SET_LOADING', { type: 'login', is: false })
               } else {
-                dispatch('initAlert', { is: true, type: 'error', message: 'user not found' })
+                location.href = '/'
+                dispatch('controller/initAlert', { is: true, type: 'error', message: 'Account blocked, Please contact support@ttub.online' }, { root: true })
+                commit('setLoading', { type: 'login', is: false })
               }
-            }).catch((error) => {
-              commit('SET_LOADING', { type: 'login', is: false })
-              console.log('Error getting document:', error)
-            })
-        })
-        .catch((error) => {
-          dispatch('initAlert', { is: true, type: 'error', message: error.message })
-          commit('SET_LOADING', { type: 'login', is: false })
-        })
+            } else {
+              commit('setLoading', { type: 'login', is: false })
+              console.log('user not found')
+              dispatch('controller/initAlert', { is: true, type: 'error', message: 'user not found' }, { root: true })
+              user.date = new Date().toLocaleDateString()
+              dispatch('resolveUser', user)
+            }
+          }).catch((error) => {
+            commit('setLoading', { type: 'login', is: false })
+            console.log('Error getting document:', error)
+          })
+      })
+      .catch((error) => {
+        dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+        commit('setLoading', { type: 'login', is: false })
+      })
+
+    function updateLastLogin (userID, date) {
+      db.collection('users').doc(userID).update({
+        lastLogin: date
+      })
     }
   },
 
   logoutUser ({ commit }) {
     auth.signOut().then(function () {
-      location.href = '/'
-      commit('SET_LOGIN', false)
-      commit('SET_USER', null)
+      this.$router.push('/login')
+      commit('setState', { type: 'user', value: null })
     }).catch((error) => {
       console.log(error.message)
     })
   },
 
   resetPassword ({ commit, dispatch }, email) {
-    commit('SET_LOADING', { type: 'reset', is: true })
+    commit('setLoading', { type: 'reset', is: true })
     auth.sendPasswordResetEmail(email).then(function () {
       // Email sent.
-      commit('SET_LOADING', { type: 'reset', is: false })
-      dispatch('initAlert', { is: true, type: 'info', message: 'Check email for reset link' })
+      commit('setLoading', { type: 'reset', is: false })
+      dispatch('controller/initAlert', { is: true, type: 'primary', message: 'Check email for reset link' }, { root: true })
     }).catch(function (error) {
-      commit('SET_LOADING', { type: 'reset', is: false })
-
-      dispatch('initAlert', { is: true, type: 'error', message: error.message })
+      commit('setLoading', { type: 'reset', is: false })
+      dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
     })
   },
 
-  notifyWhyte ({ commit }) {
-    // const email = 'peteremmanuelwhyte@gmail.com'
-    // auth.sendPasswordResetEmail(email).then(function () {
-    //   console.log('email sent')
-    // }).catch(function (error) {
-    //   console.log(error.message)
-    // })
-    console.log('.')
-  },
-  // Update Info Actions
-  updateEmail ({ commit, dispatch }, email) {
+  async  updatePassword ({ commit, dispatch }, payload) {
+    commit('setLoading', { type: 'password', is: true })
     const user = auth.currentUser
-    commit('SET_LOADING', { type: 'email', is: true })
-
-    // check if email already exist
-    let itExist
-    db.collection('users').get().then((snapshot) => {
-      itExist = snapshot.docs.find((doc) => {
-        return email.toLowerCase() === doc.data().email.toLowerCase()
-      })
-    })
-
-    if (email === user.email) {
-      // console.log('New email cannot be old email')
-      commit('SET_LOADING', { type: 'email', is: false })
-      dispatch('initAlert', { is: true, type: 'error', message: 'New email cannot be old email' })
-    } else if (itExist) {
-      // console.log('email already exist')
-      commit('SET_LOADING', { type: 'email', is: false })
-      dispatch('initAlert', { is: true, type: 'error', message: 'Email already exist' })
-    } else {
-      user.updateEmail(email).then(function () {
-        // Update successful.
-        // console.log('email update')
-        db.collection('users').doc(user.uid).update({
-          email
-        }).then(() => {
-          // console.log('user email data updated')
-          commit('SET_LOADING', { type: 'email', is: false })
-          dispatch('initAlert', { is: true, type: 'success', message: 'Email updated successfully' })
-        }).catch((error) => {
-          // console.log(error.message)
-          commit('SET_LOADING', { type: 'email', is: false })
-          dispatch('initAlert', { is: true, type: 'error', message: error.message })
-        })
-      }).catch((error) => {
-        // An error happened.
-        // console.log(error.message)
-        commit('SET_LOADING', { type: 'email', is: false })
-        dispatch('initAlert', { is: true, type: 'error', message: error.message })
-      })
-    }
-  },
-
-  updateWalletAddress ({ commit, dispatch }, walletAddress) {
     const userId = auth.currentUser.uid
-    // commit('SET_LOADING', { type: 'wallet', is: true })
-    db.collection('users').doc(userId).update({
-      walletAddress
-    }).then(() => {
-      // console.log('wallet Address updated')
-      commit('SET_LOADING', { type: 'wallet', is: false })
-      dispatch('initAlert', { is: true, type: 'success', message: 'Wallet updated successfully' })
-    }).catch((error) => {
-      // console.log(error.message)
-      commit('SET_LOADING', { type: 'wallet', is: false })
-      dispatch('initAlert', { is: true, type: 'error', message: error.message })
-    })
-  },
-
-  updateBank ({ commit, state, dispatch }, payload) {
-    const userId = auth.currentUser.uid
-    commit('SET_LOADING', { type: 'bank', is: true })
     console.log(payload)
-    // check if the user havent added a
-    if (state.user.bank !== null) {
-      update()
-    } else {
-      add()
-    }
-
-    function add () {
-      db.collection('users').doc(userId).add({
-        bank: payload
-      }).then(() => {
-        // console.log('wallet Address updated')
-        commit('SET_LOADING', { type: 'bank', is: false })
-        dispatch('initAlert', { is: true, type: 'success', message: 'Bank Added successfully' })
-      }).catch((error) => {
-        // console.log(error.message)
-        commit('SET_LOADING', { type: 'bank', is: false })
-        dispatch('initAlert', { is: true, type: 'error', message: error.message })
-      })
-    }
-    function update () {
-      db.collection('users').doc(userId).update({
-        bank: payload
-      }).then(() => {
-        // console.log('wallet Address updated')
-        commit('SET_LOADING', { type: 'bank', is: false })
-        dispatch('initAlert', { is: true, type: 'success', message: 'Bank updated successfully' })
-      }).catch((error) => {
-        // console.log(error.message)
-        commit('SET_LOADING', { type: 'bank', is: false })
-        dispatch('initAlert', { is: true, type: 'error', message: error.message })
-      })
-    }
-  },
-
-  updateCurrency ({ commit, state, dispatch }, payload) {
-    const userId = auth.currentUser.uid
-    commit('SET_LOADING', { type: 'currency', is: true })
-
-    // check if the user havent added a
-    if (state.user.country !== null) {
-      update()
-    } else {
-      add()
-    }
-
-    function add () {
-      db.collection('users').doc(userId).add({
-        country: payload.country,
-        currency: payload.currency
-      }).then(() => {
-        // console.log('wallet Address updated')
-        commit('SET_LOADING', { type: 'currency', is: false })
-        dispatch('initAlert', { is: true, type: 'success', message: 'Currency Added successfully' })
-      }).catch((error) => {
-        // console.log(error.message)
-        commit('SET_LOADING', { type: 'currency', is: false })
-        dispatch('initAlert', { is: true, type: 'error', message: error.message })
-      })
-    }
-    function update () {
-      db.collection('users').doc(userId).update({
-        country: payload.country,
-        currency: payload.currency
-      }).then(() => {
-        // console.log('wallet Address updated')
-        commit('SET_LOADING', { type: 'currency', is: false })
-        dispatch('initAlert', { is: true, type: 'success', message: 'Currency updated successfully' })
-      }).catch((error) => {
-        // console.log(error.message)
-        commit('SET_LOADING', { type: 'currency', is: false })
-        dispatch('initAlert', { is: true, type: 'error', message: error.message })
-      })
-    }
-  },
-
-  uploadPhoto ({ commit, dispatch }, payload) {
-    const userId = auth.currentUser.uid
-    let filename, photo, ext, photoURL
-
-    if (payload !== null) {
-      commit('SET_LOADING', { type: 'photo', is: true })
-      photo = payload
-      filename = photo.name
-      ext = filename.slice(filename.lastIndexOf('.'))
-
-      st.ref(`photo/${userId}${ext}`)
-        .put(photo)
-        .then((res) => {
-          // console.log('start download')
-          st.ref(`photo/${userId}${ext}`)
-            .getDownloadURL()
-            .then((url) => {
-              photoURL = url
-              // console.log('download success')
-              db.collection('users').doc(userId).update({
-                photoURL
-              }).then(() => {
-                // console.log('database updated')
-                commit('SET_LOADING', { type: 'photo', is: false })
-                dispatch('initAlert', { is: true, type: 'success', message: 'Photo Uploaded successfully' })
-              }).catch((error) => {
-                // console.log(error.message)
-                commit('SET_LOADING', { type: 'photo', is: false })
-                dispatch('initAlert', { is: true, type: 'error', message: error.message })
-              })
-            })
-            .catch((error) => {
-              switch (error.code) {
-                case 'storage/object-not-found':
-                  // File doesn't exist
-                  photoURL = ''
-                  break
-
-                case 'storage/unauthorized':
-                  // User doesn't have permission to access the object
-                  break
-
-                case 'storage/canceled':
-                  // User canceled the upload
-                  break
-
-                case 'storage/unknown':
-                  // Unknown error occurred, inspect the server response
-                  break
-              }
-            })
-        })
-        .catch((error) => {
-          commit('SET_LOADING', { type: 'photo', is: false })
-          dispatch('initAlert', { is: true, type: 'error', message: error.message })
-        })
-    }
-  },
-
-  updateFirstName ({ commit, dispatch, state }, payload) {
-    const userId = auth.currentUser.uid
-    commit('SET_LOADING', { type: 'firstName', is: true })
-
-    db.collection('users').doc(userId).update({
-      firstName: payload
-    }).then(() => {
-      // console.log('firstName update successful')
-      commit('SET_LOADING', { type: 'firstName', is: false })
-      dispatch('initAlert', { is: true, type: 'success', message: 'First Name updated successfully' })
-
-      if (state.user !== null) {
-        if (state.user.admin) {
-          this.$router.push('/admin/account')
-        } else {
-          this.$router.push('/dashboard/profile')
-        }
-      }
-    }).catch((error) => {
-      // console.log(error.message)
-      commit('SET_LOADING', { type: 'firstName', is: false })
-      dispatch('initAlert', { is: true, type: 'error', message: error.message })
-    })
-  },
-
-  updateLastName ({ commit, dispatch, state }, payload) {
-    const userId = auth.currentUser.uid
-    commit('SET_LOADING', { type: 'lastName', is: true })
-
-    db.collection('users').doc(userId).update({
-      lastName: payload
-    }).then(() => {
-      // console.log('lastName update successful')
-      commit('SET_LOADING', { type: 'lastName', is: false })
-      dispatch('initAlert', { is: true, type: 'success', message: 'Last Name updated successfully' })
-
-      if (state.user !== null) {
-        if (state.user.admin) {
-          this.$router.push('/admin/account')
-        } else {
-          this.$router.push('/dashboard/profile')
-        }
-      }
-    }).catch((error) => {
-      // console.log(error.message)
-      commit('SET_LOADING', { type: 'lastName', is: false })
-      dispatch('initAlert', { is: true, type: 'error', message: error.message })
-    })
-  },
-
-  updatePhoneNumber ({ commit, dispatch, state }, payload) {
-    const userId = auth.currentUser.uid
-    commit('SET_LOADING', { type: 'phoneNumber', is: true })
-
-    db.collection('users').doc(userId).update({
-      phoneNumber: payload
-    }).then(() => {
-      // console.log('phoneNumber update successful')
-      commit('SET_LOADING', { type: 'phoneNumber', is: false })
-      dispatch('initAlert', { is: true, type: 'success', message: 'Phone Number updated successfully' })
-
-      if (state.user !== null) {
-        if (state.user.admin) {
-          this.$router.push('/admin/account')
-        } else {
-          this.$router.push('/dashboard/profile')
-        }
-      }
-    }).catch((error) => {
-      // console.log(error.message)
-      commit('SET_LOADING', { type: 'phoneNumber', is: false })
-      dispatch('initAlert', { is: true, type: 'error', message: error.message })
-    })
-  },
-
-  updatePassword ({ commit, dispatch }, payload) {
-    const user = auth.currentUser
-    const userId = auth.currentUser.uid
-    user.updatePassword(payload).then(() => {
-      commit('SET_LOADING', { type: 'password', is: true })
+    await user.updatePassword(payload).then(() => {
       db.collection('users')
         .doc(userId).update({
           password: payload
         }).then(() => {
-          commit('SET_LOADING', { type: 'password', is: false })
-          dispatch('initAlert', { is: true, type: 'success', message: 'Password updated successfully' })
-
-          if (state.user !== null) {
-            if (state.user.admin) {
-              this.$router.push('/admin/account')
-            } else {
-              this.$router.push('/dashboard/profile')
-            }
-          }
+          commit('setLoading', { type: 'password', is: false })
+          dispatch('controller/initAlert', { is: true, type: 'success', message: 'Password updated successfully' }, { root: true })
         }).catch((error) => {
-          dispatch('initAlert', { is: true, type: 'error', message: error.message })
+          dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
         })
     }).catch((error) => {
-      commit('SET_LOADING', { type: 'password', is: false })
-      dispatch('initAlert', { is: true, type: 'error', message: error.message })
+      commit('setLoading', { type: 'password', is: false })
+      dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+    })
+  },
+  async  updateEmail ({ commit, dispatch, state }, email) {
+    commit('setLoading', { type: 'email', is: true })
+    const user = auth.currentUser
+    const userId = auth.currentUser.uid
+    await auth
+      .signInWithEmailAndPassword(state.user.email, state.user.password).then(() => {
+        user.updateEmail(email).then(function () {
+          db.collection('users').doc(userId).update({
+            email
+          }).then(() => {
+            // console.log('user email data updated')
+            commit('setLoading', { type: 'email', is: false })
+            dispatch('controller/initAlert', { is: true, persistence: true, type: 'success', message: 'Email updated successfully' }, { root: true })
+          }).catch((error) => {
+            // console.log(error.message)
+            commit('setLoading', { type: 'email', is: false })
+            dispatch('controller/initAlert', { is: true, persistence: true, type: 'error', message: error.message }, { root: true })
+          })
+        }).catch((error) => {
+          commit('setLoading', { type: 'email', is: false })
+          dispatch('controller/initAlert', { is: true, persistence: true, type: 'error', message: error.message }, { root: true })
+        })
+      }).catch((error) => {
+        commit('setLoading', { type: 'email', is: false })
+        dispatch('controller/initAlert', { is: true, persistence: true, type: 'error', message: error.message }, { root: true })
+      })
+  },
+
+  // Update the wallet address
+  async referralFunc ({ commit, dispatch }, payload) {
+    commit('setLoading', { type: 'referral', is: true })
+    // Get all users
+    // Check for the referree
+    // Update thier referral details
+    const ref = db.collection('users')
+    await ref.get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          const user = doc.data()
+          if (user.referralID === payload.id) {
+            updateUser(user)
+          }
+        })
+      }).catch((error) => {
+        commit('setLoading', { type: 'referral', is: false })
+        console.log('Error getting document:', error)
+      })
+
+    function updateUser (arg) {
+      // get the array of referrals
+      const ref = db.collection('referrals')
+      const arr = []
+      ref.doc(arg.userID).then((doc) => {
+        if (doc.exists) {
+          arr.push(doc.data())
+        }
+      }).catch((error) => {
+        commit('setLoading', { type: 'referral', is: false })
+        console.log('Error getting referral array:', error)
+      })
+
+      // add the new array
+      arr && arr.push(arg)
+
+      // update the referrals
+      ref.update(arr).then(() => {
+        console.log('Updated')
+      }).catch((error) => {
+        commit('setLoading', { type: 'referral', is: false })
+        console.log('Error getting referral array:', error)
+      })
+
+      // update referral Wallet
+      arg.wallet.referral = parseFloat(arg.wallet.referral) + 80
+      db.collection('users').doc(arg.userID).update(arg)
+    }
+  },
+
+  // Update the wallet address
+  async updateWalletAddress ({ commit, dispatch }, payload) {
+    commit('setLoading', { type: 'wallet', is: true })
+    const userId = auth.currentUser.uid
+    await db.collection('users').doc(userId).update({
+      walletAddress: payload
+    }).then(() => {
+      commit('setLoading', { type: 'wallet', is: false })
+      dispatch('controller/initAlert', { is: true, type: 'success', message: 'Wallet Address Updated' }, { root: true })
+    }).catch((error) => {
+      commit('setLoading', { type: 'wallet', is: false })
+      console.log(error.message)
+      dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+    })
+  },
+  // Update the wallet address
+  async updateProfile ({ commit, dispatch }, payload) {
+    commit('setLoading', { type: 'profile', is: true })
+    const userId = auth.currentUser.uid
+    await db.collection('users').doc(userId).update({
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+      email: payload.email,
+      phoneNumber: payload.phoneNumber,
+      country: payload.country,
+      currency: payload.currency
+    }).then(() => {
+      commit('setLoading', { type: 'profile', is: false })
+      dispatch('controller/initAlert', { is: true, type: 'success', message: 'Profile Updated' }, { root: true })
+    }).catch((error) => {
+      commit('setLoading', { type: 'profile', is: false })
+      console.log(error.message)
+      dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
     })
   },
 
-  handleAuthStateChanged ({ commit, dispatch, state }) {
+  // Verification functions
+  initializeVerification ({ commit }) {
+    commit('setLoading', { type: 'verify', is: true })
+
+    const userID = auth.currentUser.uid
+    const ref = db.collection('verification').doc(userID)
+    ref.onSnapshot((snapshot) => {
+      if (snapshot.exists) {
+        const data = snapshot.data()
+        console.log('Verification Data', data)
+        // set State
+        commit('setState', { type: 'verification', value: data })
+        commit('setLoading', { type: 'verify', is: false })
+      } else {
+        commit('setLoading', { type: 'verify', is: false })
+      }
+    })
+  },
+
+  async initVerification ({ commit, dispatch }, payload) {
+    const userID = auth.currentUser.uid
+    const ref = db.collection('verification').doc(userID)
+    commit('setLoading', { type: 'verify', is: true })
+    const verificationObject = {
+      identity: {
+        front: '',
+        back: '',
+        type: '',
+        status: null
+      },
+      address: {
+        type: '',
+        status: null,
+        document: ''
+      },
+      face: {
+        photo: '',
+        status: null
+      }
+    }
+
+    await ref.set(verificationObject)
+      .then(() => {
+        console.log('Initialization Complete')
+        commit('setLoading', { type: 'verify', is: false })
+      }).catch((error) => {
+        console.log(error.message)
+        commit('setLoading', { type: 'verify', is: false })
+        dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+      })
+  },
+
+  async verifyFunc ({ commit, dispatch }, payload) {
+    const field = payload.field
+    const userID = auth.currentUser.uid
+    const ref = db.collection('verification').doc(userID)
+
+    // Check if verification object is init
+    await ref.get().then((doc) => {
+      if (doc.exists) {
+        const data = doc.data()
+        // get Document
+        updateDoc(data)
+      } else {
+        // init verification
+        dispatch('initVerification')
+
+        const data = {
+          identity: {
+            front: '',
+            back: '',
+            type: '',
+            status: null
+          },
+          address: {
+            type: '',
+            status: null,
+            document: ''
+          },
+          face: {
+            photo: '',
+            status: null
+          }
+        }
+
+        updateDoc(data)
+        // upload document
+      }
+    })
+
+    function updateDoc (data) {
+      if (field === 'identity') {
+        // update data locally
+        data.identity.message = ''
+        data.identity.type = payload.type
+
+        // update database
+        ref.update({
+          identity: data
+        })
+
+        // upload document
+        dispatch('verifyIdentity', { data, photo: payload.front, doc: 'front' })
+        dispatch('verifyIdentity', { data, photo: payload.back, doc: 'back' })
+      } else if (field === 'address') {
+        // update data locally
+        data.address.message = ''
+        data.address.type = payload.type
+
+        // update database
+        ref.update({
+          address: data
+        })
+
+        // upload document
+        dispatch('verifyAddress', { data, photo: payload.document })
+      } else if (field === 'face') {
+        // update data locally
+        data.face.message = ''
+
+        // update database
+        console.log('updating ', data)
+        ref.update(data)
+
+        // upload document
+        const photo = payload.photo
+        dispatch('verifyFace', { data, photo })
+      }
+      // update document
+    }
+  },
+
+  verifyAddress ({ commit, dispatch }, payload) {
+    commit('setLoading', { type: 'verify', is: true })
+    // update data locally
+    const data = payload.data
+    data.address.document = null // Doc mean either front or back document
+    const userID = auth.currentUser.uid
+
+    // uploadDoc(field, data, data.photo)
+    const ref = db.collection('verification').doc(userID)
+
+    let photoURL
+    const photo = payload.photo
+    const filename = photo.name
+    const ext = filename.slice(filename.lastIndexOf('.'))
+
+    st.ref(`verification/${userID}${ext}`)
+      .put(photo)
+      .then((res) => {
+        // console.log('start download')
+        st.ref(`verification/${userID}${ext}`)
+          .getDownloadURL()
+          .then((url) => {
+            photoURL = url
+            // update photo in the database
+            data.address.status = 'Progress'
+            data.address.document = photoURL
+            console.log('data', data)
+
+            ref.update(data).then(function () {
+              console.log('Verification updated')
+              commit('setLoading', { type: 'verify', is: false })
+              dispatch('controller/initAlert', { is: true, type: 'success', message: 'Document submitted successfully' }, { root: true })
+              // initialize verification
+              // dispatch('initializeVerification')
+            })
+              .catch(function (error) {
+                // The document probably doesn't exist.
+                console.log(error.message)
+                commit('setLoading', { type: 'verify', is: false })
+                dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+              })
+          })
+          .catch((error) => {
+            console.log(error.message)
+            commit('setLoading', { type: 'verify', is: false })
+            dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+          })
+      }).catch((err) => {
+        console.log(err)
+        commit('setLoading', { type: 'verify', is: false })
+        dispatch('controller/initAlert', { is: true, type: 'error', message: err.message }, { root: true })
+      })
+  },
+  verifyIdentity ({ commit, dispatch }, payload) {
+    commit('setLoading', { type: 'verify', is: true })
+    // update data locally
+    const data = payload.data
+    data.identity[payload.doc] = null // Doc mean either front or back document
+    const userID = auth.currentUser.uid
+
+    // uploadDoc(field, data, data.photo)
+    const ref = db.collection('verification').doc(userID)
+
+    let photoURL
+    const photo = payload.photo
+    const filename = photo.name
+    const ext = filename.slice(filename.lastIndexOf('.'))
+
+    st.ref(`verification/${userID}${ext}`)
+      .put(photo)
+      .then((res) => {
+        // console.log('start download')
+        st.ref(`verification/${userID}${ext}`)
+          .getDownloadURL()
+          .then((url) => {
+            photoURL = url
+            // update photo in the database
+            data.identity.status = 'Progress'
+            data.identity[payload.doc] = photoURL
+            console.log('data', data)
+
+            ref.update(data).then(function () {
+              console.log('Verification updated')
+              commit('setLoading', { type: 'verify', is: false })
+              dispatch('controller/initAlert', { is: true, type: 'success', message: 'Document submitted successfully' }, { root: true })
+
+              // initialize verification
+              // dispatch('initializeVerification')
+            })
+              .catch(function (error) {
+                // The document probably doesn't exist.
+                console.log(error.message)
+                commit('setLoading', { type: 'verify', is: false })
+                dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+              })
+          })
+          .catch((error) => {
+            console.log(error.message)
+            commit('setLoading', { type: 'verify', is: false })
+            dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+          })
+      }).catch((err) => {
+        console.log(err)
+        commit('setLoading', { type: 'verify', is: false })
+        dispatch('controller/initAlert', { is: true, type: 'error', message: err.message }, { root: true })
+      })
+  },
+  verifyFace ({ commit, dispatch }, payload) {
+    commit('setLoading', { type: 'verify', is: true })
+    // update data locally
+    const data = payload.data
+    data.face.photo = null
+    const userID = auth.currentUser.uid
+
+    // uploadDoc(field, data, data.photo)
+    const ref = db.collection('verification').doc(userID)
+
+    let photoURL
+    const photo = payload.photo
+    const filename = photo.name
+    const ext = filename.slice(filename.lastIndexOf('.'))
+
+    st.ref(`verification/${userID}${ext}`)
+      .put(photo)
+      .then((res) => {
+        // console.log('start download')
+        st.ref(`verification/${userID}${ext}`)
+          .getDownloadURL()
+          .then((url) => {
+            photoURL = url
+            // update photo in the database
+            data.face.status = 'Progress'
+            data.face.photo = photoURL
+            console.log('data', data)
+
+            ref.update(data).then(function () {
+              console.log('Verification updated')
+              commit('setLoading', { type: 'verify', is: false })
+              dispatch('controller/initAlert', { is: true, type: 'success', message: 'Document submitted successfully' }, { root: true })
+              // initialize verification
+              // dispatch('initializeVerification')
+            })
+              .catch(function (error) {
+                // The document probably doesn't exist.
+                console.log(error.message)
+                commit('setLoading', { type: 'verify', is: false })
+
+                dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+              })
+          })
+          .catch((error) => {
+            console.log(error.message)
+            commit('setLoading', { type: 'verify', is: false })
+            dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+          })
+      }).catch((err) => {
+        console.log(err)
+        commit('setLoading', { type: 'verify', is: false })
+        dispatch('controller/initAlert', { is: true, type: 'error', message: err.message }, { root: true })
+      })
+  },
+  // Verification Functions
+  async updateStatus ({ commit, dispatch, state }, payload) {
+    commit('setLoading', { type: 'verify', is: true })
+    // get the exact veritification data and update the status locally
+    const data = state.verification[payload]
+    data.status = null
+    const userID = auth.currentUser.uid
+    // update the status on the server
+    const ref = db.collection('verification').doc(userID)
+    await ref.update({
+      [payload]: data
+    })
+      .then(function () {
+        console.log('Status updated')
+        commit('setLoading', { type: 'verify', is: false })
+      })
+      .catch(function (error) {
+      // The document probably doesn't exist.
+        console.log(error.message)
+        commit('setLoading', { type: 'verify', is: false })
+        dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
+      })
+  },
+
+  handleAuth ({ commit, dispatch, state }) {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        if (state.blocked) {
-          this.$router.push('/error/cors')
-        } else {
-          commit('SET_LOGIN', true)
+        commit('setState', { type: 'login', value: true })
+        // get current user id
+        const userId = auth.currentUser.uid
+        // get current user details
+        db.collection('users')
+          .doc(userId)
+          .onSnapshot((snapshot) => {
+            if (snapshot.exists) {
+              const currentUser = snapshot.data()
 
-          // get current user id
-          const userId = auth.currentUser.uid
+              commit('setState', { type: 'user', value: currentUser })
+              // init transactions
+              dispatch('controller/initApp', null, { root: true })
+              dispatch('admin/initAdmin', null, { root: true })
 
-          // Get JWT from Firebase
-          auth.currentUser.getIdToken(true)
-            .then((token) => {
-              // Set JWT to the cookie
-              Cookie.set('access_token', token)
-            })
-
-          // get current user details
-          db.collection('users')
-            .doc(userId)
-            .onSnapshot((snapshot) => {
-              if (snapshot.exists) {
-                const currentUser = snapshot.data()
-                if (currentUser.admin) {
-                  dispatch('users/initAdmin', currentUser, { root: true })
-
-                  commit('SET_USER', currentUser)
-                } else {
-                  commit('SET_USER', currentUser)
-                  console.log(currentUser)
-                  dispatch('initWallet')
-                }
-
-                // set wallet
-                // console.log('initwallet')
-                dispatch('wallet/initWallet', null, { root: true })
-
-                // Redirect to dashboard
-                // Redirect to dashboard .
-                if (!state.user.isDelete) {
-                  if (!state.user.block) {
-                    if (state.user !== null) {
-                      if (state.user.admin) {
-                        this.$router.push('/admin')
-                      } else {
-                        this.$router.push('/dashboard')
-                      }
-                    }
-                  } else {
-                    location.href = '/'
+              // Redirect to dashboard
+              if (!state.user.block) {
+                if (state.user !== null) {
+                  if (state.user.role !== 'admin') {
+                    this.$router.push('/dashboard/home')
                   }
-                } else {
-                  location.href = '/'
                 }
               } else {
-                // snapshot.data() will be undefined in this case
-                // eslint-disable-next-line
-                console.log('No such document!')
+                location.href = '/login'
+                dispatch('controller/initAlert', { is: true, type: 'error', message: 'Account blocked, Please contact support@ttub.online' }, { root: true })
+                commit('setLoading', { type: 'login', is: false })
               }
-            })
-        }
+
+              console.log(state.user)
+            } else {
+              // snapshot.data() will be undefined in this case
+              // eslint-disable-next-line
+                console.log('No such document!')
+            }
+          })
       } else {
         // console.log('logout')
-        Cookie.remove('access_token')
         location.href = '/login'
-        commit('SET_LOGIN', false)
-        commit('SET_USER', null)
+        commit('setState', { type: 'login', value: false })
+        commit('setState', { type: 'user', value: null })
       }
     })
   }
+
 }

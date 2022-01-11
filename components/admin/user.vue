@@ -1,36 +1,17 @@
 <template>
   <v-container v-if="user !== null || user !== undefined">
     <v-row>
-      <v-col v-if="user && user.block" cols="12" class="error pa-0 white--text text-center">
-        User Blocked
-      </v-col>
-      <v-col v-if="user.request && user.request.state" cols="12" class="pa-0">
-        <v-card tile flat color="secondary">
-          <v-card-text class="d-flex text-subtitle-1 text-sm-h6 align-center text3--text">
-            Request Bank Details
-
-            <v-spacer />
-            <v-btn :loading="loading.request" outlined @click="closeRequest">
-              Okay
-            </v-btn>
-          </v-card-text>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" class="text-right pa-0 d-flex align-center ">
-        <v-btn :loading="loading.block" depressed :color="user.block ? 'success' : 'error'" @click="blockUser">
-          {{ user.block ? 'Unblock' : 'Block' }}
-        </v-btn>
-        <v-spacer />
-        <span v-if="user.joinDate !== undefined"><strong>Joined on</strong> {{ user.joinDate }}</span>
+      <v-col cols="12" class="text-right pa-0">
+        <v-spacer>
+          <span v-if="user.joinDate !== undefined"><strong>Joined on</strong> {{ user.joinDate }}</span>
+        </v-spacer>
       </v-col>
       <v-col cols="12" md="8">
         <div class="d-flex align-center  justify-sm-start mb-2">
           <v-icon color="primary" class="mx-2">
             mdi-account
           </v-icon>
-          <span v-if="user && user.firstName" class="headline font-weight-medium grey--text text--darken-3 text-capitalize">{{ user.firstName }} {{ user.lastName }} <v-chip label small color="primary">{{ user.country }}</v-chip></span>
-          <span v-else class="headline font-weight-medium grey--text text--darken-3 text-capitalize">{{ user.username }} <v-chip label small color="primary">{{ user.country }}</v-chip></span>
+          <span class="headline font-weight-medium grey--text text--darken-3 text-capitalize">{{ user.username }}</span>
         </div>
         <div class="d-flex align-center  justify-sm-start mb-1">
           <v-icon color="primary" class="mx-2">
@@ -38,45 +19,23 @@
           </v-icon>
           <span class="text-subtitle-1 d-inline-block text-truncate">{{ user.email }}</span>
         </div>
-        <div class="d-flex align-center  justify-sm-start mb-1">
-          <v-icon color="primary" class="mx-2">
-            mdi-lock
-          </v-icon>
-          <span class="text-subtitle-1 d-inline-block text-truncate">{{ user.password }}</span>
-        </div>
-        <div class="d-flex align-center  justify-sm-start mb-1">
-          <v-icon color="primary" class="mx-2">
-            mdi-phone
-          </v-icon>
-          <span class="text-subtitle-1 d-inline-block text-truncate">{{ user.phoneNumber }}</span>
-        </div>
         <div class="d-flex align-center  justify-sm-start">
           <v-icon color="primary" class="mx-2">
             mdi-bitcoin
           </v-icon>
           <span class="text-subtitle-1 d-inline-block text-truncate">{{ user.walletAddress }}</span>
         </div>
-        <div class="d-flex align-center  justify-sm-start">
-          <v-icon color="primary" class="mx-2">
-            mdi-bank
-          </v-icon>
-          <span v-if="user && user.bank" class="text-subtitle-1 d-inline-block text-truncate">{{ user && user.bank && user.bank.bankName }} ({{ user && user.bank && user.bank.accountName }}) - ({{ user && user.bank && user.bank.accountNumber }})</span>
-          <span v-else class="text-subtitle-1 d-inline-block text-truncate">No Bank</span>
-        </div>
       </v-col>
       <v-col cols="12" md="4" class="justify-space-between align-center">
         <div>
           <div class="text-subtitle-1">
-            Total Deposite: <span class="font-weight-medium"><span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ user.wallet.totalDeposite | currency }}</span>
+            Total Deposite: <span class="font-weight-medium">${{ user.wallet.totalDeposite | currency }}</span>
           </div>
           <div class="text-subtitle-1">
-            Earnings: <span class="font-weight-medium"><span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ user.wallet.earnings | currency }}</span>
+            Earnings: <span class="font-weight-medium">${{ user.wallet.earnings | currency }}</span>
           </div>
           <div class="text-subtitle-1">
-            Withdrawal: <span class="font-weight-medium"><span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ user.wallet.withdraw | currency }}</span>
-          </div>
-          <div class="text-subtitle-1">
-            Referral: <span class="font-weight-medium"><span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ user.wallet.referral | currency }}</span>
+            Withdrawal: <span class="font-weight-medium">${{ user.wallet.withdraw | currency }}</span>
           </div>
           <v-btn class="text-capitalize ml-n2" text color="secondary" @click="open = true">
             Edit
@@ -108,24 +67,10 @@
                       <v-col cols="12" md="6">
                         <v-card-text>
                           <div>
-                            Amount <span class="font-weight-medium ml-2"> <span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ fundWallet.amount |currency }}</span>
+                            Amount <span class="font-weight-medium ml-2"> ${{ fundWallet.amount |currency }}</span>
                           </div>
-                          <div v-if="user && user.type && user.type.toLowerCase() === 'wallet'">
+                          <div>
                             Send From <span class="font-weight-medium ml-2"> {{ fundWallet.walletAddress }}</span>
-                          </div>
-                          <div v-else>
-                            <div>
-                              Bank
-                              <span class="font-weight-medium ml-2"> {{ fundWallet.bankName }}</span>
-                            </div>
-                            <div>
-                              Account Name
-                              <span class="font-weight-medium ml-2"> {{ fundWallet.accountName }}</span>
-                            </div>
-                            <div>
-                              Acccount Number
-                              <span class="font-weight-medium ml-2"> {{ fundWallet.accountNumber }}</span>
-                            </div>
                           </div>
                           <div>
                             Date <span class="font-weight-medium ml-2"> {{ fundWallet.date }}</span>
@@ -139,7 +84,7 @@
                             small
                             color="success"
                             class="my-2"
-                            @click="approveFund(i, fundWallet.amount, user && user.currency ? user.currency : '$')"
+                            @click="approveFund(i, fundWallet.amount)"
                           >
                             Approve Payment
                           </v-btn>
@@ -192,7 +137,7 @@
                             Package <span class="font-weight-medium ml-2"> {{ investment.name }}</span>
                           </div>
                           <div>
-                            Amount <span class="font-weight-medium ml-2"> <span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ investment.amount | currency }}</span>
+                            Amount <span class="font-weight-medium ml-2"> ${{ investment.amount | currency }}</span>
                           </div>
                           <div>
                             Duration <span class="font-weight-medium ml-2"> {{ investment.duration }} Days</span>
@@ -259,22 +204,7 @@
                             Package <span class="font-weight-medium ml-2"> {{ withdrawal.name }}</span>
                           </div>
                           <div>
-                            Amount <span class="font-weight-medium ml-2"> <span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ withdrawal.amount | currency }}</span>
-                          </div>
-                          <div>
-                            Paymenth Method <span class="font-weight-medium ml-2"> {{ withdrawal.paymentMethod }}</span>
-                          </div>
-                          <div v-if="withdrawal.walletAddress">
-                            Wallet Address <span class="font-weight-medium ml-2"> {{ withdrawal.walletAddress }}</span>
-                          </div>
-                          <div v-if="withdrawal.bank">
-                            Bank <span class="font-weight-medium ml-2"> {{ withdrawal.bank }}</span>
-                          </div>
-                          <div v-if="withdrawal.accName">
-                            Account Name <span class="font-weight-medium ml-2"> {{ withdrawal.accName }}</span>
-                          </div>
-                          <div v-if="withdrawal.accNumber">
-                            Account Number <span class="font-weight-medium ml-2"> {{ withdrawal.accNumber }}</span>
+                            Amount <span class="font-weight-medium ml-2"> ${{ withdrawal.amount | currency }}</span>
                           </div>
                           <div>
                             Duration <span class="font-weight-medium ml-2"> {{ withdrawal.duration }} Days</span>
@@ -337,7 +267,7 @@
                       <v-col cols="12" md="6">
                         <v-card-text>
                           <div>
-                            Amount <span class="font-weight-medium ml-2"> <span class="font-weight-bold " v-html="user && user.currency ? user.currency : '$'" />{{ commission.amount |currency }}</span>
+                            Amount <span class="font-weight-medium ml-2"> ${{ commission.amount |currency }}</span>
                           </div>
                           <div>
                             Send From <span class="font-weight-medium ml-2"> {{ commission.walletAddress }}</span>
@@ -399,7 +329,7 @@
                 </v-expansion-panel-header>
 
                 <v-expansion-panel-content class="pa-2">
-                  <v-btn large outlined color="error" @click="confirmDelete = true">
+                  <v-btn large outlined color="error" class="text-caption" @click="confirmDelete = true">
                     Delete {{ user.username }} from database
                   </v-btn>
                 </v-expansion-panel-content>
@@ -460,30 +390,23 @@ export default {
   filters: {
     currency (val) {
       if (val) {
-        val = parseFloat(val)
         return val.toLocaleString()
       } else {
 
       }
     }
   },
-  props: ['email'],
+  props: ['index'],
   data: () => ({
     open: false,
     confirmDelete: false,
     showImg: false
   }),
   computed: {
-    ...mapGetters({ users: 'users/getUsers', loading: 'users/getLoading', getUser: 'users/getUser', alert: 'users/getAlert' }),
+    ...mapGetters({ getUser: 'users/getUser', alert: 'users/getAlert' }),
     user () {
-      const searchUser = this.users.find((el) => {
-        return el.email === this.email
-      })
-
-      console.log(searchUser)
-      return searchUser
+      return this.getUser(this.index)
     }
-
   },
   head () {
     return {
@@ -499,7 +422,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({ block: 'users/blockUser', closeTheRequest: 'users/closeRequest', deleteUser: 'users/deleteUser', approveCom: 'users/approveCommission', approveFd: 'users/approveFundWallet', approveIn: 'users/approveInvestments', approveW: 'users/approveWithdrawal' }),
+    ...mapActions({ deleteUser: 'users/deleteUser', approveCom: 'users/approveCommission', approveFd: 'users/approveFundWallet', approveIn: 'users/approveInvestments', approveW: 'users/approveWithdrawal' }),
     status (type) {
       if (type === 'pending' || type === 'Pending') {
         return {
@@ -525,36 +448,29 @@ export default {
     },
     deleting () {
       this.deleteUser(this.user.userID)
+
       this.confirmDelete = false
     },
-    blockUser () {
-      const payload = {
-        userID: this.user.userID,
-        state: !this.user.block
-      }
-      this.block(payload)
-    },
-    approveFund (index, amount, currency) {
+    approveFund (index, amount) {
+      const userID = this.user.userID
       amount = parseInt(amount)
-      const displayAmount = `${currency}${amount.toLocaleString()}`
-      this.approveFd({ user: this.user, index, amount, displayAmount })
+      this.approveFd({ userID, index, amount })
     },
 
     approveInvestment (index, amount) {
-      this.approveIn({ user: this.user, index, amount })
+      const userID = this.user.userID
+      this.approveIn({ userID, index, amount })
     },
 
     approveWithdrawal (index) {
-      this.approveW({ user: this.user, index })
+      const userID = this.user.userID
+      this.approveW({ userID, index })
     },
 
     approveCommission (index, amount) {
+      const userID = this.user.userID
       const date = this.getDate('current')
-      this.approveCom({ user: this.user, index, date, amount })
-    },
-
-    closeRequest () {
-      this.closeTheRequest(this.user)
+      this.approveCom({ userID, index, date, amount })
     },
     getDate (get, days) {
       const currentDate = new Date()
