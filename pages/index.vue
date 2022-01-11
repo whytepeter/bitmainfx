@@ -23,8 +23,7 @@
             <div
               class="opacity text-h6 text-md-h5 white--text mt-3 font-weight-light"
             >
-              The most convenient trading interface. Instant access to more than
-              100 assets of the world's leading companies.
+              The most convenient Mining interface. We provides hydrogen crypto mining. Let us do the work, while you earn own rewards.
             </div>
             <div
               data-aos="fade-up"
@@ -289,9 +288,12 @@
           Smooth Experience on Any Device
         </h2>
 
-        <p style="font-size:17px" class="indigo--text text--lighten-4">
-          Whether you prefer trading at your desk or on the go — Bitmain FX has got you covered. The custom-built platform has been adapted for any device you may choose and switching is 100% seamless.
+        <!-- <p style="font-size:17px" class="indigo--text text--lighten-4">
+          Our services combine all the key aspects of efficient cryptocurrency mining: creating highly efficient data centers for users of an ecological mining system using hydrogen and solar panels.
         </p>
+        <p style="font-size:17px" class="indigo--text text--lighten-4">
+          We have selected for you the high-quality equipment, with the help of which cloud mining on our service will provide you the opportunity to multiply your income with passive profit.
+        </p> -->
       </v-col>
 
       <v-col
@@ -320,14 +322,11 @@
           class="  text-subtitle-1 indigo--text text--lighten-4 mt-3 "
         >
           <p style="font-size:17px" class="text-md-h5 font-weight-light">
-            Copy Trading allows you to directly copy the positions taken by the automated trade guided by an expert. You decide the initial amount listed you wish to invest and simply copy everything they do automatically in real-time – when that trade makes a trade, your account will make that same trade as well accurately.
+            Considering all nuances of working with cryptocurrency, we took care of reliable security and confidentiality for our clients.
           </p>
 
           <p style="font-size:17px" class="text-md-h5 font-weight-light">
-            You do not need to have any input on the trades, and you get the identical returns on each trade as your chosen trader. Copy trading is one of the easiest ways to use another trader’s expert knowledge.
-          </p>
-          <p style="font-size:17px" class="text-md-h5 font-weight-light">
-            By copying another trader, you could potentially make money based on their skills. In fact, no advanced knowledge of the financial market is required to take part!
+            Having been in the crypto world for a long time, we managed to provide safe and most importantly ecological mining using hydrogen and solar panels.
           </p>
         </div>
       </v-col>

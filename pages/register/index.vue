@@ -163,7 +163,7 @@
                         required
                       />
                     </v-col>
-                    <v-col cols="12" class="py-0">
+                    <!-- <v-col cols="12" class="py-0">
                       <v-select
                         v-model="trader"
                         dense
@@ -175,7 +175,7 @@
                         label="Trade Expert"
                         required
                       />
-                    </v-col>
+                    </v-col> -->
 
                     <v-col cols="12" class="py-0">
                       <v-checkbox
@@ -251,8 +251,7 @@ export default {
       v => !!v || 'E-mail is required',
       v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
     ],
-    trader: '',
-    traderRules: [v => !!v || 'Trader is required'],
+
     firstName: '',
     firstNameRules: [v => !!v || 'First Name is required'],
     lastName: '',
@@ -313,7 +312,6 @@ export default {
           password: this.password,
           country: this.country,
           currency: this.currency,
-          trader: this.trader,
           symbol: this.getSymbol(this.currency),
           date: this.getDate('current')
         }

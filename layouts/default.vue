@@ -26,7 +26,6 @@
         <v-spacer class="d-sm-none" />
         <v-toolbar-items flat class="hidden-sm-and-down " color="transparent">
           <v-btn
-            v-if="!currentRoute"
             tile
             active-class=" font-weight-medium secondary--text"
             class="indigo--text text--lighten-5 text-h6 text-capitalize home-active font-weight-light"
@@ -37,7 +36,6 @@
             About
           </v-btn>
           <v-btn
-            v-if="!currentRoute"
             tile
             active-class=" font-weight-medium secondary--text"
             class="indigo--text text--lighten-5 text-h6 text-capitalize home-active font-weight-light"
@@ -47,7 +45,7 @@
           >
             Help
           </v-btn>
-          <v-menu open-on-hover offset-y bottom>
+          <!-- <v-menu open-on-hover offset-y bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 v-bind="attrs"
@@ -77,9 +75,9 @@
                 <v-list-item-title>Options</v-list-item-title>
               </v-list-item>
             </v-list>
-          </v-menu>
+          </v-menu> -->
 
-          <v-btn
+          <!-- <v-btn
             tile
             active-class=" font-weight-medium secondary--text"
             class="indigo--text text--lighten-5 text-h6 text-capitalize home-active font-weight-light"
@@ -88,9 +86,8 @@
             exact
           >
             Copy Trade
-          </v-btn>
+          </v-btn> -->
           <v-btn
-            v-if="currentRoute"
             tile
             active-class=" font-weight-medium secondary--text"
             class="indigo--text text--lighten-5 text-h6 text-capitalize home-active font-weight-light"
@@ -332,23 +329,23 @@ export default {
       { name: 'About Us', route: '/about', icon: 'mdi-account-group' },
       { name: 'Help Center', route: '/help', icon: 'mdi-forum' },
       { name: 'Contact Us', route: '/contact', icon: 'mdi-email-outline' },
-      {
-        name: 'Trade Forex',
-        route: '/trade/forex',
-        icon: 'mdi-text-box-outline'
-      },
-      { name: 'Trade Crypto', route: '/trade/crypto', icon: 'mdi-copyright' },
-      {
-        name: 'Trade Stock',
-        route: '/trade/stock',
-        icon: 'mdi-file-table-box-outline '
-      },
-      {
-        name: 'Trade Options',
-        route: '/trade/options',
-        icon: 'mdi-car-brake-worn-linings'
-      },
-      { name: 'Copy Trade', route: '/copytrade', icon: 'mdi-content-copy' },
+      // {
+      //   name: 'Trade Forex',
+      //   route: '/trade/forex',
+      //   icon: 'mdi-text-box-outline'
+      // },
+      // { name: 'Trade Crypto', route: '/trade/crypto', icon: 'mdi-copyright' },
+      // {
+      //   name: 'Trade Stock',
+      //   route: '/trade/stock',
+      //   icon: 'mdi-file-table-box-outline '
+      // },
+      // {
+      //   name: 'Trade Options',
+      //   route: '/trade/options',
+      //   icon: 'mdi-car-brake-worn-linings'
+      // },
+      // { name: 'Copy Trade', route: '/copytrade', icon: 'mdi-content-copy' },
       { name: 'Privacy Policy', route: '/policy', icon: 'mdi-lock-check' },
       {
         name: 'Terms & Conditions',

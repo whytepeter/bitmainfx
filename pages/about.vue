@@ -14,16 +14,13 @@
               class=" text-md-h5 indigo--text text--lighten-3 font-weight-light mt-5"
             >
               <p style="font-size:17px">
-                Bitmain FX  is an international company that has been trading and attracting more traders with it exclusive operations . the Bitmain FX platform for more than 7 years as been answering the questions of the advance trading world.
+                Bitmain FX  managed to implement environmentally friendly crypto mining into an operating service for every amateur and beginner in the crypto world.
               </p>
               <p style="font-size:17px">
-                The company was founded in 2013 and since then we have reached one of the first positions of world leaders in the online trading industry.
+                is an environmentally friendly cloud mining service based on mining efficiency using hydrogen and solar panels.
               </p>
               <p style="font-size:17px">
-                As a leading CySec registered company, we have received several awards, including The Award of Financial Excellence by the Academy of Interactive & Visual Arts, achieving a significant impact on the Trading Industry.
-              </p>
-              <p style="font-size:17px">
-                The Bitmain FX brand is active all over the world operating in more than 13 languages offering to our clients the opportunity to trade in different instruments including Forex, CFD’s, Cryptocurrencies and Options.
+                We provide crypto mining services designed and inspired by various cryptocurrency enthusiasts and blockchain experts, as well as people who care about the environment, to provide an affordable and most efficient and environmentally friendly mining service with frequent payments for both small and small large investors.
               </p>
             </div>
           </v-col>
