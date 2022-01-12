@@ -46,13 +46,13 @@ export default {
         name: 'Simple',
         delay: 500,
         description:
-          'Since 2013, Bitmain FX has consistently taken measures to ensure it\'s platform makes online trading and investing accessible to anyone. By keeping a balance between giving easy access to beginners and improving upon important elements for more experienced traders, Bitmain FX has solidified itself as the world’s leading social trading platform. Bitmain FX offers both short-term options for day traders and long-term options for investors, such as our innovative CopyPortfolios™ – a fully managed thematic portfolio. We also acknowledge that different traders have different risk-appetites, and offer instruments varying from low to high risk. Our tools are easy to use, and we make all of the information on the platform accessible on both our web interface and in our mobile app. It is no wonder that more than 6 million people worldwide choose Bitmain FX as their preferred trading platform.'
+          'Since 2013, Bitmain FX has consistently taken measures to ensure it\'s platform makes online Mining and investing accessible to anyone. By keeping a balance between giving easy access to beginners and improving upon important elements for more experienced Miners , Bitmain FX has solidified itself as the world’s leading social Mining platform. Bitmain FX offers both short-term options for day Miners  and long-term options for investors, such as our innovative CopyPortfolios™ – a fully managed thematic portfolio. We also acknowledge that different Miners  have different risk-appetites, and offer instruments varying from low to high risk. Our tools are easy to use, and we make all of the information on the platform accessible on both our web interface and in our mobile app. It is no wonder that more than 6 million people worldwide choose Bitmain FX as their preferred Mining platform.'
       },
       {
         name: 'Social',
         delay: 600,
         description:
-          'Bitmain FX takes great pride in it\'s social trading features, enabling it\'s clients to benefit from the collective wisdom of it\'s vast network of traders. Our social newsfeed, CopyTrader™ system, and Popular Investor program utilise the full potential of our next-generation social trading platform. With numerous successful traders using our platform to share their strategies, Bitmain FX clients have everything they need to pursue their financial goals.'
+          'Bitmain FX takes great pride in it\'s social Mining features, enabling it\'s clients to benefit from the collective wisdom of it\'s vast network of Miners . Our social newsfeed, CopyTrader™ system, and Popular Investor program utilise the full potential of our next-generation social Mining platform. With numerous successful Miners  using our platform to share their strategies, Bitmain FX clients have everything they need to pursue their financial goals.'
       },
       {
         name: 'Secure',
@@ -70,13 +70,13 @@ export default {
         name: 'Educational',
         delay: 900,
         description:
-          'Bitmain FX offers a variety of trading tools and courses, to give you everything you need to become an educated trader or long-term investor. One of our main goals is to promote financial literacy: Our courses offer a smooth entry point into the world of online traiding. We have also partnered with major financial institutions, such as Russia’s Sberbank and China’s Ping An Group, to promote online trading and financial education in these markets.'
+          'Bitmain FX offers a variety of Mining tools and courses, to give you everything you need to become an educated trader or long-term investor. One of our main goals is to promote financial literacy: Our courses offer a smooth entry point into the world of online traiding. We have also partnered with major financial institutions, such as Russia’s Sberbank and China’s Ping An Group, to promote online Mining and financial education in these markets.'
       },
       {
         name: 'Collaborative',
         delay: 1000,
         description:
-          'Bitmain FX’s CopyTrader feature is a brilliant way to automate some of your trading habits. By allocating some of your funds to copy the trading actions of experienced traders, you can benefit from their experience, and even expand your knowledge. Our CopyTrader feature and Popular Investor program are so effective, we’ve moulded them into a new financial instrument called CopyPortfolios™. These investment products use a sophisticated algorithm to aggregate the collective knowledge of our most successful traders into one fully managed portfolio you can invest in.'
+          'Bitmain FX’s CopyTrader feature is a brilliant way to automate some of your Mining habits. By allocating some of your funds to copy the Mining actions of experienced Miners , you can benefit from their experience, and even expand your knowledge. Our CopyTrader feature and Popular Investor program are so effective, we’ve moulded them into a new financial instrument called CopyPortfolios™. These investment products use a sophisticated algorithm to aggregate the collective knowledge of our most successful Miners  into one fully managed portfolio you can invest in.'
       },
       {
         name: 'Transparency',
@@ -95,7 +95,7 @@ export default {
           hid: 'description',
           name: 'description',
           content:
-            'Since 2013, Bitmain FX has consistently taken measures to ensure it\'s platform makes online trading and investing accessible to anyone. By keeping a balance between giving easy access to beginners and improving upon important elements for more experienced traders, Bitmain FX has solidified itself as the world’s leading social trading platform. Bitmain FX offers both short-term options for day traders and long-term options for investors, such as our innovative CopyPortfolios™ – a fully managed thematic portfolio. We also acknowledge that different traders have different risk-appetites, and offer instruments varying from low to high risk. Our tools are easy to use, and we make all of the information on the platform accessible on both our web interface and in our mobile app. It is no wonder that more than 6 million people worldwide choose Bitmain FX as their preferred trading platform.'
+            'Since 2013, Bitmain FX has consistently taken measures to ensure it\'s platform makes online Mining and investing accessible to anyone. By keeping a balance between giving easy access to beginners and improving upon important elements for more experienced Miners , Bitmain FX has solidified itself as the world’s leading social Mining platform. Bitmain FX offers both short-term options for day Miners  and long-term options for investors, such as our innovative CopyPortfolios™ – a fully managed thematic portfolio. We also acknowledge that different Miners  have different risk-appetites, and offer instruments varying from low to high risk. Our tools are easy to use, and we make all of the information on the platform accessible on both our web interface and in our mobile app. It is no wonder that more than 6 million people worldwide choose Bitmain FX as their preferred Mining platform.'
         }
       ]
     }

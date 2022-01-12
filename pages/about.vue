@@ -53,7 +53,7 @@
         class="text-center font-weight-light mb-4"
       >
         <h2 class="text-h6 font-weight-bold white--text  text-md-h3 mb-2">
-          Our Trading Company In Numbers
+          Our Mining Company In Numbers
         </h2>
 
         <p class="indigo--text text--lighten-4">
@@ -97,7 +97,7 @@
           style="font-size:17px"
           class=" text-md-h5 indigo--text text--lighten-3 font-weight-light mt-5"
         >
-          Traders from all over the world trust Bitmain FX. The platform interface is localized into 12 languages.
+          Miners from all over the world trust Bitmain FX. The platform interface is localized into 12 languages.
         </div>
       </v-col>
       <v-col cols="12" class="py-16" />
@@ -194,13 +194,13 @@ export default {
         title: '$20,375,097',
         delay: 600,
         info:
-          'Average withdrawn by Traders per Month'
+          'Average withdrawn by Miners  per Month'
       },
       {
         title: '$290,574,054',
         delay: 700,
         info:
-          'Average Trading Volume Per Month'
+          'Average Mining Volume Per Month'
       },
       {
         title: '$340,575,476',
@@ -234,7 +234,7 @@ export default {
         name: 'Simplicity',
         delay: 500,
         description:
-          'One of Bitmain FX main goals is to remove barriers and make online trading and investing more accessible to the everyday user. Whenever people join Bitmain FX, we aim to make them feel a part of the platform from the very beginning. Moreover, we realize that many people use multiple platforms to manage their capital online, which is why we are constantly expanding our product offering to eventually include all of your financial needs under one roof.'
+          'One of Bitmain FX main goals is to remove barriers and make online Mining and investing more accessible to the everyday user. Whenever people join Bitmain FX, we aim to make them feel a part of the platform from the very beginning. Moreover, we realize that many people use multiple platforms to manage their capital online, which is why we are constantly expanding our product offering to eventually include all of your financial needs under one roof.'
       },
       {
         name: 'Innovation',

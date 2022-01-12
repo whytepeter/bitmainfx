@@ -272,7 +272,7 @@
           <p class="text1--text text-justify">
             The Transactions offered by this Website can be executed only by
             fully competent adults. Transactions with financial instruments
-            offered on the Website involve substantial risk and trading may be
+            offered on the Website involve substantial risk and Mining may be
             very risky. If you make Transactions with the financial instruments
             offered on this Website, you might incur substantial losses or even
             lose everything in your Account. Before you decide to start

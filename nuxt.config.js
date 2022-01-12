@@ -23,7 +23,7 @@ export default {
       {
         hid: "description",
         name: "description",
-        content: process.env.npm_package_description || "Bitmain FX  has been one of the world’s leading online brokers since 2013. Our developers, financial experts, personal, and support managers are making every effort to make your trading more comfortable, secured and profitable year after year."
+        content: process.env.npm_package_description || "Bitmain FX  has been one of the world’s leading online brokers since 2013. Our developers, financial experts, personal, and support managers are making every effort to make your Mining more comfortable, secured and profitable year after year."
       }
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]

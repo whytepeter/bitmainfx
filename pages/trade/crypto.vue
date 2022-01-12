@@ -42,10 +42,10 @@ export default {
   data: () => ({
     policies: [
       {
-        name: 'Build Your Cryptocurrency Trading Portfolio with Bitmain FX',
+        name: 'Build Your Cryptocurrency Mining Portfolio with Bitmain FX',
         delay: 500,
         description: `
-        <p>Bitmain FX is excited to announce the launch of our new cryptocurrency trading platform. Now you can start trading Bitcoin, Ethereum and many more cryptocurrencies quickly, easily and safely from wherever you are — in just seconds. You get great margin trading leverage and short sell options with fast deposits and withdrawals. Our support team is available 24/7/365 to help get you trading on our CySEC-regulated platform with a trading volume of US $11 billion monthly.</p>
+        <p>Bitmain FX is excited to announce the launch of our new cryptocurrency Mining platform. Now you can start Mining Bitcoin, Ethereum and many more cryptocurrencies quickly, easily and safely from wherever you are — in just seconds. You get great margin Mining leverage and short sell options with fast deposits and withdrawals. Our support team is available 24/7/365 to help get you Mining on our CySEC-regulated platform with a Mining volume of US $11 billion monthly.</p>
         `
       },
       {
@@ -83,7 +83,7 @@ export default {
           hid: 'description',
           name: 'description',
           content:
-            'Bitmain FX is excited to announce the launch of our new cryptocurrency trading platform. '
+            'Bitmain FX is excited to announce the launch of our new cryptocurrency Mining platform. '
         }
       ]
     }

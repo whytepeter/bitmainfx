@@ -84,7 +84,7 @@
         class="text-center font-weight-light"
       >
         <h2 class="text-h6 font-weight-bold secondary--text  text-md-h4 mb-4">
-          Start Trading in 3 Steps
+          Start Mining in 3 Steps
         </h2>
         <!--
         <p>
@@ -138,7 +138,7 @@
               style="font-size:17px"
               class=" text-sm-h5 indigo--text text--lighten-3 mt-5 font-weight-light"
             >
-              Bitmain FX  has been one of the world’s leading online brokers since 2013. Our developers, financial experts, personal, and support managers are making every effort to make your trading more comfortable, secured and profitable year after year.
+              Bitmain FX  has been one of the world’s leading online brokers since 2013. Our developers, financial experts, personal, and support managers are making every effort to make your Mining more comfortable, secured and profitable year after year.
             </div>
           </v-col>
           <v-col
@@ -235,7 +235,7 @@
           style="font-size:17px"
           class="  text-md-h5 indigo--text text--lighten-3 mt-3 font-weight-light"
         >
-          Strategies with features like Copy Trading Option, Stop Loss/Take Profit, Negative balance protection and Trailing Stop, you can manage your losses and profits at the extreme minimum levels predetermined by you.
+          Strategies with features like Copy Mining Option, Stop Loss/Take Profit, Negative balance protection and Trailing Stop, you can manage your losses and profits at the extreme minimum levels predetermined by you.
         </div>
       </v-col>
     </v-row>
@@ -415,7 +415,7 @@
         </h2>
         <!--
         <p class="indigo--text text--lighten-4">
-          Whether you prefer trading at your desk or on the go — Bitmain FX has got you covered. The custom-built platform has been adapted for any device you may choose and switching is 100% seamless.
+          Whether you prefer Mining at your desk or on the go — Bitmain FX has got you covered. The custom-built platform has been adapted for any device you may choose and switching is 100% seamless.
         </p> -->
       </v-col>
 
@@ -538,13 +538,13 @@ export default {
     profiles: [
       {
         name: 'Lenna Graham',
-        description: 'Easy to use, risk-free trading platform that increases ones earning potential.',
+        description: 'Easy to use, risk-free Mining platform that increases ones earning potential.',
         icon: '/assets/T1.jpeg',
         delay: 500
       },
       {
         name: 'Malcolm Brakus',
-        description: 'The Bitmain FX team provided a lot of helpful advice when I asked about trading strategies.',
+        description: 'The Bitmain FX team provided a lot of helpful advice when I asked about Mining strategies.',
         icon: '/assets/T2.jpeg',
         delay: 600
       },
@@ -576,7 +576,7 @@ export default {
     started: [
       {
         name: '1. Register Now',
-        description: 'You will immediately have access to your trading account and all tools you need for successful trading.',
+        description: 'You will immediately have access to your Mining account and all tools you need for successful trading.',
         icon: '/icon/register.png',
         delay: 500
       },
@@ -587,8 +587,8 @@ export default {
         delay: 600
       },
       {
-        name: '3. Trade or Copy Experts',
-        description: 'Trade by yourself independently or Copy Expert Trade’s with new advance trading strategies.',
+        name: '3. Regular Payments',
+        description: 'Through our service, withdrawal requests are processed and paid out daily to our users.',
         icon: '/icon/trade.png',
         delay: 700
       }
@@ -634,13 +634,13 @@ export default {
       },
       {
         name: 'Copy Experts',
-        description: 'Select expert trader and automatically copy trades with secured trading strategies.',
+        description: 'Select expert trader and automatically copy trades with secured Mining strategies.',
         icon: '/icon/copy.png',
         delay: 800
       },
       {
         name: 'Binary Options',
-        description: 'One of the advantages of trading options is that you are not trading an actual asset',
+        description: 'One of the advantages of Mining options is that you are not Mining an actual asset',
         icon: '/icon/binary.png',
         delay: 900
       }

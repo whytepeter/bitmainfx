@@ -5,12 +5,12 @@
         <div
           class=" text-h4 text-md-h3 text-lg-h2 text-capitalize white--text font-weight-bold"
         >
-          Copy Expert Traders
+          Copy Expert Miners
         </div>
         <div
           class="text-h6  white--text font-weight-light mt-5"
         >
-          You dont need to be an expert trader to make profit, just copy traders
+          You dont need to be an expert trader to make profit, just copy Miners
         </div>
       </v-col>
     </v-row>
@@ -21,16 +21,16 @@
         class="mb-6"
       >
         <div class="font-weight-light text-justify">
-          <p>Bitmain FX Copy Trading is both a product and a service. We cater to both the traders and investors. Being able to copy trades from several expert traders is a great service in and of itself.</p>
+          <p>Bitmain FX Copy Mining is both a product and a service. We cater to both the Miners  and investors. Being able to copy trades from several expert Miners  is a great service in and of itself.</p>
           <p>We originally wanted to put together a portfolio and manage everyone’s funds in one account but we soon realized that account segregation and being in control of your funds is the only way to go, especially if we wanted to bring in outside investors. So, after looking around and finding out that there was no way for anyone to copy someone else’s trades (unlike any other market), we decided to start working on this project.</p>
-          <p>There have been many challenges and obstacles to overcome but when something is worth pursuing you do it even if it’s hard. While the service is still being refined and improved on the daily bases we are actively connecting traders and investors for the mutual benefit in trading and investing.</p>
+          <p>There have been many challenges and obstacles to overcome but when something is worth pursuing you do it even if it’s hard. While the service is still being refined and improved on the daily bases we are actively connecting Miners  and investors for the mutual benefit in Mining and investing.</p>
         </div>
       </v-col>
       <v-col cols="12" md="10">
         <v-row class="ma-0">
           <v-col cols="12" class="mb-sm-4">
             <div class="text-center text-h6 text-sm-h4 font-weight-bold text2--text">
-              How Copy Trading Works
+              How Copy Mining Works
             </div>
           </v-col>
           <v-col
@@ -72,8 +72,8 @@
       >
         <div class="font-weight-light text-justify ">
           <p>Here is how the copier works: You, as an investor, simply select an expert or experts that you want to copy trades from. Once you are signed up, this is the only action needed on your part.</p>
-          <p>Once you’ve taken care of the above, you are all set. There are no codes that you need to run or signals for you to manually input. Our software will handle the trade copying automatically on your behalf. We monitor your experts trading activity and as soon as there is a trade, we calculate all the necessary parameters and execute the trade.</p>
-          <p>The only thing you have to make sure of is that you have enough funds available in your trading account. When the expert exits a position, you too will exit it. Automatically.</p>
+          <p>Once you’ve taken care of the above, you are all set. There are no codes that you need to run or signals for you to manually input. Our software will handle the trade copying automatically on your behalf. We monitor your experts Mining activity and as soon as there is a trade, we calculate all the necessary parameters and execute the trade.</p>
+          <p>The only thing you have to make sure of is that you have enough funds available in your Mining account. When the expert exits a position, you too will exit it. Automatically.</p>
         </div>
       </v-col>
 
@@ -126,7 +126,7 @@ export default {
         delay: 500
       },
       {
-        name: '2. Copy One or More Expert Traders',
+        name: '2. Copy One or More Expert Miners ',
         icon: '/icon/Vector3.png',
         delay: 600
       },
@@ -140,12 +140,12 @@ export default {
       {
         name: 'Who are the experts',
         des:
-          ' We carefully select expert applicants. We get to know them as a trader and examine their trading performance over a period of time. We also tend to look for expert who already have a following to further confirm their competence (social proof). You can also read about every expert on their individual performance pages.'
+          ' We carefully select expert applicants. We get to know them as a trader and examine their Mining performance over a period of time. We also tend to look for expert who already have a following to further confirm their competence (social proof). You can also read about every expert on their individual performance pages.'
       },
       {
         name: 'Recommended amount to start with?',
         des:
-          'We suggest to have around $3000-$5000 in your account due to exchanges minimum order requirements and so that you can at least cover the trading cost every month.'
+          'We suggest to have around $3000-$5000 in your account due to exchanges minimum order requirements and so that you can at least cover the Mining cost every month.'
       }
 
     ],
@@ -155,9 +155,9 @@ export default {
         des:
           `<div>
           <p>Here is how the copier works: You, as an investor, simply select an expert or experts that you want to copy trades from. Once you are signed up, this is the only action needed on your part.</p>
-          <p>Once you’ve taken care of the above, you are all set. There are no codes that you need to run or signals for you to manually input. Our software will handle the trade copying automatically on your behalf. We monitor your experts trading activity and as soon as there is a trade, we calculate all the necessary parameters and execute the trade.</p>
+          <p>Once you’ve taken care of the above, you are all set. There are no codes that you need to run or signals for you to manually input. Our software will handle the trade copying automatically on your behalf. We monitor your experts Mining activity and as soon as there is a trade, we calculate all the necessary parameters and execute the trade.</p>
           <p>The copier works based on trade percent amount. So, for example, if your expert takes a position in XYZ coin for a total of 10% of his account value and you are 100% allocated to that expert, then the copier will also execute a trade in your account in the amount of 10% of your account value.</p>
-          <p>The only thing you have to make sure of is that you have enough available base currency that your expert trades with, in your trading account. How much is enough? First, you must meet the exchanges minimum order amount (let’s say about $10 per trade to be safe). That means that if your expert executes a 5% order, you must have at least $300 in your account total value (at 100% expert allocation as an example). This also means that you need to have at least 10% or higher in available base currency to avoid missed trades.</p>
+          <p>The only thing you have to make sure of is that you have enough available base currency that your expert trades with, in your Mining account. How much is enough? First, you must meet the exchanges minimum order amount (let’s say about $10 per trade to be safe). That means that if your expert executes a 5% order, you must have at least $300 in your account total value (at 100% expert allocation as an example). This also means that you need to have at least 10% or higher in available base currency to avoid missed trades.</p>
           <p>When the expert exits a position, you too will exit it. Automatically. You can also change allocation at any time.</p>
           </div>
                   `
@@ -179,7 +179,7 @@ export default {
           hid: 'description',
           name: 'description',
           content:
-            'Bitmain FX Copy Trading is both a product and a service. We cater to both the traders and investors. Being able to copy trades from several expert traders is a great service in and of itself.'
+            'Bitmain FX Copy Mining is both a product and a service. We cater to both the Miners  and investors. Being able to copy trades from several expert Miners  is a great service in and of itself.'
         }
       ]
     }

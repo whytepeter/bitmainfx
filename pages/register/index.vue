@@ -168,7 +168,7 @@
                         v-model="trader"
                         dense
                         color="secondary"
-                        :items="['Trade Yourself', 'Copy trading A.T.S(Expert)']"
+                        :items="['Trade Yourself', 'Copy Mining A.T.S(Expert)']"
                         outlined
                         class="text-subtitle-2 mx-1 font-weight-light "
                         :rules="[(v) => !!v || 'Trader is required']"
