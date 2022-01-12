@@ -227,8 +227,8 @@ export default {
         icon: 'mdi-account'
       },
       {
-        name: 'My Investment',
-        slug: 'Investment',
+        name: 'Packages',
+        slug: 'Packages',
         route: '/dashboard/investment',
         icon: 'mdi-finance'
       },

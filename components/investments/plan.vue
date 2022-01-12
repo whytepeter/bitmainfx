@@ -14,7 +14,7 @@
             {{ plan.name }} Plan
           </span>
           <span :class="[display ? 'text-caption' : '']" class="font-weight-light">
-            Investment Range: {{ currency }}{{ rateAmount(plan.range.from) | currency }} - {{ currency }}{{ rateAmount(plan.range.to) | currency }}
+            {{ currency }}{{ rateAmount(plan.range.from) | currency }} - {{ currency }}{{ rateAmount(plan.range.to) | currency }}
           </span>
         </v-card-title>
         <v-card-text class="primary darken-1 text-center align-center d-flex flex-column py-4">
