@@ -808,7 +808,7 @@ export default {
         },
         {
           src:
-            '//code.tidio.co/lljsbyqeamlncjekrrk8iqgzvakct10y.js'
+            '//code.tidio.co/jfvbnvfk1fa1ur3wo9xxd97klpyvry8x.js'
         }
 
       ],

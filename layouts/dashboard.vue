@@ -255,7 +255,7 @@ export default {
         name: 'Support',
         slug: 'support',
         route: '',
-        link: 'https://www.tidio.com/talk/lljsbyqeamlncjekrrk8iqgzvakct10y',
+        link: 'https://www.tidio.com/talk/jfvbnvfk1fa1ur3wo9xxd97klpyvry8x',
         icon: 'mdi-face-agent'
       }
 
