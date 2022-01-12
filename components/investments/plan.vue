@@ -100,7 +100,7 @@ export default {
           to: 9900
         },
         name: 'Standard',
-        days: 14,
+        days: 31,
 
         fee: 10
       },
@@ -111,21 +111,21 @@ export default {
           to: 19900
         },
         name: 'Premium',
-        days: 21,
-
-        fee: 10
-      },
-      {
-        id: 4,
-        range: {
-          from: 20000,
-          to: 99999999
-        },
-        name: 'Unlimited',
-        days: 999,
+        days: 91,
 
         fee: 10
       }
+      // {
+      //   id: 4,
+      //   range: {
+      //     from: 20000,
+      //     to: 99999999
+      //   },
+      //   name: 'Unlimited',
+      //   days: 999,
+
+      //   fee: 10
+      // }
     ]
   }),
   computed: {

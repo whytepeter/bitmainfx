@@ -5,8 +5,8 @@
     right
     elevation="0"
     color="transparent"
-    :timeout="alert.persistence ? 900000000 : 4000"
     class="pa-0 ma-0"
+    :timeout="90000000"
   >
     <v-alert
       border="left"
@@ -26,10 +26,9 @@
             :class="alert.title ? 'mt-n1 ' : ''"
             class="text-subtitle-2 font-weight-light text1--text "
           >{{ alert.message }}
-            <span v-if="alert.timer !== null">{{ countDown }} secs</span>
           </span>
         </div>
-        <v-spacer />
+
         <v-icon v-if="alert.persistence" right @click="closeAlert()">
           mdi-close
         </v-icon>
@@ -44,21 +43,10 @@ export default {
   name: 'Alert',
   data: () => ({}),
   computed: {
-    ...mapGetters({ alert: 'controller/getAlert' }),
-    countDown: {
-      get () {
-        return this.alert.timer
-      },
-      set (val) {
-        this.alert.timer = val
-      }
-    }
+    ...mapGetters({ alert: 'controller/getAlert' })
+
   },
-  mounted () {
-    if (this.alert.timer !== null) {
-      this.countDownTimer()
-    }
-  },
+
   methods: {
     ...mapMutations({ setAlert: 'controller/setAlert' }),
 
@@ -77,23 +65,9 @@ export default {
         message: '',
         title: ''
       })
-    },
-
-    countDownTimer () {
-      if (typeof this.countDown === 'undefined') {
-        this.countDown = 0
-      }
-      if (this.countDown > 0) {
-        setTimeout(() => {
-          this.countDown -= 1
-          this.countDownTimer()
-        }, 1000)
-      } else {
-        console.log()
-        this.closeAlert()
-        console.log('coundown', this.countDown)
-      }
+      console.log('close')
     }
+
   }
 }
 </script>

@@ -504,7 +504,7 @@ export default {
   data: () => ({
     activenow: true,
     amount: 200000,
-    videoId: 'Ud-Q5VIQWkw',
+    videoId: 'Xaa_-jQ4NvM',
     playerVars: {
       autoplay: 1
     },

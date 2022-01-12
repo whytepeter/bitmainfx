@@ -78,7 +78,7 @@
     >
       <v-list-item class="px-2 white ">
         <v-list-item-avatar large class="ml-n1">
-          <v-img src="/bitmainfx.jpeg" />
+          <v-img src="/bitmainfx.png" />
         </v-list-item-avatar>
         <v-list-item-title class="pa-2 primary--text font-weight-bold">
           IQ Options
@@ -205,17 +205,17 @@ export default {
         name: 'Withdrawal Request',
         route: '/admin/withdraws',
         icon: 'mdi-currency-usd'
-      },
-      {
-        name: 'Verification',
-        route: '/admin/verification',
-        icon: 'mdi-account-check'
-      },
-      {
-        name: 'Settings',
-        route: '/admin/settings',
-        icon: 'mdi-cog'
       }
+      // {
+      //   name: 'Verification',
+      //   route: '/admin/verification',
+      //   icon: 'mdi-account-check'
+      // },
+      // {
+      //   name: 'Settings',
+      //   route: '/admin/settings',
+      //   icon: 'mdi-cog'
+      // }
       // {
       //   name: 'Settings',
       //   route: '/admin/settings',

@@ -15,7 +15,7 @@
     >
       <!-- <v-btn text href="/" class="mt-n4">
         <v-avatar tile size="100">
-          <img src="/bitmainfx.jpeg" max-width="100" alt="Bitmain FX">
+          <img src="/bitmainfx.png" max-width="100" alt="Bitmain FX">
         </v-avatar>
       </v-btn> -->
       <div class="text-h5 font-weight-bold text-sm-h4 mb-4 mt-8 ">

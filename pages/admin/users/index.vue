@@ -113,10 +113,6 @@ export default {
     ...mapGetters({ state: 'admin/getState', loading: 'admin/getLoading' }),
     allUsers () {
       const users = this.state('users')
-      users.forEach((el) => {
-        el.deposit = `$${el.wallet.deposit.toLocaleString()}`
-      })
-
       return users
     }
   },

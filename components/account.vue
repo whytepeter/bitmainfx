@@ -81,7 +81,7 @@
             class="rounded-lg pa-sm-4 white "
           >
             <img
-              src="/bitmainfx.jpeg"
+              src="/bitmainfx.png"
               alt="Bitmain FX.org"
             >
           </v-avatar>

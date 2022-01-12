@@ -143,7 +143,7 @@
       <v-list color="indigo--text text--accent-1" nav>
         <v-list-item class="pa-4">
           <v-avatar tile size="100" class="">
-            <img src="/bitmainfx.jpeg" max-width="70" alt="Bitmain FX">
+            <img src="/bitmainfx.png" max-width="70" alt="Bitmain FX">
           </v-avatar>
         </v-list-item>
         <div style="width:100%" class="pa-1 secondary rounded-tl rounded-tr" />

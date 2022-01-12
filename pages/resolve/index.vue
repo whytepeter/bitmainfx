@@ -13,7 +13,7 @@
           >
             <!-- <v-btn text href="/" class="mt-n4">
               <v-avatar tile size="100">
-                <img src="/bitmainfx.jpeg" max-width="100" alt="Bitmain FX">
+                <img src="/bitmainfx.png" max-width="100" alt="Bitmain FX">
               </v-avatar>
             </v-btn> -->
             <div class="text-button mb-n2 mt-8 ">

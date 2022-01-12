@@ -10,7 +10,7 @@
           <v-card-title class="d-flex flex-column align-center">
             <!-- <v-btn text href="/" class="">
               <v-avatar tile size="100">
-                <img src="/bitmainfx.jpeg" max-width="100" alt="Bitmain FX">
+                <img src="/bitmainfx.png" max-width="100" alt="Bitmain FX">
               </v-avatar>
             </v-btn> -->
 

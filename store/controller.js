@@ -78,14 +78,20 @@ export const actions = {
 // Alert
   initAlert ({ commit }, { is, type, timer, persistence, title, message }) {
     if (typeof persistence === 'undefined') {
-      persistence = false
+      persistence = true
     }
     if (typeof timer === 'undefined') {
       timer = null
     }
-    commit('setAlert', { is, type, title, timer, persistence, message })
-  },
 
+    commit('setAlert', { is, type, title, timer, persistence, message })
+
+    if (!persistence) {
+      setTimeout(() => {
+        commit('setAlert', { is: false, type, title: '', timer: null, persistence: false, message: '' })
+      }, 5000)
+    }
+  },
   async initCurrency ({ commit }) {
     commit('setLoading', { type: 'currency', is: true })
     await db.collection('currency')

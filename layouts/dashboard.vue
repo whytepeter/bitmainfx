@@ -85,7 +85,7 @@
     >
       <v-list-item class="px-2 white ">
         <v-list-item-avatar large class="ml-n1">
-          <v-img src="/bitmainfx.jpeg" />
+          <v-img src="/bitmainfx.png" />
         </v-list-item-avatar>
         <v-list-item-title class="pa-2 primary--text font-weight-bold">
           Bitmain FX

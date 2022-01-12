@@ -164,6 +164,7 @@ export const actions = {
         data.forEach((doc) => {
           // get user detail
           const user = doc.data()
+          user.deposit = `$${user.wallet.deposit.toLocaleString()}`
           users.push(user)
         })
 
