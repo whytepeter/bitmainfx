@@ -345,19 +345,25 @@ export const actions = {
               // Update last login
               updateLastLogin(currentUser.userID, user.date)
               // Redirect to dashboard
-              if (!state.user.block) {
-                if (state.user !== null) {
-                  if (state.user.role === 'admin') {
-                    this.$router.push('/admin')
-                  } else {
-                    this.$router.push('/dashboard/home')
+              if (user.delete) {
+                if (!state.user.block) {
+                  if (state.user !== null) {
+                    if (state.user.role === 'admin') {
+                      this.$router.push('/admin')
+                    } else {
+                      this.$router.push('/dashboard/home')
+                    }
+                    commit('setLoading', { type: 'login', is: false })
+                    dispatch('controller/initAlert', { is: true, type: 'success', message: 'Login successful' }, { root: true })
                   }
+                } else {
+                  location.href = '/'
+                  dispatch('controller/initAlert', { is: true, type: 'error', message: 'Account blocked, Please contact support@ttub.online' }, { root: true })
                   commit('setLoading', { type: 'login', is: false })
-                  dispatch('controller/initAlert', { is: true, type: 'success', message: 'Login successful' }, { root: true })
                 }
               } else {
                 location.href = '/'
-                dispatch('controller/initAlert', { is: true, type: 'error', message: 'Account blocked, Please contact support@ttub.online' }, { root: true })
+                dispatch('controller/initAlert', { is: true, type: 'error', message: 'Account Suspended, Please contact support@ttub.online' }, { root: true })
                 commit('setLoading', { type: 'login', is: false })
               }
             } else {
@@ -747,6 +753,7 @@ export const actions = {
           .getDownloadURL()
           .then((url) => {
             photoURL = url
+            console.log('URL', url)
             // update photo in the database
             data.identity.status = 'Progress'
             data.identity[payload.doc] = photoURL

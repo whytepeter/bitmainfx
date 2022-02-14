@@ -25,16 +25,21 @@
             <v-col cols="12" md="6" class="px-0 px-md-6">
               <v-card outlined class="mx-auto">
                 <v-card-text>
-                  <v-img
-                    contain
-                    max-height="300"
+                  <v-avatar
+                    v-if="verification.identity.front"
+                    tile
                     width="100%"
-                    :src="verification && verification.identity && verification.identity.front"
-                    :alt="verification.identity && verification.identity.type"
-                    @load="identity.front = true"
-                  />
+                    height="100%"
+                    size="140"
+                    class="rounded-lg pa-sm-4 white "
+                  >
+                    <img
+                      :src="verification && verification.identity.front"
+                      :alt="verification.identity.type"
+                    >
+                  </v-avatar>
                   <v-progress-linear
-                    v-if="!identity.front"
+                    v-if="!verification.identity.front"
                     indeterminate
                     color="secondary"
                   />
@@ -44,16 +49,21 @@
             <v-col cols="12" md="6" class="px-0 px-md-6">
               <v-card outlined class="mx-auto">
                 <v-card-text>
-                  <v-img
-                    contain
-                    max-height="300"
+                  <v-avatar
+                    v-if="verification.identity.back"
+                    tile
                     width="100%"
-                    :src="verification && verification.identity && verification.identity.back"
-                    :alt="verification.identity && verification.identity.type"
-                    @load="identity.back = true"
-                  />
+                    height="100%"
+                    size="140"
+                    class="rounded-lg pa-sm-4 white "
+                  >
+                    <img
+                      :src="verification && verification.identity.back"
+                      :alt="verification.identity.type"
+                    >
+                  </v-avatar>
                   <v-progress-linear
-                    v-if="!identity.back"
+                    v-if="!verification.identity.back"
                     indeterminate
                     color="secondary"
                   />
@@ -92,16 +102,21 @@
             <v-col cols="12" md="10" class="px-0 px-md-6">
               <v-card outlined class="mx-auto">
                 <v-card-text>
-                  <v-img
-
-                    contain
+                  <v-avatar
+                    v-if="verification.address.document"
+                    tile
                     width="100%"
-                    :src="verification.address && verification.address && verification.address.document"
-                    :alt="verification.address && verification.address.type"
-                    @load="address = true"
-                  />
+                    height="100%"
+                    size="140"
+                    class="rounded-lg pa-sm-4 white "
+                  >
+                    <img
+                      :src="verification && verification.address.document"
+                      :alt="verification.address.type"
+                    >
+                  </v-avatar>
                   <v-progress-linear
-                    v-if="!address"
+                    v-if="!verification.address.document"
                     indeterminate
                     color="secondary"
                   />
@@ -140,16 +155,21 @@
             <v-col cols="12" md="10" class="px-0 px-md-6">
               <v-card outlined class="mx-auto">
                 <v-card-text>
-                  <v-img
-                    class="rounded-mg mx-auto"
-                    max-height="300"
-                    contain
+                  <v-avatar
+                    v-if="verification.face.photo"
+                    tile
                     width="100%"
-                    :src="verification && verification.face && verification.face.photo"
-                    @load="face = true"
-                  />
+                    height="100%"
+                    size="140"
+                    class="rounded-lg pa-sm-4 white "
+                  >
+                    <img
+                      :src="verification && verification.face.photo"
+                      :alt="verification && verification.face.type"
+                    >
+                  </v-avatar>
                   <v-progress-linear
-                    v-if="!face"
+                    v-if="!verification.face.photo"
                     indeterminate
                     color="secondary"
                   />
@@ -214,8 +234,9 @@ export default {
   computed: {
     ...mapGetters({ state: 'admin/getState' }),
     verification () {
-      const data = this.state('verification')
-      console.log('this data', data)
+      const data = { ...this.state('verification') }
+      console.log('address', data.address && data.address.document)
+      console.log('Identity', data.identity && data.identity.back)
       return data && data
     },
     verified () {
