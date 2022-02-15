@@ -345,7 +345,7 @@ export const actions = {
               // Update last login
               updateLastLogin(currentUser.userID, user.date)
               // Redirect to dashboard
-              if (state.user.delete) {
+              if (!state.user.delete) {
                 if (!state.user.block) {
                   if (state.user !== null) {
                     if (state.user.role === 'admin') {
