@@ -72,8 +72,7 @@
           <v-autocomplete
             v-model="displayCountry"
             :items="countries"
-            item-text="currency"
-            disabled
+            item-text="name"
             dense
             outlined
             class="text-subtitle-2 mx-1 font-weight-light "
