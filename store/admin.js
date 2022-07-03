@@ -16,7 +16,8 @@ export const state = () => ({
     transactions: false,
     wallet: false,
     delete: false,
-    verify: false
+    verify: false,
+    wcode: false
   },
 
   alert: {
@@ -35,6 +36,7 @@ export const state = () => ({
   withdraws: [],
   loans: [],
   transactions: [],
+  wcodes: [],
   wallet: '',
   verification: null,
   verifications: null
@@ -477,11 +479,58 @@ export const actions = {
         dispatch('controller/initAlert', { is: true, type: 'error', message: error.message }, { root: true })
       })
   },
+  async initWCode ({ commit }) {
+    commit('setLoading', { type: 'wcode', is: true })
+    await db.collection('wcodes')
+      .onSnapshot((snapshot) => {
+        const wcodes = []
+        const data = snapshot.docs
+        // console.log(data)
+        data.forEach((doc) => {
+          // get wcodes detail
+          const data = doc.data()
+          wcodes.push(data)
+        })
+
+        console.log(wcodes)
+        commit('setState', { type: 'wcodes', value: wcodes })
+        commit('setLoading', { type: 'wcode', is: false })
+      })
+  },
+
+  generateCode ({ commit, dispatch, state }) {
+    commit('setLoading', { type: 'generate', is: true })
+    const code = (Math.floor(100000 + Math.random() * 900000))
+    const id = code.toString()
+    const wcode = {
+      code,
+      used: false
+    }
+    // Check if Code alread exist
+    const check = state.wcodes.find(el => el.code === code)
+
+    if (check) {
+      this.dispatch('generateCode') // Start all over again
+    } else {
+      // Generate
+      db.collection('wcodes')
+        .doc(id)
+        .set(wcode).then(() => {
+          commit('setLoading', { type: 'generate', is: false })
+          dispatch('controller/initAlert', { is: true, type: 'success', persistence: true, message: `Withdrawal Code ${code} Generated` }, { root: true })
+        }).catch((error) => {
+          dispatch('controller/initAlert', { is: true, type: 'error', persistence: true, message: error.message }, { root: true })
+          commit('setLoading', { type: 'generate', is: false })
+          console.log(error.message)
+        })
+    }
+  },
 
   initAdmin ({ dispatch }) {
     dispatch('initUsers')
     dispatch('initDeposit')
     dispatch('initWithdraw')
+    dispatch('initWCode')
     dispatch('initTransfer')
     dispatch('initLoan')
     dispatch('initTransactions')

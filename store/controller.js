@@ -460,10 +460,98 @@ export const actions = {
       })
   },
 
+  async autoCron ({ rootState, dispatch }) {
+    console.log('Starting auto crone')
+
+    const userID = auth.currentUser.uid
+    const user = rootState.authentication.user
+    const autoProfit = user.autoProfit
+    const today = getDate('current')
+    // const currentBal = user.wallet[wallet]
+
+    console.log(today, autoProfit.next, autoProfit.max, user.wallet.earnings)
+
+    // Check if user has autoProfit
+    if (autoProfit) {
+      if (autoProfit.start && autoProfit.next === today && autoProfit.max > user.wallet.earnings) {
+        const obj = {
+          next: getDate('add', 1),
+          start: autoProfit.start,
+          max: autoProfit.max,
+          amount: autoProfit.amount
+        }
+        // Update User Profit
+        const newProfit = user.wallet.earnings + autoProfit.amount
+        const newWallet = user.wallet
+        newWallet.earnings = newProfit
+        console.log(newWallet)
+
+        // Update AutoProfit Details
+        await db.collection('users').doc(userID).update({
+          autoProfit: obj
+        }).then(() => {
+          console.log('AutoProfit Details Updated')
+        }).catch((error) => {
+          console.log(error.message)
+          // dispatch('initAlert', { is: true, type: 'error', persistence: true, message: error.message })
+        })
+
+        await db.collection('users').doc(userID).update({ wallet: newWallet })
+      } else {
+        console.log("Parameter wasn't met")
+      }
+    } else {
+      addAutoProfit()
+    }
+
+    function addAutoProfit () {
+      const object = {
+        start: false,
+        max: 0,
+        days: 0,
+        amount: 0
+      }
+
+      db.collection('users').doc(userID).add({
+        autoProfit: object
+      }).then(() => {
+        console.log('AutoProfit Added')
+      }).catch((error) => {
+        console.log(error.message)
+        // dispatch('initAlert', { is: true, type: 'error', persistence: true, message: error.message })
+      })
+    }
+
+    function getDate (get, days) {
+      const currentDate = new Date()
+      let newDate
+
+      function addDays (days) {
+        const result = new Date(currentDate)
+        result.setDate(result.getDate() + +days)
+        return formatDate(result)
+      }
+
+      function formatDate (date) {
+        const months = ['January', 'February', 'March', 'April', 'May', 'June',
+          'July', 'August', 'September', 'October', 'November', 'December']
+        return `${date.getDate()} ${months[date.getMonth()]}, ${date.getFullYear()}`
+      }
+
+      if (get === 'add') {
+        newDate = addDays(days)
+      } else if (get === 'current') {
+        newDate = formatDate(currentDate)
+      }
+      return newDate
+    }
+  },
+
   // Initialize App
   async initApp ({ dispatch }) {
     await dispatch('initTransactions')
     await dispatch('initInvestments')
+    await dispatch('autoCron')
     await dispatch('investmentCrone')
     await dispatch('initCurrency')
     await dispatch('authentication/initializeVerification', null, { root: true })

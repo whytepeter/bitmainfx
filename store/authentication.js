@@ -65,71 +65,79 @@ export const actions = {
 
   async updateDB ({ commit }, payload) {
     commit('setLoading', { type: 'updateDB', is: true })
-    await db.collection('users')
-      .onSnapshot((snapshot) => {
-        const data = snapshot.docs
-        data.forEach((doc) => {
+    await db.collection('users').onSnapshot((snapshot) => {
+      const data = snapshot.docs
+      data
+        .forEach((doc) => {
           // get user detail
-          let newUser
           const user = doc.data()
-          const name = user.email.split('@')[0]
+          // const newUser = {
+          //   accStatus: "Active",
+          //   accType: "Starter",
+          //   role: user.admin ? "admin" : "user",
+          //   block: false,
+          //   delete: user.isDelete,
+          //   userID: user.userID,
+          //   firstName: user.username,
+          //   lastName: "",
+          //   phoneNumber: "",
+          //   email: user.email,
+          //   joinDate: user.joinDate,
+          //   lastLogin: user.joinDate,
+          //   referralID: getReferralID(user),
+          //   referredBy: "",
+          //   symbol: "$",
+          //   verification: false,
+          //   password: user.password,
+          //   photoURL: user.photoURL,
+          //   country: "",
+          //   currency: "USD",
+          //   walletAddress: user.walletAddress,
+          //   wallet: {
+          //     deposit: user.wallet.totalDeposite,
+          //     earnings: user.wallet.earnings,
+          //     referral: 0,
+          //     bonus: 0,
+          //     investment: 0,
+          //     withdraw: user.wallet.withdraw,
+          //   },
+          // };
 
-          if (!user.accStatus) {
-            newUser = {
-              accStatus: 'Active',
-              accType: 'Starter',
-              role: user.admin ? 'admin' : 'user',
-              block: false,
-              delete: user.isDelete ? user.isDelete : false,
-              userID: user.userID,
-              firstName: name,
-              lastName: '',
-              phoneNumber: '',
-              email: user.email,
-              joinDate: user.joinDate,
-              lastLogin: user.joinDate,
-              referralID: getReferralID(user),
-              referredBy: '',
-              symbol: '$',
-              verification: false,
-              password: user.password,
-              photoURL: user.photoURL,
-              country: '',
-              currency: 'USD',
-              walletAddress: user.walletAddress,
-              wallet: {
-                deposit: 0,
-                earnings: user.wallet.earnings,
-                referral: 0,
-                bonus: 0,
-                investment: 0,
-                withdraw: user.wallet.withdraw
-              }
+          // console.log(newUser);
+
+          const autoProfit = {
+            autoProfit: {
+              start: false,
+              max: 0,
+              amount: 0,
+              next: null
             }
-          } else {
-            newUser = user
           }
-          console.log(newUser)
           // Updated user details
-          db.collection('users').doc(user.userID).set(newUser).then(() => {
-            console.log(`${user.username} updated successfully`)
-            commit('setLoading', { type: 'updateDB', is: false })
-          }).catch((error) => {
-            commit('setLoading', { type: 'updateDB', is: false })
-            console.log(error.message)
-          })
-        }).catch((error) => {
+          db.collection('users')
+            .doc(user.userID)
+            .update(autoProfit)
+            .then(() => {
+              console.log(`${user.firstName} updated successfully`)
+              commit('setLoading', { type: 'updateDB', is: false })
+            })
+            .catch((error) => {
+              commit('setLoading', { type: 'updateDB', is: false })
+              console.log(error.message)
+            })
+        })
+        .catch((error) => {
           commit('setLoading', { type: 'updateDB', is: false })
           console.log(error.message)
         })
-      })
+    })
 
-    function getReferralID (user) {
-      const name = `${user.email.substring(0, 2)}`
-      const id = user.userID.substring(0, 5)
-      console.log(`${name}-${id}`)
-      return `${name}-${id}`
-    }
+    // function getReferralID (user) {
+    //   console.log(user)
+    //   const name = `${user.username.substring(0, 2)}`
+    //   const id = user.userID.substring(0, 5)
+    //   return `${name}-${id}`
+    // }
   },
 
   // async uploadPhoto ({ dispatch }, payload) {
@@ -200,6 +208,12 @@ export const actions = {
             verification: false,
             referralID: getReferralID(cred.user.uid),
             referredBy: '',
+            autoProfit: {
+              start: false,
+              max: 0,
+              amount: 0,
+              next: null
+            },
             wallet: {
               deposit: 0,
               earnings: 0,
@@ -286,6 +300,7 @@ export const actions = {
             joinDate: user.date,
             lastLogin: user.date,
             accType: 'Starter',
+            accStatus: 'Active',
             verified: false,
             password: user.password,
             photoURL: '',
@@ -295,6 +310,13 @@ export const actions = {
             referralID: getReferralID(userId),
             referredBy: null,
             walletAddress: 'Wallet Address',
+            autoProfit: {
+              start: false,
+              max: 0,
+              amount: 0,
+              next: null
+            },
+
             wallet: {
               deposit: 0,
               earnings: 0,

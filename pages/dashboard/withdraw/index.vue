@@ -5,7 +5,15 @@
         <p-container dark :color="'primary'" :title="'Withdrawal'">
           <v-row class="ma-0">
             <v-col v-if="!show" cols="12" sm="6" md="4" class="pa-1">
-              <dcard :action="()=>{show = true}" :icon="'mdi-cash-minus'" :title="'Request Withdrawal'" />
+              <dcard
+                :action="
+                  () => {
+                    show = true;
+                  }
+                "
+                :icon="'mdi-cash-minus'"
+                :title="'Request Withdrawal'"
+              />
               <!-- <v-btn
                 depressed
                 block
@@ -24,7 +32,8 @@
                   Total Profit
                   <v-chip label color="accent ml-2">
                     <div v-if="user && user.wallet.earnings !== 0">
-                      {{ currency }}{{ rateAmount(user && user.wallet.earnings) | currency }}
+                      {{ currency
+                      }}{{ (user && user.wallet.earnings) | currency }}
                     </div>
                     <div v-else>
                       {{ currency }}0.00
@@ -55,8 +64,8 @@
                 >
                   <v-row class="ma-0" no-gutters>
                     <v-col cols="12" md="6">
-                      <v-row class="ma-0">
-                        <v-col cols="12" class="py-0 pl-0 mb-n1 ">
+                      <v-row v-if="showForm" class="ma-0">
+                        <v-col cols="12" class="py-0 pl-0 mb-n1">
                           <v-text-field
                             v-model="xAmount"
                             type="text"
@@ -64,12 +73,12 @@
                             dense
                             outlined
                             color="secondary"
-                            :label="`Enter Amount (${currency})` "
+                            :label="`Enter Amount (${currency})`"
                             :rules="amountRules"
                             class="text-subtitle-2 font-weight-light rounded-md"
                           />
                         </v-col>
-                        <v-col cols="12" class="py-0 pl-0 mb-n1 ">
+                        <v-col cols="12" class="py-0 pl-0 mb-n1">
                           <v-select
                             v-model="withdrawalMethod"
                             dense
@@ -77,15 +86,20 @@
                             :items="withdrawalMethods"
                             outlined
                             class="text-subtitle-2 font-weight-light rounded-md"
-                            :rules="[(v) => !!v || 'Withdrawal Method is required']"
+                            :rules="[
+                              (v) => !!v || 'Withdrawal Method is required',
+                            ]"
                             label="Withdrawal Method"
                             required
                           />
                         </v-col>
                         <!-- Bank Details -->
-                        <v-col cols="12" class="py-0 pl-0 mb-n1 ">
+                        <v-col cols="12" class="py-0 pl-0 mb-n1">
                           <v-text-field
-                            v-if="withdrawalMethod !== '' && withdrawalMethod === 'Bank Transfer'"
+                            v-if="
+                              withdrawalMethod !== '' &&
+                                withdrawalMethod === 'Bank Transfer'
+                            "
                             v-model="bank.name"
                             type="text"
                             name="BankName"
@@ -97,9 +111,12 @@
                             class="text-subtitle-2 font-weight-light rounded-md"
                           />
                         </v-col>
-                        <v-col cols="12" class="py-0 pl-0 mb-n1 ">
+                        <v-col cols="12" class="py-0 pl-0 mb-n1">
                           <v-text-field
-                            v-if="withdrawalMethod !== '' && withdrawalMethod === 'Bank Transfer'"
+                            v-if="
+                              withdrawalMethod !== '' &&
+                                withdrawalMethod === 'Bank Transfer'
+                            "
                             v-model="bank.accName"
                             type="text"
                             name="accName"
@@ -111,9 +128,12 @@
                             class="text-subtitle-2 font-weight-light rounded-md"
                           />
                         </v-col>
-                        <v-col cols="12" class="py-0 pl-0 mb-n1 ">
+                        <v-col cols="12" class="py-0 pl-0 mb-n1">
                           <v-text-field
-                            v-if="withdrawalMethod !== '' && withdrawalMethod === 'Bank Transfer'"
+                            v-if="
+                              withdrawalMethod !== '' &&
+                                withdrawalMethod === 'Bank Transfer'
+                            "
                             v-model="bank.accNumber"
                             type="text"
                             name="accNumber"
@@ -125,9 +145,12 @@
                             class="text-subtitle-2 font-weight-light rounded-md"
                           />
                         </v-col>
-                        <v-col cols="12" class="py-0 pl-0 mb-n1 ">
+                        <v-col cols="12" class="py-0 pl-0 mb-n1">
                           <v-text-field
-                            v-if="withdrawalMethod !== '' && withdrawalMethod === 'Bank Transfer'"
+                            v-if="
+                              withdrawalMethod !== '' &&
+                                withdrawalMethod === 'Bank Transfer'
+                            "
                             v-model="bank.other"
                             type="text"
                             name="accNumber"
@@ -140,9 +163,14 @@
                           />
                         </v-col>
                         <!-- Wallet Address -->
-                        <v-col cols="12" class="py-0 pl-0 mb-n1 ">
+                        <v-col cols="12" class="py-0 pl-0 mb-n1">
                           <v-text-field
-                            v-if="withdrawalMethod !== '' && withdrawalMethod !== 'Bank Transfer' && withdrawalMethod !== 'Paypal'"
+                            v-if="
+                              withdrawalMethod !== '' &&
+                                withdrawalMethod !== 'Bank Transfer' &&
+                                withdrawalMethod !== 'Paypal' &&
+                                withdrawalMethod !== 'Cash App Tag'
+                            "
                             v-model="wallet"
                             type="text"
                             name="wallet"
@@ -156,9 +184,29 @@
                         </v-col>
 
                         <!-- Paypal Email address -->
-                        <v-col cols="12" class="py-0 pl-0 mb-n1 ">
+                        <v-col cols="12" class="py-0 pl-0 mb-n1">
                           <v-text-field
-                            v-if="withdrawalMethod !== '' && withdrawalMethod === 'Paypal'"
+                            v-if="
+                              withdrawalMethod !== '' &&
+                                withdrawalMethod === 'Cash App'
+                            "
+                            v-model="tag"
+                            type="text"
+                            name="tag"
+                            dense
+                            outlined
+                            color="secondary"
+                            label="Cash App Tag"
+                            :rules="tagRules"
+                            class="text-subtitle-2 font-weight-light rounded-md"
+                          />
+                        </v-col>
+                        <v-col cols="12" class="py-0 pl-0 mb-n1">
+                          <v-text-field
+                            v-if="
+                              withdrawalMethod !== '' &&
+                                withdrawalMethod === 'Paypal'
+                            "
                             v-model="paypalAddress"
                             type="text"
                             name="papaylAddress"
@@ -170,7 +218,7 @@
                             class="text-subtitle-2 font-weight-light rounded-md"
                           />
                         </v-col>
-                        <v-col cols="12" class="py-0 pl-0 mb-n1 ">
+                        <v-col cols="12" class="py-0 pl-0 mb-n1">
                           <v-textarea
                             v-model="comment"
                             name="address"
@@ -184,16 +232,57 @@
                             required
                           />
                         </v-col>
-                        <v-col cols="12" class="py-0 pl-0 mb-n1 ">
+                        <v-col cols="12" class="py-0 pl-0 mb-n1">
                           <v-btn
                             depressed
                             :loading="loading.withdraw"
                             block
                             type="submit"
                             color="secondary"
-                            class="text-subtitle-2 font-weight-normal "
+                            class="text-subtitle-2 font-weight-normal"
                           >
                             Submit
+                          </v-btn>
+                        </v-col>
+                      </v-row>
+                      <v-row v-else class="ma-0">
+                        <v-col cols="12">
+                          Contact support
+                          <v-btn
+                            color="accent"
+                            text
+                            href="mailto:support@bitmainsfx.online"
+                            class="px-0 text-lowercase"
+                          >
+                            support@bitmainsfx.online
+                          </v-btn>
+                          to get your <strong>Withdrawal Code</strong>
+                        </v-col>
+                        <v-col cols="12">
+                          <v-text-field
+                            v-model="wcode"
+                            type="text"
+                            name="withdrawalCode"
+                            dense
+                            outlined
+                            color="secondary"
+                            label="Withdrawal Code"
+                            :rules="[
+                              (v) => !!v || 'Withdrawal Code is required',
+                            ]"
+                            class="text-subtitle-2 font-weight-light rounded-md"
+                          />
+                        </v-col>
+                        <v-col cols="12">
+                          <v-btn
+                            depressed
+                            block
+                            color="secondary"
+                            :loading="loading.withdraw"
+                            class="text-subtitle-2 font-weight-normal mx-1"
+                            @click="checkWCode"
+                          >
+                            Proceed
                           </v-btn>
                         </v-col>
                       </v-row>
@@ -201,12 +290,39 @@
 
                     <v-col cols="12" md="6" class="d-none d-md-block">
                       <v-card light flat rounded="lg" class="white">
-                        <v-card-title class="text-subtitle-1 font-weight-medium">
+                        <v-card-title
+                          class="text-subtitle-1 font-weight-medium"
+                        >
                           Market Prices
                         </v-card-title>
                         <v-card-text>
-                          <div style="height:433px; background-color: #1D2330; overflow:hidden; box-sizing: border-box; border: 1px solid #282E3B; border-radius: 4px; text-align: right; line-height:14px; font-size: 12px; font-feature-settings: normal; text-size-adjust: 100%; box-shadow: inset 0 -20px 0 0 #262B38; padding: 0px; margin: 0px; width: 100%;">
-                            <div style="height:413px; padding:0px; margin:0px; width: 100%;">
+                          <div
+                            style="
+                              height: 433px;
+                              background-color: #1d2330;
+                              overflow: hidden;
+                              box-sizing: border-box;
+                              border: 1px solid #282e3b;
+                              border-radius: 4px;
+                              text-align: right;
+                              line-height: 14px;
+                              font-size: 12px;
+                              font-feature-settings: normal;
+                              text-size-adjust: 100%;
+                              box-shadow: inset 0 -20px 0 0 #262b38;
+                              padding: 0px;
+                              margin: 0px;
+                              width: 100%;
+                            "
+                          >
+                            <div
+                              style="
+                                height: 413px;
+                                padding: 0px;
+                                margin: 0px;
+                                width: 100%;
+                              "
+                            >
                               <iframe
                                 src="https://widget.coinlib.io/widget?type=full_v2&theme=dark&cnt=6&pref_coin_id=1505&graph=yes"
                                 width="100%"
@@ -216,11 +332,31 @@
                                 marginheight="0"
                                 frameborder="0"
                                 border="0"
-                                style="border:0;margin:0;padding:0;"
+                                style="border: 0; margin: 0; padding: 0"
                               />
                             </div>
-                            <div style="color: #626B7F; line-height: 14px; font-weight: 400; font-size: 11px; box-sizing: border-box; padding: 2px 6px; width: 100%; font-family: Verdana, Tahoma, Arial, sans-serif;">
-                              <a href="https://coinlib.io" target="_blank" style="font-weight: 500; color: #626B7F; text-decoration:none; font-size:11px">Cryptocurrency Prices</a>&nbsp;by Coinlib
+                            <div
+                              style="
+                                color: #626b7f;
+                                line-height: 14px;
+                                font-weight: 400;
+                                font-size: 11px;
+                                box-sizing: border-box;
+                                padding: 2px 6px;
+                                width: 100%;
+                                font-family: Verdana, Tahoma, Arial, sans-serif;
+                              "
+                            >
+                              <a
+                                href="https://coinlib.io"
+                                target="_blank"
+                                style="
+                                  font-weight: 500;
+                                  color: #626b7f;
+                                  text-decoration: none;
+                                  font-size: 11px;
+                                "
+                              >Cryptocurrency Prices</a>&nbsp;by Coinlib
                             </div>
                           </div>
                         </v-card-text>
@@ -232,7 +368,13 @@
             </v-col>
           </v-row>
         </p-container>
-        <x-transaction v-if="!show" :filter="false" :title="'Recent Withdrawals'" class="mt-4" :type="'withdraw'" />
+        <x-transaction
+          v-if="!show"
+          :filter="false"
+          :title="'Recent Withdrawals'"
+          class="mt-4"
+          :type="'withdraw'"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -257,9 +399,13 @@ export default {
   },
   data: () => ({
     show: false,
+    showForm: false,
     valid: true,
     wallet: '',
+    wcode: '',
     walletRules: [v => !!v || 'Wallet Address is required'],
+    tag: '',
+    tagRules: [v => !!v || 'Cash App Tag is required'],
     paypalAddress: '',
     paypalAddressRules: [v => !!v || 'Paypal Address is required'],
 
@@ -279,20 +425,40 @@ export default {
     comment: '',
     commentRules: [v => !!v || 'Amount is required'],
     withdrawalMethod: '',
-    withdrawalMethods: ['Bitcoin', 'Ethereum', 'Perfect Money', 'Litecoin', 'Payeer', 'Paypal', 'Bank Transfer']
-
+    withdrawalMethods: [
+      'Bitcoin',
+      'Ethereum',
+      'Perfect Money',
+      'Litecoin',
+      'Payeer',
+      'Paypal',
+      'Bank Transfer'
+    ]
   }),
+
+  created () {
+    this.$store.dispatch('admin/initWCode')
+  },
   computed: {
-    ...mapGetters({ user: 'authentication/getUser', loading: 'controller/getLoading', state: 'admin/getState', state2: 'controller/getState' }),
+    ...mapGetters({
+      user: 'authentication/getUser',
+      loading: 'controller/getLoading',
+      state: 'admin/getState',
+      state2: 'controller/getState'
+    }),
     currency () {
       const arr = this.state2('currency')
       let currency
       if (this.user) {
-        arr && arr.forEach((el) => {
-          if (this.user && (this.user.currency).toLowerCase() === (el.name).toLowerCase()) {
-            currency = el.symbol
-          }
-        })
+        arr &&
+          arr.forEach((el) => {
+            if (
+              this.user &&
+              this.user.currency.toLowerCase() === el.name.toLowerCase()
+            ) {
+              currency = el.symbol
+            }
+          })
       } else {
         currency = '$'
       }
@@ -320,12 +486,15 @@ export default {
         }
       }
     }
-
   },
   methods: {
-    ...mapActions({ initAlert: 'controller/initAlert', withdrawalRequest: 'controller/withdrawalRequest' }),
+    ...mapActions({
+      initAlert: 'controller/initAlert',
+      withdrawalRequest: 'controller/withdrawalRequest',
+      state: 'admin/getState'
+    }),
     submit () {
-      this.$refs.form.validate()
+      console.log('correct')
       if (this.$refs.form.validate()) {
         const amount = parseInt(this.xAmount.split(',').join(''))
         if (this.checkBalance(amount)) {
@@ -334,12 +503,15 @@ export default {
             method: this.withdrawalMethod,
             comment: this.comment,
             date: this.getDate('current'),
-            status: 'pending'
+            status: 'pending',
+            wcode: this.wcode
           }
           if (this.withdrawalMethod === 'Bank Transfer') {
             payload.bank = this.bank
           } else if (this.withdrawalMethod === 'Paypal') {
             payload.paypalAddress = this.paypalAddress
+          } else if (this.withdrawalMethod === 'Cash App') {
+            payload.cashAppTag = this.tag
           } else {
             // const name = `${this.withdrawalMethod}Address`
             payload.wallet = this.wallet
@@ -351,25 +523,65 @@ export default {
         }
       }
     },
+    checkWCode () {
+      if (this.wcode.trim() !== '') {
+        const wcodes = this.state('wcodes')
+        console.log(wcodes)
+        const verify = wcodes.find(el => el.code === parseInt(this.wcode))
+
+        console.log(verify)
+        if (verify) {
+          if (verify.used) {
+            this.initAlert({
+              is: true,
+              persistence: true,
+              type: 'error',
+              message:
+                'This Withdrawal Code has been used already, Please contact support'
+            })
+          } else {
+            this.showForm = true
+            return true
+          }
+        } else {
+          this.initAlert({
+            is: true,
+            persistence: true,
+            type: 'error',
+            message:
+              'This Withdrawal Code is not valid, Please contact support'
+          })
+        }
+      } else {
+        this.initAlert({
+          is: true,
+          persistence: true,
+          type: 'error',
+          message: 'Fields cannot be blank'
+        })
+      }
+    },
     rateAmount (payload) {
-      console.log(this.user)
       const arr = this.state2('currency')
       let amount
       if (this.user) {
-        arr && arr.forEach((el) => {
-          if (this.user && (this.user.currency).toLowerCase() === (el.name).toLowerCase()) {
-            amount = parseFloat(parseFloat(payload) / el.rate)
-          }
-        })
+        arr &&
+          arr.forEach((el) => {
+            if (
+              this.user &&
+              this.user.currency.toLowerCase() === el.name.toLowerCase()
+            ) {
+              amount = parseFloat(parseFloat(payload) / el.rate)
+            }
+          })
       } else {
         amount = payload
       }
 
-      console.log(amount)
       return amount
     },
     checkBalance (amount) {
-      const balance = this.rateAmount(this.user && this.user.wallet.earnings)
+      const balance = this.user && this.user.wallet.earnings
       // console.log(amount)
       // console.log(balance)
       if (amount <= 10) {
@@ -422,9 +634,23 @@ export default {
       }
 
       function formatDate (date) {
-        const months = ['January', 'February', 'March', 'April', 'May', 'June',
-          'July', 'August', 'September', 'October', 'November', 'December']
-        return `${date.getDate()} ${months[date.getMonth()]}, ${date.getFullYear()}`
+        const months = [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December'
+        ]
+        return `${date.getDate()} ${
+          months[date.getMonth()]
+        }, ${date.getFullYear()}`
       }
 
       if (get === 'add') {
@@ -435,10 +661,8 @@ export default {
       return newDate
     }
   }
-
 }
 </script>
 
 <style>
-
 </style>
