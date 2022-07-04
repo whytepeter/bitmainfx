@@ -1,7 +1,14 @@
 <template>
   <v-app v-if="user" class="grey lighten-3">
     <div>
-      <v-app-bar fixed flat app elevation outlined color="white">
+      <v-app-bar
+        fixed
+        flat
+        app
+        elevation
+        outlined
+        color="white"
+      >
         <v-app-bar-nav-icon
           class="primary--text"
           @click.stop="(mini = !mini), (drawer = true)"
@@ -23,7 +30,9 @@
           <v-list>
             <v-list-item dense to="/dashboard/home" @click="switchPage('Home')">
               <v-list-item-icon>
-                <v-icon size="20" class="px-1"> mdi-home-variant </v-icon>
+                <v-icon size="20" class="px-1">
+                  mdi-home-variant
+                </v-icon>
               </v-list-item-icon>
               <v-list-item-title>Dashboard</v-list-item-title>
             </v-list-item>
@@ -33,7 +42,9 @@
               @click="switchPage('Settings')"
             >
               <v-list-item-icon>
-                <v-icon size="20" class="px-1"> mdi-account </v-icon>
+                <v-icon size="20" class="px-1">
+                  mdi-account
+                </v-icon>
               </v-list-item-icon>
               <v-list-item-title>Account</v-list-item-title>
             </v-list-item>
@@ -41,7 +52,9 @@
             <v-divider />
             <v-list-item dense @click="logout">
               <v-list-item-icon>
-                <v-icon size="20" class="px-1"> fas fa-sign-out-alt </v-icon>
+                <v-icon size="20" class="px-1">
+                  fas fa-sign-out-alt
+                </v-icon>
               </v-list-item-icon>
               <v-list-item-title>Logout</v-list-item-title>
             </v-list-item>
@@ -98,10 +111,14 @@
       <v-list class="font-weight-medium">
         <v-list-item class="" @click="logout">
           <v-list-item-icon>
-            <v-icon color="error"> fas fa-sign-out-alt </v-icon>
+            <v-icon color="error">
+              fas fa-sign-out-alt
+            </v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="error--text"> Logout </v-list-item-title>
+            <v-list-item-title class="error--text">
+              Logout
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -148,8 +165,8 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
-import pAlert from "~/components/other/pAlert.vue";
+import { mapGetters, mapMutations } from 'vuex'
+import pAlert from '~/components/other/pAlert.vue'
 export default {
   components: { pAlert },
   data: () => ({
@@ -160,32 +177,32 @@ export default {
     permanent: true,
 
     sideLinks: [
-      { name: "Home", route: "/admin", icon: "mdi-home-variant " },
+      { name: 'Home', route: '/admin', icon: 'mdi-home-variant ' },
       {
-        name: "Account",
-        route: "/admin/account",
-        icon: "mdi-account-tie",
+        name: 'Account',
+        route: '/admin/account',
+        icon: 'mdi-account-tie'
       },
       {
-        name: "Users",
-        route: "/admin/users",
-        icon: "mdi-account-group ",
+        name: 'Users',
+        route: '/admin/users',
+        icon: 'mdi-account-group '
       },
       {
-        name: "Deposit Request",
-        route: "/admin/deposits",
-        icon: "mdi-currency-usd",
+        name: 'Deposit Request',
+        route: '/admin/deposits',
+        icon: 'mdi-currency-usd'
       },
       {
-        name: "Withdrawal Request",
-        route: "/admin/withdraws",
-        icon: "mdi-currency-usd",
+        name: 'Withdrawal Request',
+        route: '/admin/withdraws',
+        icon: 'mdi-currency-usd'
       },
       {
-        name: "W-OTP",
-        route: "/admin/otp",
-        icon: "mdi-account-check",
-      },
+        name: 'W-OTP',
+        route: '/admin/otp',
+        icon: 'mdi-account-check'
+      }
       // {
       //   name: 'Verification',
       //   route: '/admin/verification',
@@ -206,54 +223,54 @@ export default {
       //   route: '/admin/loans',
       //   icon: 'mdi-cash-check'
       // }
-    ],
+    ]
   }),
 
-  head() {
+  head () {
     return {
       link: [
         {
-          rel: "stylesheet",
-          href: "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css",
+          rel: 'stylesheet',
+          href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css'
         },
         {
-          rel: "stylesheet",
-          href: "https://use.fontawesome.com/releases/v5.15.1/css/all.css",
-        },
-      ],
-    };
+          rel: 'stylesheet',
+          href: 'https://use.fontawesome.com/releases/v5.15.1/css/all.css'
+        }
+      ]
+    }
   },
 
   computed: {
     ...mapGetters({
-      user: "authentication/getUser",
-      activePage: "controller/getActivePage",
-    }),
+      user: 'authentication/getUser',
+      activePage: 'controller/getActivePage'
+    })
   },
-  created() {
-    this.$store.dispatch("authentication/handleAuth");
+  created () {
+    this.$store.dispatch('authentication/handleAuth')
     // this.$store.dispatch('controller/initApp')
     if (this.$vuetify.breakpoint.xsOnly) {
-      this.drawer = false;
+      this.drawer = false
     }
   },
   methods: {
     ...mapMutations({
-      setActivePage: "controller/setActivePage",
-      setAlert: "authentication/setAlert",
+      setActivePage: 'controller/setActivePage',
+      setAlert: 'authentication/setAlert'
     }),
-    switchPage(page) {
-      this.setActivePage(page);
+    switchPage (page) {
+      this.setActivePage(page)
     },
-    goto(page, to) {
-      this.$router.push(to);
-      this.setActivePage(page);
+    goto (page, to) {
+      this.$router.push(to)
+      this.setActivePage(page)
     },
-    logout() {
-      this.$store.dispatch("authentication/logoutUser");
-    },
-  },
-};
+    logout () {
+      this.$store.dispatch('authentication/logoutUser')
+    }
+  }
+}
 </script>
 
 <style scoped>

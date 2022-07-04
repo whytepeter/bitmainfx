@@ -24,11 +24,16 @@
         </v-toolbar-title>
 
         <v-spacer class="d-sm-none" />
-        <v-toolbar-items flat class="hidden-sm-and-down " color="transparent">
+        <v-toolbar-items flat class="hidden-sm-and-down" color="transparent">
           <v-btn
             tile
             active-class=" font-weight-medium secondary--text"
-            class="indigo--text text--lighten-5 text-h6 text-capitalize home-active font-weight-light"
+            class="
+              indigo--text
+              text--lighten-5 text-h6 text-capitalize
+              home-active
+              font-weight-light
+            "
             text
             to="/about"
             exact
@@ -38,7 +43,12 @@
           <v-btn
             tile
             active-class=" font-weight-medium secondary--text"
-            class="indigo--text text--lighten-5 text-h6 text-capitalize home-active font-weight-light"
+            class="
+              indigo--text
+              text--lighten-5 text-h6 text-capitalize
+              home-active
+              font-weight-light
+            "
             text
             to="/help"
             exact
@@ -90,7 +100,12 @@
           <v-btn
             tile
             active-class=" font-weight-medium secondary--text"
-            class="indigo--text text--lighten-5 text-h6 text-capitalize home-active font-weight-light"
+            class="
+              indigo--text
+              text--lighten-5 text-h6 text-capitalize
+              home-active
+              font-weight-light
+            "
             text
             to="/contact"
             exact
@@ -146,7 +161,7 @@
             <img src="/bitmainfx.png" max-width="70" alt="Bitmain FX">
           </v-avatar>
         </v-list-item>
-        <div style="width:100%" class="pa-1 secondary rounded-tl rounded-tr" />
+        <div style="width: 100%" class="pa-1 secondary rounded-tl rounded-tr" />
         <v-list-item-group
           active-class="primary--text text-darken-4 text--secondary-4"
         >
@@ -200,7 +215,7 @@
 
     <v-footer
       id="contact"
-      style="min-height:300px"
+      style="min-height: 300px"
       color="white"
       class="d-flex justify-center px-0 py-6"
     >
@@ -215,14 +230,14 @@
           </div>
           <div>
             <v-btn
-              href="mailto:info@bitmainfx.online"
+              href="mailto:info@bitmainsfx.online"
               text
-              class="text-lowercase font-weight-light text-subtitle-1  px-1"
+              class="text-lowercase font-weight-light text-subtitle-1 px-1"
             >
               <v-icon left size="20" color="primary">
                 mdi-email
               </v-icon>
-              info@bitmainfx.online
+              info@bitmainsfx.online
             </v-btn>
           </div>
           <div class="d-flex align-center justify-center justify-sm-start">
@@ -233,7 +248,9 @@
               href="social.link"
               color="primary"
               class="social-hover"
-              :style="social.name === 'telegram' ? 'transform:rotate(-45deg)' : ''"
+              :style="
+                social.name === 'telegram' ? 'transform:rotate(-45deg)' : ''
+              "
               small
               icon
               fab
@@ -244,19 +261,31 @@
               </v-icon>
             </v-btn>
           </div>
-          <div class="primary--text  mt-4">
+          <div class="primary--text mt-4">
             © 2016-2021 All Rights reserved.
           </div>
         </v-col>
         <v-col cols="12" md="8">
           <div
-            class="d-flex justify-center justify-sm-start align-center ml-n2 mb-2"
+            class="
+              d-flex
+              justify-center justify-sm-start
+              align-center
+              ml-n2
+              mb-2
+            "
           >
             <v-btn
               to="/legal"
               text
               color="secondary"
-              class="text-subtitle-1 mx-2 font-weight-light text-capitalize px-1"
+              class="
+                text-subtitle-1
+                mx-2
+                font-weight-light
+                text-capitalize
+                px-1
+              "
             >
               Legal Information
             </v-btn>
@@ -264,7 +293,13 @@
               to="/terms"
               text
               color="secondary"
-              class="text-subtitle-1 mx-2 font-weight-light text-capitalize px-1"
+              class="
+                text-subtitle-1
+                mx-2
+                font-weight-light
+                text-capitalize
+                px-1
+              "
             >
               Terms & Conditions
             </v-btn>

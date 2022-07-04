@@ -1,16 +1,16 @@
 <template>
   <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="submit">
     <v-row class="ma-0" no-gutters>
-      <v-col cols="12" class=" mb-2 py-0 pr-md-3  ">
+      <v-col cols="12" class="mb-2 py-0 pr-md-3">
         <span
           v-if="paymentMethod === 'Bank Transfer' || paymentMethod === 'Paypal'"
-          class="text-body-2 info--text font-weight-medium "
+          class="text-body-2 info--text font-weight-medium"
         >
           Contact
           <a
-            href="mailto:info@bitmainfx.online"
+            href="mailto:info@bitmainsfx.online"
             class="secondary--text"
-          >info@bitmainfx.online</a>
+          >info@bitmainsfx.online</a>
           for {{ paymentMethod }} payment
         </span>
         <span v-else class="text-caption info--text font-weight-medium">
@@ -18,15 +18,15 @@
         </span>
       </v-col>
 
-      <v-col cols="12" class=" pt-0 pr-md-3 mb-2">
+      <v-col cols="12" class="pt-0 pr-md-3 mb-2">
         <v-btn
-          style="width:100%"
+          style="width: 100%"
           color="accent"
           depressed
           small
           @click="copy(wallet.address)"
         >
-          <span style="width:100%" class="text-truncate text-caption">{{
+          <span style="width: 100%" class="text-truncate text-caption">{{
             wallet
           }}</span>
           <v-icon color="" small right>
@@ -34,7 +34,7 @@
           </v-icon>
         </v-btn>
       </v-col>
-      <v-col cols="12" class="py-0 pr-md-3 mb-n1 ">
+      <v-col cols="12" class="py-0 pr-md-3 mb-n1">
         <v-text-field
           v-model="xAmount"
           type="text"
@@ -47,7 +47,7 @@
           class="text-subtitle-2 font-weight-light rounded-md"
         />
       </v-col>
-      <v-col cols="12" class="py-0 pr-md-3 mb-n1 ">
+      <v-col cols="12" class="py-0 pr-md-3 mb-n1">
         <v-select
           v-model="paymentMethod"
           dense
@@ -55,18 +55,18 @@
           :items="paymentMethods"
           outlined
           class="text-subtitle-2 font-weight-light rounded-md"
-          :rules="[v => !!v || 'Payment Method is required']"
+          :rules="[(v) => !!v || 'Payment Method is required']"
           label="Payment Method"
           required
         />
       </v-col>
-      <v-col cols="12" class="py-0 pr-md-3 mb-n1 ">
+      <v-col cols="12" class="py-0 pr-md-3 mb-n1">
         <v-btn
           depressed
           block
           type="submit"
           color="secondary"
-          class="text-subtitle-2 font-weight-normal "
+          class="text-subtitle-2 font-weight-normal"
         >
           Proceed to Payment
         </v-btn>
